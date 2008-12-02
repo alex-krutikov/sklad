@@ -1,0 +1,241 @@
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>PrihodFiltrDialog</class>
+ <widget class="QDialog" name="PrihodFiltrDialog" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>454</width>
+    <height>323</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="groupBox" >
+     <property name="title" >
+      <string/>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item row="6" column="0" >
+       <widget class="QCheckBox" name="bcb11" >
+        <property name="text" >
+         <string>Накладная:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1" colspan="3" >
+       <widget class="QLineEdit" name="le6" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1" colspan="3" >
+       <widget class="QLineEdit" name="le4" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" >
+       <widget class="QCheckBox" name="bcb7" >
+        <property name="text" >
+         <string>Счет:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QCheckBox" name="bcb2" >
+        <property name="text" >
+         <string>Тип:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QCheckBox" name="bcb3" >
+        <property name="text" >
+         <string>Наименование:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0" >
+       <widget class="QCheckBox" name="bcb9" >
+        <property name="text" >
+         <string>Начальная дата:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1" >
+       <widget class="QDateEdit" name="de1" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="2" >
+       <widget class="QCheckBox" name="bcb10" >
+        <property name="text" >
+         <string>Конечная дата:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="3" >
+       <widget class="QDateEdit" name="de2" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1" colspan="3" >
+       <widget class="QLineEdit" name="le5" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0" >
+       <widget class="QCheckBox" name="bcb8" >
+        <property name="text" >
+         <string>Место:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0" colspan="4" >
+       <widget class="Line" name="line_3" >
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" >
+       <widget class="QCheckBox" name="bcb6" >
+        <property name="text" >
+         <string>Поставщик:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1" colspan="3" >
+       <widget class="QComboBox" name="cb3" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="4" >
+       <widget class="Line" name="line_2" >
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" >
+       <widget class="QCheckBox" name="bcb5" >
+        <property name="enabled" >
+         <bool>true</bool>
+        </property>
+        <property name="text" >
+         <string>Производитель:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="3" >
+       <widget class="QComboBox" name="cb2" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="3" >
+       <widget class="QLineEdit" name="le2" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" colspan="3" >
+       <widget class="QComboBox" name="cb1" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QCheckBox" name="bcb12" >
+       <property name="text" >
+        <string>Показывать все записи</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pb1" >
+       <property name="text" >
+        <string>Применить</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <pixmapfunction></pixmapfunction>
+ <tabstops>
+  <tabstop>bcb2</tabstop>
+  <tabstop>cb1</tabstop>
+  <tabstop>bcb3</tabstop>
+  <tabstop>le2</tabstop>
+  <tabstop>bcb5</tabstop>
+  <tabstop>cb2</tabstop>
+  <tabstop>bcb6</tabstop>
+  <tabstop>cb3</tabstop>
+  <tabstop>bcb7</tabstop>
+  <tabstop>le4</tabstop>
+  <tabstop>bcb9</tabstop>
+  <tabstop>de1</tabstop>
+  <tabstop>bcb10</tabstop>
+  <tabstop>de2</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

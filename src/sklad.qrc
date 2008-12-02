@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/icons" >
+        <file>icons/about.png</file>
+        <file>icons/add2.png</file>
+        <file>icons/delete2.png</file>
+        <file>icons/export2.png</file>
+        <file>icons/folder_add.png</file>
+        <file>icons/font.png</file>
+        <file>icons/import1.png</file>
+        <file>icons/index.png</file>
+        <file>icons/information.png</file>
+        <file>icons/navigate_plus.png</file>
+        <file>icons/preferences.png</file>
+        <file>icons/printer.png</file>
+    </qresource>
+    <qresource prefix="/tr" >
+        <file>qt_ru.qm</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,363 @@
+<ui version="4.0" >
+ <class>ProektForm</class>
+ <widget class="QWidget" name="ProektForm" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1048</width>
+    <height>594</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="spacing" >
+    <number>2</number>
+   </property>
+   <property name="leftMargin" >
+    <number>2</number>
+   </property>
+   <property name="topMargin" >
+    <number>2</number>
+   </property>
+   <property name="rightMargin" >
+    <number>2</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>2</number>
+   </property>
+   <item>
+    <widget class="QSplitter" name="splitter" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QGroupBox" name="groupBox" >
+      <property name="title" >
+       <string>Проект</string>
+      </property>
+      <layout class="QVBoxLayout" >
+       <property name="spacing" >
+        <number>4</number>
+       </property>
+       <property name="leftMargin" >
+        <number>2</number>
+       </property>
+       <property name="topMargin" >
+        <number>2</number>
+       </property>
+       <property name="rightMargin" >
+        <number>2</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>2</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QPushButton" name="pb_proekt_add" >
+           <property name="text" >
+            <string>Добавить</string>
+           </property>
+           <property name="icon" >
+            <iconset resource="../sklad.qrc" >:/icons/icons/add2.png</iconset>
+           </property>
+           <property name="iconSize" >
+            <size>
+             <width>12</width>
+             <height>12</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tw_proekt" />
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_2" >
+      <property name="title" >
+       <string>Заказ</string>
+      </property>
+      <layout class="QVBoxLayout" >
+       <property name="spacing" >
+        <number>4</number>
+       </property>
+       <property name="leftMargin" >
+        <number>2</number>
+       </property>
+       <property name="topMargin" >
+        <number>2</number>
+       </property>
+       <property name="rightMargin" >
+        <number>2</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>2</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QPushButton" name="pb_zakaz_add" >
+           <property name="text" >
+            <string>Добавить</string>
+           </property>
+           <property name="icon" >
+            <iconset resource="../sklad.qrc" >:/icons/icons/add2.png</iconset>
+           </property>
+           <property name="iconSize" >
+            <size>
+             <width>12</width>
+             <height>12</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tw_zakaz" />
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_3" >
+      <property name="title" >
+       <string>Изделие</string>
+      </property>
+      <layout class="QVBoxLayout" >
+       <property name="spacing" >
+        <number>4</number>
+       </property>
+       <property name="leftMargin" >
+        <number>2</number>
+       </property>
+       <property name="topMargin" >
+        <number>2</number>
+       </property>
+       <property name="rightMargin" >
+        <number>2</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>2</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QPushButton" name="pb_izdelie_add" >
+           <property name="text" >
+            <string>Добавить</string>
+           </property>
+           <property name="icon" >
+            <iconset resource="../sklad.qrc" >:/icons/icons/add2.png</iconset>
+           </property>
+           <property name="iconSize" >
+            <size>
+             <width>12</width>
+             <height>12</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tw_izdelie" />
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_4" >
+      <property name="title" >
+       <string>Спецификация</string>
+      </property>
+      <layout class="QVBoxLayout" >
+       <property name="spacing" >
+        <number>4</number>
+       </property>
+       <property name="leftMargin" >
+        <number>2</number>
+       </property>
+       <property name="topMargin" >
+        <number>2</number>
+       </property>
+       <property name="rightMargin" >
+        <number>2</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>2</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QLabel" name="label" >
+           <property name="text" >
+            <string>№</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="le_sostav" >
+           <property name="maximumSize" >
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pb_sostav_add" >
+           <property name="text" >
+            <string>Добавить</string>
+           </property>
+           <property name="icon" >
+            <iconset resource="../sklad.qrc" >:/icons/icons/add2.png</iconset>
+           </property>
+           <property name="iconSize" >
+            <size>
+             <width>12</width>
+             <height>12</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pb_sostav_find" >
+           <property name="text" >
+            <string>Поиск</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pb_sostav_export_to_file" >
+           <property name="text" >
+            <string>Экспорт в файл</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tw_sostav" />
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_5" >
+      <property name="title" >
+       <string>Комплектация</string>
+      </property>
+      <layout class="QVBoxLayout" >
+       <property name="spacing" >
+        <number>4</number>
+       </property>
+       <property name="leftMargin" >
+        <number>2</number>
+       </property>
+       <property name="topMargin" >
+        <number>2</number>
+       </property>
+       <property name="rightMargin" >
+        <number>2</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>2</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QPushButton" name="pb_kompl_price" >
+           <property name="text" >
+            <string>Расчет цены</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pb_kompl_export" >
+           <property name="text" >
+            <string>Экспорт</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tw_kompl" />
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../sklad.qrc" />
+ </resources>
+ <connections/>
+</ui>

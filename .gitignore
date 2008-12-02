@@ -1,0 +1,15 @@
+# QT project GIT ignore file
+
+Makefile
+*.Release
+*.Debug
+*.layout
+*.backup
+*.ini
+*.o
+*.exe
+*.bak
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+c++

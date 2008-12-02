@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="sklad" />
+		<Option makefile="makefile" />
+		<Option makefile_is_custom="1" />
+		<Option pch_mode="0" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="release">
+				<Option output="build\sklad.exe" prefix_auto="0" extension_auto="0" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectResourceIncludeDirsRelation="0" />
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="release;" />
+		</VirtualTargets>
+		<Unit filename="bom.cpp" />
+		<Unit filename="bom.h" />
+		<Unit filename="dialogs.cpp" />
+		<Unit filename="dialogs.h" />
+		<Unit filename="dialogs2.cpp" />
+		<Unit filename="dialogs2.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="main.h" />
+		<Unit filename="mainwindow.cpp" />
+		<Unit filename="mainwindow.h" />
+		<Unit filename="misc.cpp" />
+		<Unit filename="misc.h" />
+		<Unit filename="price.cpp" />
+		<Unit filename="price.h" />
+		<Unit filename="proektform.cpp" />
+		<Unit filename="proektform.h" />
+		<Unit filename="trebnaklad.cpp" />
+		<Unit filename="trebnaklad.h" />
+		<Unit filename="users.cpp" />
+		<Unit filename="users.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
