@@ -26,10 +26,11 @@ MainWindow::MainWindow()
   resize(size);
   move(pos);
 
-  splitter->restoreState(settings.value("splitter").toByteArray());
-  splitter_3->restoreState(settings.value("splitter_3").toByteArray());
-
   splitter->setChildrenCollapsible( false );
+  splitter->restoreState(settings.value("splitter").toByteArray());
+  splitter->setChildrenCollapsible( false );
+  splitter_3->setChildrenCollapsible( false );
+  splitter_3->restoreState(settings.value("splitter_3").toByteArray());
   splitter_3->setChildrenCollapsible( false );
 
   tabWidget->setCurrentIndex( settings.value("tabindex", 0).toInt()  );
