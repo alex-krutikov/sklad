@@ -1350,8 +1350,10 @@ void MainWindow::my6()
   str1.replace(" ","%");
   QString str2 = " "+le_zakupkiFiltrSchet->text()+" ";
   str2.replace(" ","%");
-  QString str3 =    " WHERE zakupki.name LIKE \'" + str1
-                  + "\' AND zakupki.schet LIKE \'" + str2 + "\'";
+  QString str3 =    " WHERE zakupki.name LIKE \'" + str1 + "\'";
+  if( !le_zakupkiFiltrSchet->text().simplified().isEmpty() )
+  { str3 +=           " AND zakupki.schet LIKE \'" + str2 + "\'";
+  }
   if( i )
   { str3 += QString(" AND zakupki.type = %1 ").arg(i);
   }
