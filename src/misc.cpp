@@ -563,6 +563,13 @@ void KomplTable::refresh( int id )
     ii++;
   }
   setRowCount(i);
+
+  for(i=0;i<rowCount();i++)
+  { if(item(i,0)->text() != "----- // -----" ) continue;
+    if(item(i,5)->text().toInt() > 0 ) continue;
+    removeRow(i);
+    i--;
+  }
 }
 
 

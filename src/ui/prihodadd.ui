@@ -16,16 +16,7 @@
    <property name="spacing" >
     <number>6</number>
    </property>
-   <property name="leftMargin" >
-    <number>9</number>
-   </property>
-   <property name="topMargin" >
-    <number>9</number>
-   </property>
-   <property name="rightMargin" >
-    <number>9</number>
-   </property>
-   <property name="bottomMargin" >
+   <property name="margin" >
     <number>9</number>
    </property>
    <item>
@@ -34,22 +25,10 @@
       <string/>
      </property>
      <layout class="QGridLayout" >
-      <property name="leftMargin" >
+      <property name="margin" >
        <number>9</number>
       </property>
-      <property name="topMargin" >
-       <number>9</number>
-      </property>
-      <property name="rightMargin" >
-       <number>9</number>
-      </property>
-      <property name="bottomMargin" >
-       <number>9</number>
-      </property>
-      <property name="horizontalSpacing" >
-       <number>6</number>
-      </property>
-      <property name="verticalSpacing" >
+      <property name="spacing" >
        <number>6</number>
       </property>
       <item row="13" column="0" >
@@ -57,7 +36,7 @@
         <property name="orientation" >
          <enum>Qt::Vertical</enum>
         </property>
-        <property name="sizeHint" >
+        <property name="sizeHint" stdset="0" >
          <size>
           <width>20</width>
           <height>40</height>
@@ -92,132 +71,8 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1" colspan="5" >
+      <item row="1" column="1" colspan="4" >
        <widget class="QLineEdit" name="le2" />
-      </item>
-      <item row="10" column="4" >
-       <widget class="QComboBox" name="cb6" >
-        <item>
-         <property name="text" >
-          <string>A</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>B</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>C</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>D</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>E</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>F</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>G</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>H</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>I</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>J</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>K</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>L</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>M</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="10" column="5" >
-       <widget class="QSpinBox" name="sb2" >
-        <property name="minimum" >
-         <number>1</number>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="3" >
-       <spacer>
-        <property name="orientation" >
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType" >
-         <enum>QSizePolicy::MinimumExpanding</enum>
-        </property>
-        <property name="sizeHint" >
-         <size>
-          <width>16</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="10" column="2" >
-       <widget class="QSpinBox" name="sb1" >
-        <property name="minimum" >
-         <number>1</number>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="1" >
-       <widget class="QComboBox" name="cb5" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <item>
-         <property name="text" >
-          <string>Касса</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>Полка</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>Стеллаж</string>
-         </property>
-        </item>
-       </widget>
       </item>
       <item row="0" column="0" >
        <widget class="QLabel" name="label" >
@@ -239,7 +94,7 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="1" colspan="5" >
+      <item row="8" column="1" colspan="4" >
        <widget class="QLineEdit" name="le4" />
       </item>
       <item row="7" column="0" >
@@ -252,13 +107,13 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="1" colspan="5" >
+      <item row="7" column="1" colspan="4" >
        <widget class="QLineEdit" name="le6" />
       </item>
-      <item row="6" column="1" colspan="3" >
+      <item row="6" column="1" colspan="2" >
        <widget class="QLineEdit" name="le3" />
       </item>
-      <item row="6" column="4" colspan="2" >
+      <item row="6" column="3" colspan="2" >
        <widget class="QCheckBox" name="bcb1" >
         <property name="text" >
          <string>добавить НДС</string>
@@ -278,7 +133,7 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="1" colspan="5" >
+      <item row="5" column="1" colspan="4" >
        <widget class="QLineEdit" name="le10" />
       </item>
       <item row="5" column="0" >
@@ -291,7 +146,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1" colspan="5" >
+      <item row="3" column="1" colspan="4" >
        <widget class="QComboBox" name="cb2" />
       </item>
       <item row="3" column="0" >
@@ -304,7 +159,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1" colspan="5" >
+      <item row="2" column="1" colspan="4" >
        <widget class="QLineEdit" name="le9" />
       </item>
       <item row="2" column="0" >
@@ -324,32 +179,35 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1" colspan="5" >
+      <item row="0" column="1" colspan="4" >
        <widget class="QComboBox" name="cb1" />
       </item>
-      <item row="4" column="0" colspan="6" >
+      <item row="4" column="0" colspan="5" >
        <widget class="Line" name="line_2" >
         <property name="orientation" >
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
-      <item rowspan="3" row="12" column="1" colspan="5" >
+      <item rowspan="3" row="12" column="1" colspan="4" >
        <widget class="QTextEdit" name="le1" />
       </item>
-      <item row="9" column="0" colspan="6" >
+      <item row="9" column="0" colspan="5" >
        <widget class="Line" name="line_3" >
         <property name="orientation" >
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
-      <item row="11" column="0" colspan="6" >
+      <item row="11" column="0" colspan="5" >
        <widget class="Line" name="line_4" >
         <property name="orientation" >
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
+      </item>
+      <item row="10" column="1" colspan="4" >
+       <widget class="QLineEdit" name="le_mesto" />
       </item>
      </layout>
     </widget>
@@ -359,22 +217,13 @@
      <property name="spacing" >
       <number>6</number>
      </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
+     <property name="margin" >
       <number>0</number>
      </property>
      <item>
       <widget class="QPushButton" name="pb1" >
        <property name="text" >
-        <string>Копировать</string>
+        <string>Создать новую запись</string>
        </property>
        <property name="autoDefault" >
         <bool>false</bool>
@@ -386,7 +235,7 @@
        <property name="orientation" >
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>40</width>
          <height>20</height>
@@ -420,6 +269,7 @@
  </widget>
  <tabstops>
   <tabstop>cb1</tabstop>
+  <tabstop>le2</tabstop>
   <tabstop>le9</tabstop>
   <tabstop>cb2</tabstop>
   <tabstop>le10</tabstop>
@@ -427,12 +277,12 @@
   <tabstop>bcb1</tabstop>
   <tabstop>le6</tabstop>
   <tabstop>le4</tabstop>
-  <tabstop>cb5</tabstop>
-  <tabstop>sb1</tabstop>
-  <tabstop>cb6</tabstop>
-  <tabstop>sb2</tabstop>
+  <tabstop>le_mesto</tabstop>
   <tabstop>le1</tabstop>
+  <tabstop>pb2</tabstop>
   <tabstop>pb1</tabstop>
+  <tabstop>pbOK</tabstop>
+  <tabstop>pbCANCEL</tabstop>
  </tabstops>
  <resources/>
  <connections/>

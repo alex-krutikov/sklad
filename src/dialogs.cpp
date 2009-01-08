@@ -725,7 +725,6 @@ PrihodAddDialog::PrihodAddDialog( QWidget *parent,int id_arg,int zakupka_arg )
 {
   QString str,str2;
   QStringList sl;
-  int i;
 
   setupUi( this );
   if( id )  setWindowTitle( "Изменить данные в приходе");
@@ -833,16 +832,7 @@ PrihodAddDialog::PrihodAddDialog( QWidget *parent,int id_arg,int zakupka_arg )
   }
   if( id ) bcb1->setChecked( false );
 
-  QRegExp rx("([KPC])\\s+(\\d+)\\s+([A-Z])(\\d+)");
-  rx.indexIn( str );
-  sl.clear();
-  sl << "K" << "P" << "C";
-  i = sl.indexOf( rx.cap(1) );
-  if( i >= 0 ) cb5->setCurrentIndex( i );
-  sb1->setValue( rx.cap(2).toInt() );
-  i = cb6->findText( rx.cap(3) );
-  if( i >= 0 ) cb6->setCurrentIndex( i );
-  sb2->setValue( rx.cap(4).toInt() );
+  le_mesto->setText( str );
 
   connect( le2, SIGNAL( textChanged( QString ) ), this, SLOT(  my1( QString ) ) );
 
@@ -908,15 +898,7 @@ void PrihodAddDialog::accept()
   { le3->setText( QString::number(le3->text().toDouble() * 1.18) );
   }
 
-  switch( cb5->currentIndex() )
-  { case(0): mesto = "K"; break;
-    case(1): mesto = "P"; break;
-    case(2): mesto = "C"; break;
-  }
-  mesto += QString(" %1 %2%3")
-            .arg( sb1->value() )
-            .arg( cb6->currentText() )
-            .arg( sb2->value() );
+  mesto = le_mesto->text();
 
   if( zakupka )
   { le4->setText( le6->text() );

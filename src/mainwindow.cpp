@@ -75,7 +75,7 @@ MainWindow::MainWindow()
   connect( tw_komplPrih, SIGNAL(cellActivated(int,int)),
            this, SLOT(on_pb_komplSnat_clicked()) );
   connect( tw_komplKomp,    SIGNAL( cellActivated(int,int) ),
-           tw_komplKomp,         SLOT( add_zamena() ) );
+           this,            SLOT( on_pb_komplSnat_clicked() ) );
   connect( projects_widget, SIGNAL( pereraschet_needed() ),
            this,            SLOT(   pereraschet() ) );
 
@@ -901,12 +901,24 @@ void MainWindow::on_pb_komplSnat_clicked()
   i = tw_komplKomp->currentRow();
   if( i < 0 ) return;
   i = tw_komplPrih->currentRow();
+  if( i < 0 )
+  { tw_komplPrih->selectRow(0);
+  }
+  i = tw_komplPrih->currentRow();
   if( i < 0 ) return;
   prihod_id = tw_komplPrih->get_selected_id();
   zamena_id = tw_komplKomp->item( tw_komplKomp->currentRow(), 0 )
                  ->data(Qt::UserRole+2).toInt();
-  k =   tw_komplKomp->item( tw_komplKomp->currentRow(), 2 )->text().toInt()
-      - tw_komplKomp->item( tw_komplKomp->currentRow(), 3 )->text().toInt();
+  k=0;
+  for(i=0;i<100;i++)
+  { bool ok;
+    int a1 = tw_komplKomp->item( tw_komplKomp->currentRow()-i, 2 )->text().toInt(&ok);
+    if( !ok ) continue;
+    int a2 = tw_komplKomp->item( tw_komplKomp->currentRow()-i, 3 )->text().toInt(&ok);
+    if( !ok ) continue;
+    k = a1-a2;
+    break;
+  }
 
   query.prepare( "SELECT ostatok FROM prihod WHERE id = ? " );
   query.addBindValue( prihod_id );
