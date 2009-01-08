@@ -47,7 +47,7 @@
       <item row="14" column="0" >
        <widget class="QPushButton" name="pb2" >
         <property name="text" >
-         <string>остаток на складе</string>
+         <string>нет документов</string>
         </property>
         <property name="autoDefault" >
          <bool>false</bool>

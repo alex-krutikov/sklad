@@ -85,7 +85,7 @@ MainWindow::MainWindow()
 
 
   //===========================================================================
-  // Склад
+  // Наличие
   //
   tw_sklad->clear_query_fields();
   tw_sklad->rows_highlighting = true;
@@ -93,6 +93,7 @@ MainWindow::MainWindow()
   tw_sklad->add_query_field( "Тип",          100,  "typename"              );
   tw_sklad->add_query_field( "Наименование", 200,  "prihod.name"           );
   tw_sklad->add_query_field( "Остаток",       70,  "SUM(ostatok)"          );
+  tw_sklad->add_query_field( "Место",        200,  "GROUP_CONCAT(DISTINCT mesto)"             );
   tw_sklad->add_query_field( "Цена",          70,  "SUM(price*kolichestvo)/SUM(kolichestvo) " );
   tw_sklad->query_str_main =
     " FROM prihod "
@@ -309,6 +310,7 @@ MainWindow::MainWindow()
   my3( tabWidget->currentIndex() );
   //===========================================================================
   cb_rashod_kompl->hide();
+  pb_prihodFiltr->hide();
   //===========================================================================
   kompl_status.clear();
   kompl_status << "";                 // 0
@@ -357,6 +359,17 @@ void MainWindow::on_action_proizvoditeli_triggered()
 void MainWindow::on_pb_prihodFiltr_clicked()
 {
   prihod_filtr_dialog->exec();
+}
+
+//==============================================================================
+//
+//==============================================================================
+void MainWindow::on_pb_prihodAdd_clicked()
+{
+  PrihodAddDialog dialog( this );
+  if( dialog.exec() == QDialog::Accepted )
+  { on_action_Pereraschet_triggered();
+  }
 }
 
 //==============================================================================
