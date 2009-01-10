@@ -22,16 +22,7 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QVBoxLayout" >
-      <property name="leftMargin" >
-       <number>6</number>
-      </property>
-      <property name="topMargin" >
-       <number>6</number>
-      </property>
-      <property name="rightMargin" >
-       <number>6</number>
-      </property>
-      <property name="bottomMargin" >
+      <property name="margin" >
        <number>6</number>
       </property>
       <item>
@@ -46,16 +37,6 @@
         <property name="editable" >
          <bool>true</bool>
         </property>
-        <item>
-         <property name="text" >
-          <string>server</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>inkommet.ftpaccess.cc</string>
-         </property>
-        </item>
        </widget>
       </item>
      </layout>
@@ -70,16 +51,7 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" >
-      <property name="leftMargin" >
-       <number>6</number>
-      </property>
-      <property name="topMargin" >
-       <number>6</number>
-      </property>
-      <property name="rightMargin" >
-       <number>6</number>
-      </property>
-      <property name="bottomMargin" >
+      <property name="margin" >
        <number>6</number>
       </property>
       <item row="0" column="0" >
@@ -118,7 +90,7 @@
    <item>
     <widget class="QDialogButtonBox" name="buttonBox" >
      <property name="standardButtons" >
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
