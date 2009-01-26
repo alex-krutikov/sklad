@@ -650,7 +650,6 @@
     <property name="title" >
      <string>Сервис</string>
     </property>
-    <addaction name="action_Stoimost" />
     <addaction name="action_export_all_kompl" />
    </widget>
    <addaction name="menu" />
@@ -670,11 +669,6 @@
   <action name="action_Pereraschet" >
    <property name="text" >
     <string>Перерасчет</string>
-   </property>
-  </action>
-  <action name="action_Stoimost" >
-   <property name="text" >
-    <string>Общая стоимость склада</string>
    </property>
   </action>
   <action name="action_Users" >

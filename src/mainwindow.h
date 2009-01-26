@@ -27,7 +27,6 @@ public slots:
   void on_action_postavshiki_triggered();
   void on_action_proizvoditeli_triggered();
   void on_action_Pereraschet_triggered();
-  void on_action_Stoimost_triggered();
   void on_action_export_all_kompl_triggered();
   void my_Delete();
   void on_action_Users_triggered();

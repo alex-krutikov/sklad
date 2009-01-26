@@ -775,35 +775,6 @@ void MainWindow::on_action_Pereraschet_triggered()
 //==============================================================================
 //
 //==============================================================================
-void MainWindow::on_action_Stoimost_triggered()
-{
-  QString str;
-  QSqlQuery query;
-  //==========================
-  query.prepare( "SELECT SUM(price*kolichestvo),SUM(price*ostatok) FROM prihod " );
-  if( !query.exec() )
-  {  sql_error_message( query, this );
-	   return;
-  }
-  while( query.next() )
-  {  str  = tr("Суммарная стоимость закупок: %1 руб\n") .arg( query.value(0).toInt() );
-     str += tr("Общая стоимость остатка: %1 руб\n") .arg( query.value(1).toInt() );
-  }
-  query.prepare( "SELECT SUM(price*n) FROM rashod "
-                  "LEFT JOIN prihod ON prihod.id=rashod.prihod " );
-  if( !query.exec() )
-  {  sql_error_message( query, this );
-	   return;
-  }
-  while( query.next() )
-  {  str  += tr("Суммарный расход: %1 руб\n") .arg( query.value(0).toInt() );
-  }
-  QMessageBox::information(this, app_header, str );
-}
-
-//==============================================================================
-//
-//==============================================================================
 void MainWindow::on_action_export_all_kompl_triggered()
 {
   int i;
@@ -849,9 +820,11 @@ void MainWindow::on_action_export_all_kompl_triggered()
 //==============================================================================
 void MainWindow::on_action_Users_triggered()
 {
+  QMessageBox::information( this, app_header,
+    "Данная функция находится в разработке." );
   //UsersDialog dialog(this);
-  UsersDialog2 dialog(this);
-  dialog.exec();
+  //UsersDialog2 dialog(this);
+  //dialog.exec();
 }
 
 //==============================================================================
