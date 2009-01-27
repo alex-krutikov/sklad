@@ -662,6 +662,13 @@ void MainWindow::on_action_Pereraschet_triggered()
   progress.show();
 
   progress.setValue(0);
+
+  if( !query.exec( "  LOCK TABLES kompl WRITE, types WRITE, prihod WRITE, "
+                   "  zakupki WRITE, sostav WRITE, izdelie WRITE, zamena WRITE " ) )
+  {  sql_error_message( query, this );
+	 return;
+  }
+
   //========= Статус "не комплектовать" для типа "Модуль" в комплектации ======
   query.prepare(
     " UPDATE kompl LEFT JOIN types ON kompl.type=types.id "
@@ -765,6 +772,11 @@ void MainWindow::on_action_Pereraschet_triggered()
 
 
   if( !query.exec() )
+  {  sql_error_message( query, this );
+	   return;
+  }
+
+  if( !query.exec( " UNLOCK TABLES " ) )
   {  sql_error_message( query, this );
 	   return;
   }
