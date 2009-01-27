@@ -5,43 +5,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>319</width>
-    <height>174</height>
+    <width>360</width>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" >
-   <item>
-    <widget class="QFrame" name="frame" >
-     <property name="frameShape" >
-      <enum>QFrame::Box</enum>
-     </property>
-     <property name="frameShadow" >
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>6</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="label" >
-        <property name="text" >
-         <string>Адрес сервера:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="cb1" >
-        <property name="editable" >
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
+  <layout class="QVBoxLayout" name="verticalLayout" >
    <item>
     <widget class="QFrame" name="frame_2" >
      <property name="frameShape" >
@@ -50,10 +21,7 @@
      <property name="frameShadow" >
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>6</number>
-      </property>
+     <layout class="QGridLayout" name="gridLayout" >
       <item row="0" column="0" >
        <widget class="QLabel" name="label_2" >
         <property name="text" >
@@ -85,19 +53,109 @@
        </widget>
       </item>
      </layout>
+     <zorder>label_2</zorder>
+     <zorder>le2</zorder>
+     <zorder>label_3</zorder>
+     <zorder>le3</zorder>
+     <zorder>frame</zorder>
     </widget>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="standardButtons" >
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+    <widget class="QFrame" name="frame" >
+     <property name="frameShape" >
+      <enum>QFrame::Box</enum>
      </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" >
+      <property name="margin" >
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label" >
+        <property name="text" >
+         <string>Адрес сервера БД:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cb1" >
+        <property name="editable" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_6" >
+        <property name="text" >
+         <string>Имя БД</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="le_db_name" />
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4" >
+        <property name="text" >
+         <string>Пользователь БД:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="le_db_user" />
+      </item>
+      <item>
+       <widget class="QLabel" name="label_5" >
+        <property name="text" >
+         <string>Пароль доступа к БД:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="le_db_pass" />
+      </item>
+     </layout>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout" >
+     <item>
+      <widget class="QPushButton" name="pb_db" >
+       <property name="text" >
+        <string>Дополнительно</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2" >
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox" >
+       <property name="standardButtons" >
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>cb1</tabstop>
+  <tabstop>le_db_user</tabstop>
+  <tabstop>le_db_pass</tabstop>
   <tabstop>le2</tabstop>
   <tabstop>le3</tabstop>
   <tabstop>buttonBox</tabstop>

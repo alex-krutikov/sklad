@@ -31,6 +31,21 @@ InitDialog::InitDialog()
 	le2->setText( settings.value( "username" ).toString() );
 	le3->setFocus();
 	if( le2->text().isEmpty() ) le2->setFocus();
+
+    le_db_name->setText( settings.value( "mysqlname","sklad4" ).toString() );
+    le_db_user->setText( settings.value( "mysqluser","sklad" ).toString() );
+    le_db_pass->setText( settings.value( "mysqlpass","crkfl" ).toString() );
+
+	frame->hide();
+	adjustSize();
+}
+
+//==============================================================================
+// начальный диалог -- OK
+//==============================================================================
+void InitDialog::on_pb_db_clicked()
+{
+  frame->show();
 }
 
 //==============================================================================
@@ -45,12 +60,10 @@ void InitDialog::accept()
   db->setHostName( cb1->currentText() );
   db->setPort(3306);
 
-  db->setDatabaseName("sklad4");
-  //db->setDatabaseName("sklad4-test"); app_header += " - TEST";
-  //app_header += QDate::currentDate().toString(" [dd.MM.yy]");
+  db->setDatabaseName( le_db_name->text() );
 
-  db->setUserName("sklad");
-  db->setPassword("crkfl");
+  db->setUserName(le_db_user->text());
+  db->setPassword(le_db_pass->text());
   ok = db->open();
   if( !ok )
   { QMessageBox::critical(0, "Ошибка",  db->lastError().driverText()
@@ -61,6 +74,9 @@ void InitDialog::accept()
 
   QSettings settings( QSETTINGS_PARAM );
   settings.setValue( "mysqlserver", cb1->currentText() );
+  settings.setValue( "mysqlname", le_db_name->text() );
+  settings.setValue( "mysqluser", le_db_user->text() );
+  settings.setValue( "mysqlpass", le_db_pass->text() );
 
   QSqlQuery query;
   if( !query.exec("SET NAMES \'utf8\'") )

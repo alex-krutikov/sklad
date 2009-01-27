@@ -14,6 +14,7 @@ class InitDialog : public QDialog,
 public:
   InitDialog();
 private slots:
+  void on_pb_db_clicked();
   void accept();
 };
 
