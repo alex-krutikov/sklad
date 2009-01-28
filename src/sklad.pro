@@ -30,7 +30,8 @@ HEADERS  =  mainwindow.h main.h dialogs.h dialogs2.h misc.h bom.h price.h   \
             proektform.h trebnaklad.h users.h
 
 SOURCES  =  main.cpp mainwindow.cpp dialogs.cpp dialogs2.cpp misc.cpp       \
-            bom.cpp price.cpp proektform.cpp trebnaklad.cpp users.cpp
+            bom.cpp price.cpp proektform.cpp trebnaklad.cpp users.cpp       \
+            sqlactions.cpp
 
 FORMS   =   ui/mainwindow.ui   ui/initdialog.ui     ui/pricedialog.ui      \
             ui/postavshiki.ui  ui/proizvoditeli.ui  ui/sostavadd.ui        \ 

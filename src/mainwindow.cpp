@@ -8,6 +8,7 @@
 #include "dialogs2.h"
 #include "price.h"
 #include "users.h"
+#include "sqlactions.h"
 
 //#######################################################################################
 /// главное окно
@@ -423,8 +424,14 @@ void MainWindow::my_Delete()
     //==================== ПРИХОД ===================================================
     case(3):
       {
+      int zakupka_id=0;
+      int kolichestvo=0;
       i = tw_prihodHist->get_selected_id();
-      query.prepare( " SELECT name FROM prihod WHERE id = ? " );
+      if( !query.exec(" LOCK TABLES prihod READ ") )
+      {  sql_error_message( query, this );
+	     return;
+      }
+      query.prepare( " SELECT name,zakupka,kolichestvo FROM prihod WHERE id = ? " );
       query.addBindValue( i );
       if( !query.exec() )
       {  sql_error_message( query, this );
@@ -433,6 +440,8 @@ void MainWindow::my_Delete()
       if( query.size() != 1 ) return;
       while( query.next() )
       { str = sql_get_string( query, 0 );
+        zakupka_id  = query.value(1).toInt();
+        kolichestvo = query.value(2).toInt();
       }
       str = tr("Удалить\nзапись о приходе\n\n") + str + " ?";
       QMessageBox mb( app_header,  str,
@@ -443,11 +452,32 @@ void MainWindow::my_Delete()
       mb.setButtonText(QMessageBox::Yes, tr("Удалить"));
       mb.setButtonText(QMessageBox::No, tr("Отмена"));
       if( mb.exec() == QMessageBox::Yes )
-      {  query.prepare( " DELETE FROM prihod WHERE id = ? " );
+      {  if( !query.exec(" LOCK TABLES prihod WRITE, zakupki WRITE ") )
+         {  sql_error_message( query, this );
+	        return;
+         }
+         query.prepare( " DELETE FROM prihod WHERE id = ? " );
          query.addBindValue( i );
          if( !query.exec() )
          {  sql_error_message( query, this );
    	       return;
+         }
+
+         if( zakupka_id  )
+         { query.prepare( " UPDATE zakupki SET polucheno = polucheno - ? WHERE id = ? " );
+           query.addBindValue( kolichestvo );
+           query.addBindValue( zakupka_id );
+           if( !query.exec() )
+           {  sql_error_message( query, this );
+     	      return;
+           }
+
+           sql_action_zakupka_color( zakupka_id );
+         }
+
+         if( !query.exec(" UNLOCK TABLES ") )
+         {  sql_error_message( query, this );
+	        return;
          }
       }
       tw_prihodHist->refresh();
@@ -673,28 +703,6 @@ void MainWindow::on_action_Pereraschet_triggered()
   query.prepare(
     " UPDATE kompl LEFT JOIN types ON kompl.type=types.id "
     " SET kompl.status=1 WHERE typename='Модуль' " );
-  if( !query.exec() )
-  {  sql_error_message( query, this );
-	   return;
-  }
-
-  progress.setValue(1);
-  //==================== Закупки "получено" = SUM( Приход "количество" ) ======
-  query.prepare(
-    " UPDATE ( SELECT zakupka, SUM(kolichestvo) AS s1 "
-    "          FROM prihod GROUP BY zakupka ) AS t1, zakupki "
-    " SET zakupki.polucheno = t1.s1 WHERE zakupki.id = t1.zakupka " );
-  if( !query.exec() )
-  {  sql_error_message( query, this );
-	   return;
-  }
-
-  progress.setValue(2);
-  //==================== Закупки "color" ======================================
-  query.prepare( tr(
-    " UPDATE zakupki SET color = "
-    "   IF( ( postavshik ) > 0 AND ( CHAR_LENGTH(schet) > 0 ), "
-    "   IF( n <= polucheno,  40 , 30 ), 10 )"  ).toUtf8() );
   if( !query.exec() )
   {  sql_error_message( query, this );
 	   return;

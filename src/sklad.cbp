@@ -34,6 +34,8 @@
 		<Unit filename="price.h" />
 		<Unit filename="proektform.cpp" />
 		<Unit filename="proektform.h" />
+		<Unit filename="sqlactions.cpp" />
+		<Unit filename="sqlactions.h" />
 		<Unit filename="trebnaklad.cpp" />
 		<Unit filename="trebnaklad.h" />
 		<Unit filename="users.cpp" />

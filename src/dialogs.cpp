@@ -5,6 +5,7 @@
 #include "main.h"
 #include "bom.h"
 #include "mainwindow.h"
+#include "sqlactions.h"
 
 //#######################################################################################
 // начальный диалог
@@ -923,6 +924,11 @@ void PrihodAddDialog::accept()
   { le4->setText( le6->text() );
   }
 
+  if( !query.exec(" LOCK TABLES prihod WRITE, zakupki WRITE ") )
+  {  sql_error_message( query, this );
+	   return;
+  }
+
   str = (id) ? " UPDATE prihod " : " INSERT INTO prihod ";
   str +=  " SET type = ?,name = ?, kod = ?, "
           " proizvoditel = ?, naklad = ?, "
@@ -943,13 +949,30 @@ void PrihodAddDialog::accept()
   query.addBindValue( le1-> toPlainText().toUtf8() );         // примечания
   query.addBindValue( user_id );
   query.addBindValue( QDate::currentDate() );
-  if( id==0 ) query.addBindValue( zakupka );                              // закупка
+  if( id==0 )  query.addBindValue( zakupka );                 // закупка
   if( id    )  query.addBindValue( id );
 
   if( !query.exec() )
   {  sql_error_message( query, this );
 	   return;
   }
+
+  if( zakupka )
+  { query.prepare( "UPDATE zakupki SET polucheno = polucheno + ? WHERE id = ?" );
+    query.addBindValue( le6 ->text().toInt() );                 // количество
+    query.addBindValue( zakupka );
+    if( !query.exec() )
+    {  sql_error_message( query, this );
+	   return;
+    }
+    sql_action_zakupka_color( zakupka );
+  }
+
+  if( !query.exec(" UNLOCK TABLES ") )
+  {  sql_error_message( query, this );
+	   return;
+  }
+
 
   done(  QDialog::Accepted  );
 }
