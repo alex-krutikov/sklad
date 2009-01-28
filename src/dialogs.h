@@ -57,21 +57,6 @@ private slots:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_izdelieadd.h"
-class IzdelieAddDialog : public QDialog,
-                         public Ui::IzdelieAddDialog
-{
-  Q_OBJECT
-public:
-  IzdelieAddDialog( QWidget *parent = 0, int id_arg=0 );
-  void accept();
-private:
-  int id;
-};
-
-//=======================================================================================
-//
-//=======================================================================================
 #include "ui_sostavadd.h"
 class SostavAddDialog : public QDialog,
                         public Ui::SostavAddDialog

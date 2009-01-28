@@ -524,33 +524,6 @@ void Proizvoditeli::on_pb3_clicked()
 //#######################################################################################
 //
 //#######################################################################################
-IzdelieAddDialog::IzdelieAddDialog( QWidget *parent,int id_arg )
-  : QDialog( parent ), id( id_arg )
-{
-  setupUi( this );
-  setWindowTitle( "Добавить изделие в заказ" );
-}
-
-//=======================================================================================
-//
-//=======================================================================================
-void IzdelieAddDialog::accept()
-{
-  QSqlQuery query;
-  query.prepare( " INSERT INTO izdelie ( zakaz, name, n ) VALUES ( ?,?,? ) " );
-  query.addBindValue( id );
-  query.addBindValue( le1->text().toUtf8() );
-  query.addBindValue( sb1->value() );
-  if( !query.exec() )
-  {  sql_error_message( query, this );
-	   return;
-  }
-  done( QDialog::Accepted );
-}
-
-//#######################################################################################
-//
-//#######################################################################################
 SostavAddDialog::SostavAddDialog( QWidget *parent,int id_arg )
   : QDialog( parent ), id( id_arg )
 {
