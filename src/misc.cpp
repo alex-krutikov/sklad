@@ -11,6 +11,14 @@
 SqlTable::SqlTable( QWidget *parent )
   : QTableWidget( parent )
 {
+  QPalette pal = palette();
+  pal.setColor(QPalette::Inactive, QPalette::Highlight,
+                   pal.color(QPalette::Active, QPalette::Highlight));
+  pal.setColor(QPalette::Inactive, QPalette::HighlightedText,
+                   pal.color(QPalette::Active, QPalette::HighlightedText));
+  setPalette(pal);
+
+
  rows_highlighting  = false;
  row_selection_mode = false;
  horizontalHeader()->setContextMenuPolicy( Qt::CustomContextMenu );
@@ -359,6 +367,12 @@ void SqlTable::my2(int i)
 KomplTable::KomplTable( QWidget *parent )
   : QTableWidget( parent )
 {
+  QPalette pal = palette();
+  pal.setColor(QPalette::Inactive, QPalette::Highlight,
+                   pal.color(QPalette::Active, QPalette::Highlight));
+  pal.setColor(QPalette::Inactive, QPalette::HighlightedText,
+                   pal.color(QPalette::Active, QPalette::HighlightedText));
+  setPalette(pal);
 }
 
 //=======================================================================================

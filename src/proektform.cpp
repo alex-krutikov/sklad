@@ -20,6 +20,17 @@ ProektForm::ProektForm( QWidget *parent )
   setupUi( this );
   pfsf = new ProektFormSostavFindWidget( this );
 
+  QPalette pal = palette();
+  pal.setColor(QPalette::Inactive, QPalette::Highlight,
+                   pal.color(QPalette::Active, QPalette::Highlight));
+  pal.setColor(QPalette::Inactive, QPalette::HighlightedText,
+                   pal.color(QPalette::Active, QPalette::HighlightedText));
+  tw_proekt  -> setPalette(pal);
+  tw_zakaz   -> setPalette(pal);
+  tw_izdelie -> setPalette(pal);
+  tw_sostav  -> setPalette(pal);
+  tw_kompl   -> setPalette(pal);
+
   sl << "Название";
   tw_proekt->setColumnCount(1);
   tw_proekt->verticalHeader()->setDefaultSectionSize(font().pointSize()+13);
