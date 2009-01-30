@@ -793,6 +793,8 @@ PrihodAddDialog::PrihodAddDialog( QWidget *parent,int id_arg,int zakupka_arg )
   }
 
   if( id || zakupka ) bcb1->setChecked( false );
+  connect( le2, SIGNAL( textChanged( QString ) ), this, SLOT(  my1( QString ) ) );
+  setFocus();
 
   if( id == 0 )
   {  le4->hide();
@@ -826,9 +828,6 @@ PrihodAddDialog::PrihodAddDialog( QWidget *parent,int id_arg,int zakupka_arg )
   }
 
   le_mesto->setText( str );
-
-  connect( le2, SIGNAL( textChanged( QString ) ), this, SLOT(  my1( QString ) ) );
-
   setFocus();
 }
 
@@ -841,7 +840,6 @@ void PrihodAddDialog::my1( QString str )
   i = cb1->findData( map[str] );
   if( i < 0 ) return;
   cb1->setCurrentIndex( i );
-  QMessageBox::information(this,"sdf", str );
 }
 
 //=======================================================================================
