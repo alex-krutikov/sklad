@@ -1159,7 +1159,6 @@ void MainWindow::kompl_print()
        }
 
        painter.setFont( font2 );
-       painter.drawText(50,  40,       "ЗАО \"Инкоммет\"" );
        painter.drawText(50,  90,       QString("N: %1").arg( id ) );
        painter.drawText(900, 40,       QDate::currentDate().toString("dd.MM.yy") );
 

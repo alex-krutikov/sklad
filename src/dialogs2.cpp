@@ -361,7 +361,6 @@ void OtpravkaDialog::on_pb_print_clicked()
        }
 
        painter.setFont( font2 );
-       painter.drawText(500,  400,       tr("ЗАО \"Инкоммет\"") );
        painter.drawText(500,  900,       QString("N: %1").arg( sostav_id ) );
        painter.drawText(9000, 400,       QDate::currentDate().toString("dd.MM.yy") );
 
@@ -726,7 +725,6 @@ void DootpravkaDialog::on_pb_print_clicked()
        }
 
        painter.setFont( font2 );
-       painter.drawText(SCALE*50,  SCALE*40,       tr("ЗАО \"Инкоммет\"") );
        painter.drawText(SCALE*50,  SCALE*90,       QString("N: %1").arg( sostav_id ) );
        painter.drawText(SCALE*900, SCALE*40,       QDate::currentDate().toString("dd.MM.yy") );
 
