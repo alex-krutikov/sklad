@@ -928,6 +928,14 @@ void PrihodAddDialog::accept()
 	   return;
   }
 
+  query.prepare( "UPDATE prihod SET type = ? WHERE name = ?" );
+  query.addBindValue( cb1->itemData( cb1->currentIndex() ) ); // тип
+  query.addBindValue( le2->text().toUtf8() );                 // наименование
+  if( !query.exec() )
+  {  sql_error_message( query, this );
+	   return;
+  }
+
   if( zakupka )
   { query.prepare( "UPDATE zakupki SET polucheno = polucheno + ? WHERE id = ?" );
     query.addBindValue( le6 ->text().toInt() );                 // количество
