@@ -891,7 +891,7 @@ void PrihodAddDialog::accept()
 
   mesto = le_mesto->text();
 
-  if( zakupka )
+  if( zakupka || ( id == 0 ) )
   { le4->setText( le6->text() );
   }
 
