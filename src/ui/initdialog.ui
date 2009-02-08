@@ -53,11 +53,6 @@
        </widget>
       </item>
      </layout>
-     <zorder>label_2</zorder>
-     <zorder>le2</zorder>
-     <zorder>label_3</zorder>
-     <zorder>le3</zorder>
-     <zorder>frame</zorder>
     </widget>
    </item>
    <item>
@@ -153,11 +148,13 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>cb1</tabstop>
-  <tabstop>le_db_user</tabstop>
-  <tabstop>le_db_pass</tabstop>
   <tabstop>le2</tabstop>
   <tabstop>le3</tabstop>
+  <tabstop>cb1</tabstop>
+  <tabstop>le_db_name</tabstop>
+  <tabstop>le_db_user</tabstop>
+  <tabstop>le_db_pass</tabstop>
+  <tabstop>pb_db</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
