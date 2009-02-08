@@ -1,5 +1,7 @@
 Name       "Sklad"
-OutFile    "sklad-setup.exe"
+
+!define /date DATE "%Y%m%d"
+OutFile    "sklad-${DATE}-setup.exe"
 InstallDir $PROGRAMFILES\Sklad
 
 XpStyle on
