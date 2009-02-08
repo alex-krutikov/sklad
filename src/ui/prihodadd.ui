@@ -116,7 +116,7 @@
       <item row="6" column="3" colspan="2" >
        <widget class="QCheckBox" name="bcb1" >
         <property name="text" >
-         <string>добавить НДС (18%)</string>
+         <string>добавить НДС</string>
         </property>
         <property name="checked" >
          <bool>true</bool>

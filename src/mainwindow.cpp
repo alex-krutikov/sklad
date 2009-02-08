@@ -113,9 +113,9 @@ MainWindow::MainWindow()
   tw_zakupkiHist->query_str_color_field = "zakupki.color";
   tw_zakupkiHist->add_query_field( "Тип",          100,  "typename"              );
   tw_zakupkiHist->add_query_field( "Наименование", 200,  "zakupki.name"          );
+  tw_zakupkiHist->add_query_field( "Pаименование", 200,  "zakupki.name"          );
   tw_zakupkiHist->add_query_field( "Кол-во",        70,  "n"                     );
   tw_zakupkiHist->add_query_field( "Получено",      70,  "polucheno"             );
-  tw_zakupkiHist->add_query_field( "Цена",          70,  "zprice"                );
   tw_zakupkiHist->add_query_field( "Поставщик",    100,  "postavshiki.name"      );
   tw_zakupkiHist->add_query_field( "Счет",         200,  "schet"                 );
   tw_zakupkiHist->add_query_field( "№ платежа",    100,  "platej"                );

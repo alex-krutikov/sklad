@@ -778,7 +778,7 @@ PrihodAddDialog::PrihodAddDialog( QWidget *parent,int id_arg,int zakupka_arg )
   le6->setValidator( new QIntValidator(this) );
 
   if( zakupka )
-  { query.prepare( "SELECT type,name,zprice "
+  { query.prepare( "SELECT type,name "
                  "FROM zakupki WHERE id = ?" );
     query.addBindValue( zakupka );
     if( !query.exec() )
@@ -788,7 +788,6 @@ PrihodAddDialog::PrihodAddDialog( QWidget *parent,int id_arg,int zakupka_arg )
     while( query.next() )
     { cb1 ->setCurrentIndex( cb1->findData( query.value(0) ) );             // тип
       le2 ->setText( sql_get_string( query, 1 ) ); // наименование
-      le3 ->setText( sql_get_string( query, 2 ) ); // цена
     }
   }
 
@@ -1193,9 +1192,8 @@ ZakupkiAddDialog::ZakupkiAddDialog( QWidget *parent,int id_arg )
   if( id==0 ) cb6->clearEditText();
   //-------------------------------------------------------------------------
   le6->setValidator( new QIntValidator(this) );
-  le_price->setValidator( new QDoubleValidator(this) );
 
-  query.prepare( "SELECT type,name,n,postavshik,schet,platej,color,notes,zprice "
+  query.prepare( "SELECT type,name,n,postavshik,schet,platej,color,notes "
                  "FROM zakupki WHERE id = ?" );
   query.addBindValue( id );
   if( !query.exec() )
@@ -1211,7 +1209,6 @@ ZakupkiAddDialog::ZakupkiAddDialog( QWidget *parent,int id_arg )
     cb6 ->setCurrentIndex( cb6->findText( sql_get_string( query, 5 ) ) ); // платеж
     te_notes->setPlainText( query.value(7).toString() ); // примечания
     if( query.value(6).toInt() < 30 ) pb1->setEnabled( false );
-    le_price->setText( QString::number( query.value(8).toDouble() ) ); // цена
   }
 }
 
@@ -1254,7 +1251,7 @@ void ZakupkiAddDialog::accept()
   str = (id) ? " UPDATE zakupki " : " INSERT INTO zakupki ";
   str +=  " SET type = ?,name = ?, n = ?, "
           " postavshik = ?, schet = ?, "
-          " platej = ?, notes = ?, zprice = ?, ";
+          " platej = ?, notes = ?, ";
   str += (id) ? " user2 = ?, date2 = ? " : " user = ?, date = ? ";
   if( id ) str += " WHERE id = ? ";
 
@@ -1266,7 +1263,6 @@ void ZakupkiAddDialog::accept()
   query.addBindValue( cb5->currentText().toUtf8() );          // счет
   query.addBindValue( cb6->currentText().toUtf8() );          // платеж
   query.addBindValue( te_notes->toPlainText() );              // примечания
-  query.addBindValue( le_price->text().toDouble() );          // цена
   query.addBindValue( user_id );
   query.addBindValue( QDate::currentDate() );
   if( id ) query.addBindValue( id );
