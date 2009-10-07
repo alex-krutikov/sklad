@@ -1252,7 +1252,8 @@ void ZakupkiAddDialog::accept()
   str +=  " SET type = ?,name = ?, n = ?, "
           " postavshik = ?, schet = ?, "
           " platej = ?, notes = ?, ";
-  str += (id) ? " user2 = ?, date2 = ? " : " user = ?, date = ? ";
+  str += (id) ? " user2 = ?, date2 = ? " : " user = ?, date = ?, color = 30 ";
+
   if( id ) str += " WHERE id = ? ";
 
   query.prepare( str );
