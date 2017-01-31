@@ -17,12 +17,14 @@ MOC_DIR        = build
 DESTDIR        = build
 RCC_DIR        = build
 
+INCLUDEPATH += mysql/include
+
 win32{
-  LIBS += -lmysql
+    LIBS += -Lmysql/lib -lmysqlclient /NODEFAULTLIB:LIBCMT
+  #  LIBS += -Lmysql/lib -lmysqlclient
 }
 unix{
-  INCLUDEPATH += /usr/include/mysql
-  LIBS        += -lmysqlclient
+  LIBS        += -lmysql
 }
 
 # Input

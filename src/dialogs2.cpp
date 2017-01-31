@@ -4,6 +4,9 @@
 #include "dialogs2.h"
 #include "main.h"
 
+#include <QPrinter>
+#include <QPrintDialog>
+
 //#######################################################################################
 //
 //#######################################################################################
@@ -11,7 +14,7 @@ OtpravkaDialog::OtpravkaDialog( QWidget *parent )
   : QDialog( parent )
 {
   setupUi( this );
-  setWindowTitle( "Отправка" );
+  setWindowTitle( "РћС‚РїСЂР°РІРєР°" );
   resize(600,400);
 
   sostav_id=0;
@@ -56,7 +59,7 @@ void OtpravkaDialog::refresh()
   while( query.next() )
   { if( query.value(8).toInt() != 0 ) continue;
     if( query.value(1).toInt() != i )
-    { // новый тип
+    { // РЅРѕРІС‹Р№ С‚РёРї
       idata.flag = 1;
       idata.name = query.value(2).toString();
       data << idata;
@@ -72,7 +75,7 @@ void OtpravkaDialog::refresh()
     //idata.position = "sdfsdf";
 
     if( query.value(3) != query.value(5) )
-    { // замена
+    { // Р·Р°РјРµРЅР°
       idata.flag = 2;
       idata.nominal = "";
     } else
@@ -84,11 +87,11 @@ void OtpravkaDialog::refresh()
   }
   //-----------------------------------------------------
   tw->clear();
-  sl << "Наименование"
-     << "Номинал"
-     << "Требуется"
-     << "Снято"
-     << "Позиция";
+  sl << "РќР°РёРјРµРЅРѕРІР°РЅРёРµ"
+     << "РќРѕРјРёРЅР°Р»"
+     << "РўСЂРµР±СѓРµС‚СЃСЏ"
+     << "РЎРЅСЏС‚Рѕ"
+     << "РџРѕР·РёС†РёСЏ";
 
   tw->setColumnCount(5);
   tw->setHorizontalHeaderLabels( sl );
@@ -103,7 +106,7 @@ void OtpravkaDialog::refresh()
   for( i=0; i<data.count(); i++ )
   { idata = data.at(i);
     if( idata.flag == 1 )
-    { // название типа
+    { // РЅР°Р·РІР°РЅРёРµ С‚РёРїР°
       titem = new QTableWidgetItem;
       titem ->setText( idata.name );
       titem ->setBackgroundColor( color1 );
@@ -112,28 +115,28 @@ void OtpravkaDialog::refresh()
       tw->setSpan( i,0,1,5);
       continue;
     }
-    // название
+    // РЅР°Р·РІР°РЅРёРµ
     titem = new QTableWidgetItem;
     str = idata.name;
     titem ->setText( idata.name );
-    if( idata.flag==2 ) str = "  ЗАМЕНА: " + str;
+    if( idata.flag==2 ) str = "  Р—РђРњР•РќРђ: " + str;
     //if( idata.defichit_flag ) str += " (#)";
     titem ->setText( str );
     tw->setItem( i, 0, titem );
-    // номинал
+    // РЅРѕРјРёРЅР°Р»
     titem = new QTableWidgetItem;
     titem ->setText( idata.nominal );
     tw->setItem( i, 1, titem );
-    // тербуется
+    // С‚РµСЂР±СѓРµС‚СЃСЏ
     titem = new QTableWidgetItem;
     if( idata.flag != 2 )
       titem ->setText( QString::number( idata.treb ) );
     tw->setItem( i, 2, titem );
-    // снято
+    // СЃРЅСЏС‚Рѕ
     titem = new QTableWidgetItem;
     titem ->setText( QString::number( idata.snato ) );
     tw->setItem( i, 3, titem );
-    // позиция
+    // РїРѕР·РёС†РёСЏ
     titem = new QTableWidgetItem;
     titem ->setText( idata.position );
     tw->setItem( i, 4, titem );
@@ -230,31 +233,31 @@ void OtpravkaDialog::on_pb_print_clicked()
        rect.setWidth( w  );
        rect.setHeight( h );
        v << rect;
-       painter.drawText( rect, Qt::AlignVCenter|Qt::AlignLeft, tr("  Наименование")  );
+       painter.drawText( rect, Qt::AlignVCenter|Qt::AlignLeft, tr("  РќР°РёРјРµРЅРѕРІР°РЅРёРµ")  );
        w = ww[1];
        rect.setX( x ); x += w ;
        rect.setWidth( w  );
        v << rect;
-       painter.drawText( rect, Qt::AlignCenter, tr("Номинал")  );
+       painter.drawText( rect, Qt::AlignCenter, tr("РќРѕРјРёРЅР°Р»")  );
        w = ww[2];
        rect.setX( x ); x += w ;
        rect.setWidth( w  );
        v << rect;
-       painter.drawText( rect, Qt::AlignCenter, tr("Требуется")  );
+       painter.drawText( rect, Qt::AlignCenter, tr("РўСЂРµР±СѓРµС‚СЃСЏ")  );
        w = ww[3];
        rect.setX( x ); x += w ;
        rect.setWidth( w  );
        v << rect;
-       painter.drawText( rect, Qt::AlignCenter, tr("Снято")  );
+       painter.drawText( rect, Qt::AlignCenter, tr("РЎРЅСЏС‚Рѕ")  );
        w = ww[4];
        rect.setX( x ); x += w ;
        rect.setWidth( w  );
        v << rect;
-       painter.drawText( rect, Qt::AlignCenter, tr("Позиция")  );
+       painter.drawText( rect, Qt::AlignCenter, tr("РџРѕР·РёС†РёСЏ")  );
 
        while( i < data.count() )
        { if( pos_line_flag )
-         { // повторение позиции
+         { // РїРѕРІС‚РѕСЂРµРЅРёРµ РїРѕР·РёС†РёРё
              x = 1100;
              cur_y += h;
              w = ww[0]+ww[1]+ww[2]+ww[3]+ww[4];
@@ -264,7 +267,7 @@ void OtpravkaDialog::on_pb_print_clicked()
              rect.setHeight( h );
              v << rect;
              painter.setFont( font );
-             painter.drawText( rect, alig | Qt::TextDontClip, "  Позиция: " + str  );
+             painter.drawText( rect, alig | Qt::TextDontClip, "  РџРѕР·РёС†РёСЏ: " + str  );
              pos_line_flag = false;
          }
 
@@ -315,7 +318,7 @@ void OtpravkaDialog::on_pb_print_clicked()
                }
              }
              if( idata.flag==2 )
-             { if     ( j==0 ) str = "   ЗАМЕНА: " + str;
+             { if     ( j==0 ) str = "   Р—РђРњР•РќРђ: " + str;
                else if( j==2 ) str = "";
              }
              v << rect;
@@ -340,7 +343,7 @@ void OtpravkaDialog::on_pb_print_clicked()
               if( !pos_line_flag )
               {  painter.drawText( rect, alig | Qt::TextDontClip, str  );
               }  else
-              {  painter.drawText( rect, alig | Qt::TextDontClip, "  См. строчку ниже"  );
+              {  painter.drawText( rect, alig | Qt::TextDontClip, "  РЎРј. СЃС‚СЂРѕС‡РєСѓ РЅРёР¶Рµ"  );
               }
             }
             i++;
@@ -349,7 +352,7 @@ void OtpravkaDialog::on_pb_print_clicked()
         }
 
        painter.setFont( font4 );
-       str2 = tr("Спецификация: %1 (%2 шт.)").arg( sostav ).arg( nn );
+       str2 = tr("РЎРїРµС†РёС„РёРєР°С†РёСЏ: %1 (%2 С€С‚.)").arg( sostav ).arg( nn );
        if( page == 1 )
        { painter.setFont( font4 );
          rect.setRect(0,400,10000,300);
@@ -364,13 +367,13 @@ void OtpravkaDialog::on_pb_print_clicked()
        painter.drawText(500,  900,       QString("N: %1").arg( sostav_id ) );
        painter.drawText(9000, 400,       QDate::currentDate().toString("dd.MM.yy") );
 
-       str2  = tr("проект: ") + proekt;
-       str2 += tr("; заказ: ") + zakaz;
-       str2 += tr("; изделие: ") + izdelie;
-       //painter.drawText(500,  YSIZE-300, str2 ); // не выводится
+       str2  = tr("РїСЂРѕРµРєС‚: ") + proekt;
+       str2 += tr("; Р·Р°РєР°Р·: ") + zakaz;
+       str2 += tr("; РёР·РґРµР»РёРµ: ") + izdelie;
+       //painter.drawText(500,  YSIZE-300, str2 ); // РЅРµ РІС‹РІРѕРґРёС‚СЃСЏ
 
        if(( i != data.count() ) || ( page != 1 ))
-         painter.drawText(9000, YSIZE-300, tr("стр. %1").arg(page) );
+         painter.drawText(9000, YSIZE-300, tr("СЃС‚СЂ. %1").arg(page) );
 
        //painter.setPen( pen );
        painter.drawRects( v );
@@ -408,7 +411,7 @@ void OtpravkaDialog::on_pb_copy_clicked()
   query.next();
   str = sql_get_string( query, 3 )+"\r\n";
 
-  str += tr("Наименование\tНоминал\tНужно\tСнято\r\n");
+  str += tr("РќР°РёРјРµРЅРѕРІР°РЅРёРµ\tРќРѕРјРёРЅР°Р»\tРќСѓР¶РЅРѕ\tРЎРЅСЏС‚Рѕ\r\n");
 
   for(i=0; i < tw->rowCount(); i++ )
   { for(j=0; j < tw->columnCount(); j++ )
@@ -430,7 +433,7 @@ DootpravkaDialog::DootpravkaDialog( QWidget *parent )
   : QDialog( parent )
 {
   setupUi( this );
-  setWindowTitle( "Доотправка" );
+  setWindowTitle( "Р”РѕРѕС‚РїСЂР°РІРєР°" );
 
   de1->setDate( QDate(2006,1,1) );
   de2->setDate( QDate::currentDate() );
@@ -462,10 +465,10 @@ void DootpravkaDialog::refresh()
   tw->setSelectionBehavior( QAbstractItemView::SelectRows );
 
   tw->clear();
-  sl << "Наименование"
-     << "Номинал"
-     << "Кол-во"
-     << "Дата";
+  sl << "РќР°РёРјРµРЅРѕРІР°РЅРёРµ"
+     << "РќРѕРјРёРЅР°Р»"
+     << "РљРѕР»-РІРѕ"
+     << "Р”Р°С‚Р°";
 
   tw->setColumnCount(4);
   tw->setRowCount(0);
@@ -501,7 +504,7 @@ void DootpravkaDialog::refresh()
     i = tw->rowCount();
     tw->setRowCount( i+1 );
     if( j != query.value(0).toInt() )
-    { // название типа
+    { // РЅР°Р·РІР°РЅРёРµ С‚РёРїР°
       j = query.value(0).toInt();
       titem = new QTableWidgetItem;
       titem ->setText( query.value(1).toString() );
@@ -519,37 +522,37 @@ void DootpravkaDialog::refresh()
     }
     if(  (  str2 != query.value(3).toString() )
        && ( query.value(2).toString() != query.value(3).toString() ) )
-    { // название перед заменой
+    { // РЅР°Р·РІР°РЅРёРµ РїРµСЂРµРґ Р·Р°РјРµРЅРѕР№
       titem = new QTableWidgetItem;
       titem ->setText( query.value(3).toString() );
       tw->setItem( i, 0, titem );
-      // номинал
+      // РЅРѕРјРёРЅР°Р»
       titem = new QTableWidgetItem;
       titem ->setText( query.value(4).toString() );
       tw->setItem( i, 1, titem );
       i = tw->rowCount();
       tw->setRowCount( i+1 );
     }
-    // название
+    // РЅР°Р·РІР°РЅРёРµ
     titem = new QTableWidgetItem;
     str  = query.value(2).toString();
     str2 = query.value(3).toString();
-    if( str != str2 ) str = "  ЗАМЕНА: " + str;
+    if( str != str2 ) str = "  Р—РђРњР•РќРђ: " + str;
     //if( idata.defichit_flag ) str += " (#)";
     titem ->setText( str );
     tw->setItem( i, 0, titem );
     if( str == str2 )
-    { // номинал
+    { // РЅРѕРјРёРЅР°Р»
       titem = new QTableWidgetItem;
       titem ->setText( query.value(4).toString() );
       tw->setItem( i, 1, titem );
     }
-    // кол-во
+    // РєРѕР»-РІРѕ
     titem = new QTableWidgetItem;
     titem ->setText( query.value(5).toString() );
     titem ->setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
     tw->setItem( i, 2, titem );
-    // снято
+    // СЃРЅСЏС‚Рѕ
     titem = new QTableWidgetItem;
     titem ->setText( query.value(6).toDate().toString("dd MMM yy") );
     titem->setTextAlignment( Qt::AlignCenter );
@@ -649,17 +652,17 @@ void DootpravkaDialog::on_pb_print_clicked()
        rect.setWidth( w  );
        rect.setHeight( h );
        v << rect;
-       painter.drawText( rect, Qt::AlignVCenter|Qt::AlignLeft, tr("  Наименование")  );
+       painter.drawText( rect, Qt::AlignVCenter|Qt::AlignLeft, tr("  РќР°РёРјРµРЅРѕРІР°РЅРёРµ")  );
        w = ww[1];
        rect.setX( x ); x += w ;
        rect.setWidth( w  );
        v << rect;
-       painter.drawText( rect, Qt::AlignCenter, tr("Номинал")  );
+       painter.drawText( rect, Qt::AlignCenter, tr("РќРѕРјРёРЅР°Р»")  );
        w = ww[2];
        rect.setX( x ); x += w ;
        rect.setWidth( w  );
        v << rect;
-       painter.drawText( rect, Qt::AlignCenter, tr("Количество")  );
+       painter.drawText( rect, Qt::AlignCenter, tr("РљРѕР»РёС‡РµСЃС‚РІРѕ")  );
 
        while( i < tw->rowCount() )
        { x = SCALE*110;
@@ -713,7 +716,7 @@ void DootpravkaDialog::on_pb_print_clicked()
         }
 
        painter.setFont( font4 );
-       str2 = tr("Доотправка: %1 (%2 шт.)").arg( sostav ).arg( nn );
+       str2 = tr("Р”РѕРѕС‚РїСЂР°РІРєР°: %1 (%2 С€С‚.)").arg( sostav ).arg( nn );
        if( page == 1 )
        { painter.setFont( font4 );
          rect.setRect(0,SCALE*10,SCALE*1000,SCALE*60);
@@ -728,13 +731,13 @@ void DootpravkaDialog::on_pb_print_clicked()
        painter.drawText(SCALE*50,  SCALE*90,       QString("N: %1").arg( sostav_id ) );
        painter.drawText(SCALE*900, SCALE*40,       QDate::currentDate().toString("dd.MM.yy") );
 
-       str2  = tr("проект: ") + proekt;
-       str2 += tr("; заказ: ") + zakaz;
-       str2 += tr("; изделие: ") + izdelie;
-       //painter.drawText(500,  YSIZE-300, str2 ); // не выводится
+       str2  = tr("РїСЂРѕРµРєС‚: ") + proekt;
+       str2 += tr("; Р·Р°РєР°Р·: ") + zakaz;
+       str2 += tr("; РёР·РґРµР»РёРµ: ") + izdelie;
+       //painter.drawText(500,  YSIZE-300, str2 ); // РЅРµ РІС‹РІРѕРґРёС‚СЃСЏ
 
        if(( i != tw->rowCount() ) || ( page != 1 ))
-         painter.drawText(SCALE*900, SCALE*YSIZE-SCALE*30, tr("стр. %1").arg(page) );
+         painter.drawText(SCALE*900, SCALE*YSIZE-SCALE*30, tr("СЃС‚СЂ. %1").arg(page) );
 
        //painter.setPen( pen );
        painter.drawRects( v );
@@ -764,7 +767,7 @@ MontagDialog::MontagDialog( QWidget *parent, QString name )
   : QDialog( parent )
 {
   setupUi( this );
-  setWindowTitle( "Монтаж" );
+  setWindowTitle( "РњРѕРЅС‚Р°Р¶" );
   le->setText( name );
   le->setFocus();
 }
@@ -781,14 +784,14 @@ void MontagDialog::on_pb_date_clicked()
 //=======================================================================================
 void MontagDialog::on_pb_piter_clicked()
 {
-  le->insert( "Питер" );
+  le->insert( "РџРёС‚РµСЂ" );
 }
 //=======================================================================================
 //
 //=======================================================================================
 void MontagDialog::on_pb_ilya_clicked()
 {
-  le->insert( "Илья" );
+  le->insert( "РР»СЊСЏ" );
 }
 
 

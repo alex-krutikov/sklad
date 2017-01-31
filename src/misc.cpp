@@ -1,9 +1,15 @@
-#include "pch.h"
 #include "misc.h"
 #include "main.h"
 #include "dialogs.h"
 #include "dialogs2.h"
 #include "price.h"
+
+#include <QMessageBox>
+#include <QPrintDialog>
+#include <QPrinter>
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QSqlField>
 
 //#######################################################################################
 //
@@ -29,7 +35,7 @@ SqlTable::SqlTable( QWidget *parent )
 }
 
 //=======================================================================================
-/// Очистить настройки таблицы
+/// РћС‡РёСЃС‚РёС‚СЊ РЅР°СЃС‚СЂРѕР№РєРё С‚Р°Р±Р»РёС†С‹
 //=======================================================================================
 void SqlTable::clear_query_fields()
 {
@@ -40,7 +46,7 @@ void SqlTable::clear_query_fields()
 }
 
 //=======================================================================================
-/// Добавить коронку к таблице
+/// Р”РѕР±Р°РІРёС‚СЊ РєРѕСЂРѕРЅРєСѓ Рє С‚Р°Р±Р»РёС†Рµ
 //=======================================================================================
 void SqlTable::add_query_field( QString fieldname, int size,
         QString sql_field, int alignment_arg )
@@ -99,7 +105,7 @@ void SqlTable::refresh()
   QString str;
   QString str2;
 
-  // запаминаем текущую выбранную строчку
+  // Р·Р°РїР°РјРёРЅР°РµРј С‚РµРєСѓС‰СѓСЋ РІС‹Р±СЂР°РЅРЅСѓСЋ СЃС‚СЂРѕС‡РєСѓ
   sel_id = get_selected_id();
 
   clear();
@@ -239,14 +245,14 @@ void SqlTable::refresh()
           setItem(i, k, newItem);
           break;
         default:
-          QMessageBox::critical(this, QObject::tr("Неизвестный тип"), QString::number(v[k]) );
+          QMessageBox::critical(this, QObject::tr("РќРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї"), QString::number(v[k]) );
           break;
       }
     }
     i++;
   }
 
-  // восстановление выбора текущей строчки
+  // РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РІС‹Р±РѕСЂР° С‚РµРєСѓС‰РµР№ СЃС‚СЂРѕС‡РєРё
   if( sel_id )
   { setCurrentCell( pk_values.indexOf( sel_id ) , 0 );
   }
@@ -312,7 +318,7 @@ void SqlTable::my1(  const QPoint & pos )
     v << item;
   }
   menu->addSeparator();
-  item = menu->addAction( tr("Отключить все") );
+  item = menu->addAction( tr("РћС‚РєР»СЋС‡РёС‚СЊ РІСЃРµ") );
 
 	QAction *item_selected = menu->exec( mapToGlobal(pos) );
 	if( item_selected == item )
@@ -329,7 +335,7 @@ void SqlTable::my1(  const QPoint & pos )
 	    break;
 	  }
 	}
-	// если выключены все поля -- включаем все поля
+	// РµСЃР»Рё РІС‹РєР»СЋС‡РµРЅС‹ РІСЃРµ РїРѕР»СЏ -- РІРєР»СЋС‡Р°РµРј РІСЃРµ РїРѕР»СЏ
 	for( i=0; i < v.size(); i++) if( header_show_flag[i] ) break;
 	if( i==v.size() )
 	{ header_show_flag.fill(1);
@@ -396,13 +402,13 @@ void KomplTable::refresh( int id )
   setSelectionBehavior( QAbstractItemView::SelectRows );
   setSelectionMode( QAbstractItemView::SingleSelection );
 
-  sl << tr( "Наименование" ) // 0
-     << tr( "Номинал" )      // 1
-     << tr( "Требуется" )    // 2
-     << tr( "Снято" )        // 3
-     << tr( "Место" )        // 4
-     << tr( "В наличии" )    // 5
-     << tr( "Статус" );      // 6
+  sl << tr( "РќР°РёРјРµРЅРѕРІР°РЅРёРµ" ) // 0
+     << tr( "РќРѕРјРёРЅР°Р»" )      // 1
+     << tr( "РўСЂРµР±СѓРµС‚СЃСЏ" )    // 2
+     << tr( "РЎРЅСЏС‚Рѕ" )        // 3
+     << tr( "РњРµСЃС‚Рѕ" )        // 4
+     << tr( "Р’ РЅР°Р»РёС‡РёРё" )    // 5
+     << tr( "РЎС‚Р°С‚СѓСЃ" );      // 6
   setColumnCount(7);
   setHorizontalHeaderLabels( sl );
 
@@ -481,7 +487,7 @@ void KomplTable::refresh( int id )
         if( rowCount() < (i+1) ) setRowCount( i+1 );
       }
 
-      newitem = new QTableWidgetItem;        // наименование
+      newitem = new QTableWidgetItem;        // РЅР°РёРјРµРЅРѕРІР°РЅРёРµ
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       str1 = sql_get_string( query, 4 );
       newitem -> setText( str1 );
@@ -493,39 +499,39 @@ void KomplTable::refresh( int id )
       newitem->setBackgroundColor( color );
       setItem( i,0, newitem );
 
-      newitem = new QTableWidgetItem;        // номинал
+      newitem = new QTableWidgetItem;        // РЅРѕРјРёРЅР°Р»
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       newitem -> setText( sql_get_string( query, 12 ) );
       newitem->setBackgroundColor( color );
       setItem( i,1, newitem );
 
-      newitem = new QTableWidgetItem;        // требуется
+      newitem = new QTableWidgetItem;        // С‚СЂРµР±СѓРµС‚СЃСЏ
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       newitem->setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
       newitem -> setText( query.value(5).toString());
       newitem->setBackgroundColor( color );
       setItem( i,2, newitem );
 
-      newitem = new QTableWidgetItem;        // место
+      newitem = new QTableWidgetItem;        // РјРµСЃС‚Рѕ
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       newitem -> setText( sql_get_string( query, 11 ) );
       newitem -> setData( Qt::UserRole, query.value(0) );
       newitem->setBackgroundColor( color );
       setItem( i,4, newitem );
 
-      newitem = new QTableWidgetItem;        // снято
+      newitem = new QTableWidgetItem;        // СЃРЅСЏС‚Рѕ
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       newitem->setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
       newitem -> setText( query.value(6).toString());
       newitem->setBackgroundColor( color );
       setItem( i,3, newitem );
     } else
-    { newitem = new QTableWidgetItem;        // наименование
+    { newitem = new QTableWidgetItem;        // РЅР°РёРјРµРЅРѕРІР°РЅРёРµ
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       str2 = sql_get_string( query, 7 );
       if( str1 != str2 )
       { newitem -> setData( Qt::UserRole+3,2 );
-        newitem -> setText( tr("    ЗАМЕНА: ") + str2 );
+        newitem -> setText( tr("    Р—РђРњР•РќРђ: ") + str2 );
       }else
       { newitem -> setData( Qt::UserRole+3,3 );
         newitem -> setText( tr("----- // -----" ) );
@@ -537,36 +543,36 @@ void KomplTable::refresh( int id )
       setItem( i,0, newitem );
 
 
-      newitem = new QTableWidgetItem;        // номинал
+      newitem = new QTableWidgetItem;        // РЅРѕРјРёРЅР°Р»
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       newitem->setBackgroundColor( color );
       setItem( i,1, newitem );
 
-      newitem = new QTableWidgetItem;        // нужно
+      newitem = new QTableWidgetItem;        // РЅСѓР¶РЅРѕ
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       newitem->setBackgroundColor( color );
       setItem( i,2, newitem );
 
-      newitem = new QTableWidgetItem;        // место
+      newitem = new QTableWidgetItem;        // РјРµСЃС‚Рѕ
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       newitem -> setText( sql_get_string( query, 11 ) );
       newitem -> setData( Qt::UserRole, query.value(0) );
       newitem->setBackgroundColor( color );
       setItem( i,4, newitem );
 
-      newitem = new QTableWidgetItem;        // снято
+      newitem = new QTableWidgetItem;        // СЃРЅСЏС‚Рѕ
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       newitem->setBackgroundColor( color );
       setItem( i,3, newitem );
     }
 
-    newitem = new QTableWidgetItem;        // в наличии
+    newitem = new QTableWidgetItem;        // РІ РЅР°Р»РёС‡РёРё
     newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     newitem -> setText( sql_get_string( query, 9 ) );
     newitem->setBackgroundColor( color );
     setItem( i,5, newitem );
 
-    newitem = new QTableWidgetItem;        // статус
+    newitem = new QTableWidgetItem;        // СЃС‚Р°С‚СѓСЃ
     newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     str = kompl_status.value( query.value(13).toInt()  );
     newitem -> setText( str );
@@ -614,10 +620,10 @@ void KomplTable::status()
 
 	QMenu *menu = new QMenu( this );
 
-  QAction *item1 = menu->addAction( "Не комплектовать" );
-  QAction *item2 = menu->addAction( "Не отправлять" );
+  QAction *item1 = menu->addAction( "РќРµ РєРѕРјРїР»РµРєС‚РѕРІР°С‚СЊ" );
+  QAction *item2 = menu->addAction( "РќРµ РѕС‚РїСЂР°РІР»СЏС‚СЊ" );
                    menu->addSeparator();
-  QAction *item3 = menu->addAction( "Очистить" );
+  QAction *item3 = menu->addAction( "РћС‡РёСЃС‚РёС‚СЊ" );
   QAction *item_selected = menu->exec(QCursor::pos() );
   j = 0;
   if     ( item_selected == item1 ) j=1;
@@ -662,11 +668,11 @@ void Defichit2::refresh()
   tw->setSelectionBehavior( QAbstractItemView::SelectRows );
   tw->setSelectionMode( QAbstractItemView::SingleSelection );
 
-  sl << "Наименование"
-     << "Нужно"
-     << "В наличии"
-     << "В закупке"
-     << "Номера заданий";
+  sl << "РќР°РёРјРµРЅРѕРІР°РЅРёРµ"
+     << "РќСѓР¶РЅРѕ"
+     << "Р’ РЅР°Р»РёС‡РёРё"
+     << "Р’ Р·Р°РєСѓРїРєРµ"
+     << "РќРѕРјРµСЂР° Р·Р°РґР°РЅРёР№";
   tw->setColumnCount( 5 );
   tw->setHorizontalHeaderLabels( sl );
 
@@ -711,7 +717,7 @@ void Defichit2::refresh()
     " LEFT JOIN ( "
     "   SELECT name,SUM(n-polucheno) AS zakupka FROM zakupki GROUP BY name "
     "   ) AS t3 ON t1.name = t3.name "
-    " WHERE typename != \'Модуль\' " );
+    " WHERE typename != \'РњРѕРґСѓР»СЊ\' " );
   query.exec();
    i=0,j=-1;
   while( query.next() )
@@ -734,31 +740,31 @@ void Defichit2::refresh()
       i++;
       if( tw->rowCount() < i+1 ) tw->setRowCount(i+1);
     }
-    // наименование
+    // РЅР°РёРјРµРЅРѕРІР°РЅРёРµ
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled );
     titem -> setText( query.value(2).toString() );
     titem -> setData( Qt::UserRole+1, query.value(0) );
     tw->setItem( i,0, titem );
-    // нужно
+    // РЅСѓР¶РЅРѕ
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled );
     titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
     titem -> setText( query.value(3).toString() );
     tw->setItem( i,1, titem );
-    // в наличии
+    // РІ РЅР°Р»РёС‡РёРё
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled );
     titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
     titem -> setText( query.value(4).toString() );
     tw->setItem( i,2, titem );
-    // в закупке
+    // РІ Р·Р°РєСѓРїРєРµ
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled );
     titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
     titem -> setText( query.value(6).toString() );
     tw->setItem( i,3, titem );
-    // номера заданий
+    // РЅРѕРјРµСЂР° Р·Р°РґР°РЅРёР№
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled );
     titem -> setTextAlignment( Qt::AlignLeft|Qt::AlignVCenter );
@@ -812,21 +818,21 @@ void Defichit2::on_pb_print_clicked()
     " LEFT JOIN ( "
     "   SELECT name,SUM(ostatok) AS nalichie FROM prihod GROUP BY name "
     "   ) AS t2 ON t1.name = t2.name "
-    " WHERE t1.treb > IFNULL(t2.nalichie,0) AND typename != \'Модуль\'" );
+    " WHERE t1.treb > IFNULL(t2.nalichie,0) AND typename != \'РњРѕРґСѓР»СЊ\'" );
   query.exec();
 
   str += "<HTML>";
   str += " <style type=\"text/css\"> body {  font-family: \"Arial\"; font-size: 10pt  } </style> ";
   str += " <BODY> ";
-  str += "<H2 align=center>Анализ дефицита</H2>";
+  str += "<H2 align=center>РђРЅР°Р»РёР· РґРµС„РёС†РёС‚Р°</H2>";
   str += "<TABLE>";
-  str += "<TR> <TD>Дата: <TD>" + QDate::currentDate().toString("dd MMMM yyyy (dddd)");
-  str += "<TR> <TD>Номера заданий: <TD>" + sostav_id;
+  str += "<TR> <TD>Р”Р°С‚Р°: <TD>" + QDate::currentDate().toString("dd MMMM yyyy (dddd)");
+  str += "<TR> <TD>РќРѕРјРµСЂР° Р·Р°РґР°РЅРёР№: <TD>" + sostav_id;
   str += "</TABLE>";
 
   str += " <TABLE style=\"border-style: solid;border-color: black\" border=0.5 cellpadding=2 cellspacing=0 width=100%> ";
   str += " <THEAD style=\"font-family:Tahoma\" ><TR bgcolor=gray >"
-         "<TD width=40%>Наименование<TD>Требуется<TD>Наличие<TD width=40%>Номера заданий</THEAD>";
+         "<TD width=40%>РќР°РёРјРµРЅРѕРІР°РЅРёРµ<TD>РўСЂРµР±СѓРµС‚СЃСЏ<TD>РќР°Р»РёС‡РёРµ<TD width=40%>РќРѕРјРµСЂР° Р·Р°РґР°РЅРёР№</THEAD>";
   k=-1;
   while( query.next() )
   { if( query.value(0).toInt() != k )
@@ -848,7 +854,7 @@ void Defichit2::on_pb_print_clicked()
 
   QPrinter printer;
   QPrintDialog *dialog = new QPrintDialog(&printer, this);
-  dialog->setWindowTitle("Печать");
+  dialog->setWindowTitle("РџРµС‡Р°С‚СЊ");
   if (dialog->exec() != QDialog::Accepted) return;
 
   QTextDocument td;
@@ -872,8 +878,8 @@ void Defichit2::on_pb_copy_clicked()
   }
 
   QApplication::clipboard()->setText( str );
-  QMessageBox::information( this, app_header, "Наименования дефицитных позиций "
-                                              "скопированны в буфер обмена" );
+  QMessageBox::information( this, app_header, "РќР°РёРјРµРЅРѕРІР°РЅРёСЏ РґРµС„РёС†РёС‚РЅС‹С… РїРѕР·РёС†РёР№ "
+                                              "СЃРєРѕРїРёСЂРѕРІР°РЅРЅС‹ РІ Р±СѓС„РµСЂ РѕР±РјРµРЅР°" );
 }
 
 //=======================================================================================
@@ -931,7 +937,7 @@ Defichit2RenameDialog::Defichit2RenameDialog( QWidget *parent,
   : QDialog( parent )
 {
   setupUi( this );
-  setWindowTitle("Переименование");
+  setWindowTitle("РџРµСЂРµРёРјРµРЅРѕРІР°РЅРёРµ");
 
   this->name  = name;
   this->type  = type;
@@ -946,7 +952,7 @@ Defichit2RenameDialog::Defichit2RenameDialog( QWidget *parent,
   tw->setEditTriggers( QAbstractItemView::NoEditTriggers );
 
   QStringList sl;
-  sl << "Наименование" << "Наличие" << "В закупке";
+  sl << "РќР°РёРјРµРЅРѕРІР°РЅРёРµ" << "РќР°Р»РёС‡РёРµ" << "Р’ Р·Р°РєСѓРїРєРµ";
   tw->setRowCount( 0 );
   tw->setColumnCount( 3 );
   tw->setHorizontalHeaderLabels( sl );
@@ -1043,7 +1049,7 @@ void Defichit2RenameDialog::on_pb_rename_clicked()
 }
 
 //#######################################################################################
-// Диалог анализа закупки
+// Р”РёР°Р»РѕРі Р°РЅР°Р»РёР·Р° Р·Р°РєСѓРїРєРё
 //#######################################################################################
 struct DefichitPriceDialogStruct
 { QString type;
@@ -1062,7 +1068,7 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
   : QDialog( parent )
 {
   setupUi(this);
-  setWindowTitle("Анализ стоимости дефицита");
+  setWindowTitle("РђРЅР°Р»РёР· СЃС‚РѕРёРјРѕСЃС‚Рё РґРµС„РёС†РёС‚Р°");
   resize(600,600);
 
   QSqlQuery query;
@@ -1075,13 +1081,13 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
   QMap<QString,double> price_map;
 
   //------------------------------------------------------------------------------------
-  // подготовка таблицы
+  // РїРѕРґРіРѕС‚РѕРІРєР° С‚Р°Р±Р»РёС†С‹
 
-  sl << "Наименование"     // 0
-     << "Кол-во"           // 1
-     << "Цена\n(оценоч.)"  // 2
-     << "Цена\n(закуп.)"   // 2
-     << "Стоимость";       // 3
+  sl << "РќР°РёРјРµРЅРѕРІР°РЅРёРµ"     // 0
+     << "РљРѕР»-РІРѕ"           // 1
+     << "Р¦РµРЅР°\n(РѕС†РµРЅРѕС‡.)"  // 2
+     << "Р¦РµРЅР°\n(Р·Р°РєСѓРї.)"   // 2
+     << "РЎС‚РѕРёРјРѕСЃС‚СЊ";       // 3
   tw->setColumnCount(5);
   tw->setHorizontalHeaderLabels( sl );
 
@@ -1098,7 +1104,7 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
 
 
   //------------------------------------------------------------------------------------
-  // текущий остаток на складе
+  // С‚РµРєСѓС‰РёР№ РѕСЃС‚Р°С‚РѕРє РЅР° СЃРєР»Р°РґРµ
   query.prepare( " SELECT typename, name, SUM( ostatok ) "
                  " FROM prihod "
                  " LEFT JOIN types ON prihod.type=types.id "
@@ -1113,7 +1119,7 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
   }
 
   //------------------------------------------------------------------------------------
-  // получение оценочных цен
+  // РїРѕР»СѓС‡РµРЅРёРµ РѕС†РµРЅРѕС‡РЅС‹С… С†РµРЅ
   query.prepare( "SELECT name,price_est FROM price_est " );
   if( !query.exec() )
   {  sql_error_message( query, this );
@@ -1124,7 +1130,7 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
   }
 
   //------------------------------------------------------------------------------------
-  // получение закупочных цен
+  // РїРѕР»СѓС‡РµРЅРёРµ Р·Р°РєСѓРїРѕС‡РЅС‹С… С†РµРЅ
   query.prepare( "SELECT name,SUM(price*kolichestvo)/SUM(kolichestvo) AS avr_price "
                  " FROM prihod GROUP BY name" );
   if( !query.exec() )
@@ -1137,7 +1143,7 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
   }
 
   //------------------------------------------------------------------------------------
-  // получение списка необходимых компонентов
+  // РїРѕР»СѓС‡РµРЅРёРµ СЃРїРёСЃРєР° РЅРµРѕР±С…РѕРґРёРјС‹С… РєРѕРјРїРѕРЅРµРЅС‚РѕРІ
   QRegExp rx("(\\d+)");
   i=0;
   sl.clear();
@@ -1173,7 +1179,7 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
     }
     v << vi;
 
-    // анализ замен: при наличии замен используем первую замену
+    // Р°РЅР°Р»РёР· Р·Р°РјРµРЅ: РїСЂРё РЅР°Р»РёС‡РёРё Р·Р°РјРµРЅ РёСЃРїРѕР»СЊР·СѓРµРј РїРµСЂРІСѓСЋ Р·Р°РјРµРЅСѓ
     n = v.count();
     for(i=0;i<n-1;i++)
     {
@@ -1189,7 +1195,7 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
   }
 
   //---------------------------------------------------------------------
-  // сравнение с текущими остатками
+  // СЃСЂР°РІРЅРµРЅРёРµ СЃ С‚РµРєСѓС‰РёРјРё РѕСЃС‚Р°С‚РєР°РјРё
   foreach( QString k, map.keys() )
   { int a = map.value(k)-ost_map.value(k);
     if( a > 0 )
@@ -1200,7 +1206,7 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
   }
 
   //---------------------------------------------------------------------
-  // заполнение таблицы
+  // Р·Р°РїРѕР»РЅРµРЅРёРµ С‚Р°Р±Р»РёС†С‹
   foreach( QString k, map.keys() )
   { QString s0 = k.section(";",0,0);
     if( s != s0 )
@@ -1210,7 +1216,7 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
     items << ( k.section(";",1,1) + ";" + QString::number( map.value(k) ) );
   }
   //---------------------------------------------------------------------
-  // расчет и вывод таблицы
+  // СЂР°СЃС‡РµС‚ Рё РІС‹РІРѕРґ С‚Р°Р±Р»РёС†С‹
   n = items.count();
   tw->setRowCount( n );
 
@@ -1268,7 +1274,7 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
   }
 
   //---------------------------------------------------------------------
-  // общая стомиость
+  // РѕР±С‰Р°СЏ СЃС‚РѕРјРёРѕСЃС‚СЊ
   double sp=0;
   for(i=0;i<n;i++)
   { QString s=tw->item(i,4)->text();
@@ -1279,17 +1285,17 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
 }
 
 //=======================================================================================
-// Копирование таблицы в буфер обмена
+// РљРѕРїРёСЂРѕРІР°РЅРёРµ С‚Р°Р±Р»РёС†С‹ РІ Р±СѓС„РµСЂ РѕР±РјРµРЅР°
 //=======================================================================================
 void DefichitPriceDialog::on_pb_copy_clicked()
 {
   QString str = tablewidget2str( tw );
   QApplication::clipboard()->setText( str );
-  QMessageBox::information( this, app_header, "Таблица скопирована в буфер обмена." );
+  QMessageBox::information( this, app_header, "РўР°Р±Р»РёС†Р° СЃРєРѕРїРёСЂРѕРІР°РЅР° РІ Р±СѓС„РµСЂ РѕР±РјРµРЅР°." );
 }
 
 //#######################################################################################
-// Копирование содержания таблицы в строку для буфера обмена (типа CSV)
+// РљРѕРїРёСЂРѕРІР°РЅРёРµ СЃРѕРґРµСЂР¶Р°РЅРёСЏ С‚Р°Р±Р»РёС†С‹ РІ СЃС‚СЂРѕРєСѓ РґР»СЏ Р±СѓС„РµСЂР° РѕР±РјРµРЅР° (С‚РёРїР° CSV)
 //#######################################################################################
 QString tablewidget2str( const QTableWidget *tw )
 {

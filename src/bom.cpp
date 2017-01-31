@@ -5,6 +5,9 @@
 #include "main.h"
 #include "mainwindow.h"
 
+#include <QMessageBox>
+#include <QProgressDialog>
+
 //#######################################################################################
 //
 //#######################################################################################
@@ -23,43 +26,43 @@ void BomFile::loadFile( const QString filename )
   t_data ss;
 
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-  {QMessageBox::critical(mainwindow, "Импорт BOM-файла",
-              QString("Не могу открыть файл \"%1\"").arg( filename ) );
+  {QMessageBox::critical(mainwindow, "РРјРїРѕСЂС‚ BOM-С„Р°Р№Р»Р°",
+              QString("РќРµ РјРѕРіСѓ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» \"%1\"").arg( filename ) );
     return;
   }
 
-  str = QString::fromAscii( file.readLine() ).toUpper().simplified();
+  str = QString::fromLocal8Bit( file.readLine() ).toUpper().simplified();
   str.remove("\"");
   sl = str.split(";");
-  sl << "qwert"; // добавляем лишнюю секцию для безглючности
+  sl << "qwert"; // РґРѕР±Р°РІР»СЏРµРј Р»РёС€РЅСЋСЋ СЃРµРєС†РёСЋ РґР»СЏ Р±РµР·РіР»СЋС‡РЅРѕСЃС‚Рё
 
   fn.resize(4);
   fn[0] = sl.indexOf("COUNT");
   fnmax = fn[0];
   if( fn[0] < 0 )
-  { QMessageBox::critical(0, "Импорт BOM-файла",
-              "Не найдено поле \"Count\" в первой строке BOM-файла!" );
+  { QMessageBox::critical(0, "РРјРїРѕСЂС‚ BOM-С„Р°Р№Р»Р°",
+              "РќРµ РЅР°Р№РґРµРЅРѕ РїРѕР»Рµ \"Count\" РІ РїРµСЂРІРѕР№ СЃС‚СЂРѕРєРµ BOM-С„Р°Р№Р»Р°!" );
     return;
   }
   fn[1] = sl.indexOf("COMPONENTNAME");
   if( fnmax < fn[1] ) fnmax=fn[1];
   if( fn[1] < 0 )
-  { QMessageBox::critical(0, "Импорт BOM-файла",
-              "Не найдено поле \"ComponentName\" в первой строке BOM-файла!" );
+  { QMessageBox::critical(0, "РРјРїРѕСЂС‚ BOM-С„Р°Р№Р»Р°",
+              "РќРµ РЅР°Р№РґРµРЅРѕ РїРѕР»Рµ \"ComponentName\" РІ РїРµСЂРІРѕР№ СЃС‚СЂРѕРєРµ BOM-С„Р°Р№Р»Р°!" );
     return;
   }
   fn[2] = sl.indexOf("REFDES");
   if( fnmax < fn[2] ) fnmax=fn[2];
   if( fn[2] < 0 )
-  { QMessageBox::critical(0, "Импорт BOM-файла",
-              "Не найдено поле \"RefDes\" в первой строке BOM-файла!" );
+  { QMessageBox::critical(0, "РРјРїРѕСЂС‚ BOM-С„Р°Р№Р»Р°",
+              "РќРµ РЅР°Р№РґРµРЅРѕ РїРѕР»Рµ \"RefDes\" РІ РїРµСЂРІРѕР№ СЃС‚СЂРѕРєРµ BOM-С„Р°Р№Р»Р°!" );
     return;
   }
   fn[3] = sl.indexOf("VALUE");
   if( fnmax < fn[3] ) fnmax=fn[3];
   if( fn[3] < 0 )
-  { QMessageBox::critical(0, "Импорт BOM-файла",
-              QString("Не найдено поле \"Value\" в первой строке BOM-файла! %1 %2")
+  { QMessageBox::critical(0, "РРјРїРѕСЂС‚ BOM-С„Р°Р№Р»Р°",
+              QString("РќРµ РЅР°Р№РґРµРЅРѕ РїРѕР»Рµ \"Value\" РІ РїРµСЂРІРѕР№ СЃС‚СЂРѕРєРµ BOM-С„Р°Р№Р»Р°! %1 %2")
                 .arg( sl.indexOf("VALUE") )
                 .arg( sl.at(4) )  );
     return;
@@ -69,21 +72,21 @@ void BomFile::loadFile( const QString filename )
   i = 1;
   while (!file.atEnd())
   {
-    str = QString::fromAscii( file.readLine() );
+    str = QString::fromLocal8Bit( file.readLine() );
     i++;
     str.remove("\"");
     sl = str.split(";");
     if( sl.size() < fnmax ) continue;
 
-    ss.name    = sl[ fn[1] ]; // название
-    ss.nominal = sl[ fn[3] ]; // номинал
-    ss.count   = sl[ fn[0] ].toInt(); // кол-во
+    ss.name    = sl[ fn[1] ]; // РЅР°Р·РІР°РЅРёРµ
+    ss.nominal = sl[ fn[3] ]; // РЅРѕРјРёРЅР°Р»
+    ss.count   = sl[ fn[0] ].toInt(); // РєРѕР»-РІРѕ
 
-    // позиция
+    // РїРѕР·РёС†РёСЏ
     k = sl[ fn[0] ].toInt() - 1;
     if( k < 0 )
-    { QMessageBox::critical(0, "Импорт BOM-файла",
-              QString("Ошибка в поле \"Count\" (строка %1)! ").arg(i) );
+    { QMessageBox::critical(0, "РРјРїРѕСЂС‚ BOM-С„Р°Р№Р»Р°",
+              QString("РћС€РёР±РєР° РІ РїРѕР»Рµ \"Count\" (СЃС‚СЂРѕРєР° %1)! ").arg(i) );
       return;
     }
 
@@ -93,7 +96,7 @@ void BomFile::loadFile( const QString filename )
 
 
     while( k && (!file.atEnd()))
-    { str = QString::fromAscii( file.readLine() );
+    { str = QString::fromLocal8Bit( file.readLine() );
       i++;
       str.remove("\"");
       sl = str.split(";");
@@ -102,14 +105,14 @@ void BomFile::loadFile( const QString filename )
       k--;
       if(sl[ fn[0] ].count() > 0 )
       {
-        QMessageBox::critical(0, "Импорт BOM-файла",
-              QString("Ошибка! Присутствует кол-во в подчиненной строке. (строка %1)! ").arg(i) );
+        QMessageBox::critical(0, "РРјРїРѕСЂС‚ BOM-С„Р°Р№Р»Р°",
+              QString("РћС€РёР±РєР°! РџСЂРёСЃСѓС‚СЃС‚РІСѓРµС‚ РєРѕР»-РІРѕ РІ РїРѕРґС‡РёРЅРµРЅРЅРѕР№ СЃС‚СЂРѕРєРµ. (СЃС‚СЂРѕРєР° %1)! ").arg(i) );
               data.clear();
               return;
       }
     }
 
-    // упрощение поля позиция (группировка соседних позиций)
+    // СѓРїСЂРѕС‰РµРЅРёРµ РїРѕР»СЏ РїРѕР·РёС†РёСЏ (РіСЂСѓРїРїРёСЂРѕРІРєР° СЃРѕСЃРµРґРЅРёС… РїРѕР·РёС†РёР№)
     str2.clear();
     v2.resize( v.size() );
     v2.fill(1);
@@ -133,8 +136,8 @@ void BomFile::loadFile( const QString filename )
     }
     str2.chop(2);
 
-    ss.position = str2;  // позиция
-    ss.type     = str3;  // тип
+    ss.position = str2;  // РїРѕР·РёС†РёСЏ
+    ss.type     = str3;  // С‚РёРї
 
     data << ss;
   }
@@ -150,34 +153,34 @@ void BomFile::process()
   QVector<t_data> d;
   QMap<QString,int> map;
 
-  // поиск повторений
+  // РїРѕРёСЃРє РїРѕРІС‚РѕСЂРµРЅРёР№
   for(i=0; i<data.count(); i++)
   { if( map.contains( data[i].name ) )
     { j = map[ data[i].name ];
       if( data[i].type != d[j].type )
-      {  QMessageBox::critical( 0, "Проверка BOM файла",
-                        QString("Ошибка! Найдено повторение наименования при разных типах: \n\n"
-                                "  %1 ( %2 шт.) тип:%3 \n"
-                                "  %4 ( %5 шт.) тип:%6 \n")
+      {  QMessageBox::critical( 0, "РџСЂРѕРІРµСЂРєР° BOM С„Р°Р№Р»Р°",
+                        QString("РћС€РёР±РєР°! РќР°Р№РґРµРЅРѕ РїРѕРІС‚РѕСЂРµРЅРёРµ РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ РїСЂРё СЂР°Р·РЅС‹С… С‚РёРїР°С…: \n\n"
+                                "  %1 ( %2 С€С‚.) С‚РёРї:%3 \n"
+                                "  %4 ( %5 С€С‚.) С‚РёРї:%6 \n")
                                   .arg( d[j].name    ).arg( d[j].count    ).arg( d[j].type    )
                                   .arg( data[i].name ).arg( data[i].count ).arg( data[i].type ) );
          data.clear();
          return;
       }
       if( data[i].nominal != d[j].nominal )
-      {  QMessageBox::critical( 0, "Проверка BOM файла",
-                        QString("Ошибка! Найдено повторение наименования при разных номиналах: \n\n"
-                                "  %1 ( %2 шт.) номинал:%3 \n"
-                                "  %4 ( %5 шт.) номинал:%6 \n")
+      {  QMessageBox::critical( 0, "РџСЂРѕРІРµСЂРєР° BOM С„Р°Р№Р»Р°",
+                        QString("РћС€РёР±РєР°! РќР°Р№РґРµРЅРѕ РїРѕРІС‚РѕСЂРµРЅРёРµ РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ РїСЂРё СЂР°Р·РЅС‹С… РЅРѕРјРёРЅР°Р»Р°С…: \n\n"
+                                "  %1 ( %2 С€С‚.) РЅРѕРјРёРЅР°Р»:%3 \n"
+                                "  %4 ( %5 С€С‚.) РЅРѕРјРёРЅР°Р»:%6 \n")
                                   .arg( d[j].name    ).arg( d[j].count    ).arg( d[j].nominal    )
                                   .arg( data[i].name ).arg( data[i].count ).arg( data[i].nominal ) );
          data.clear();
          return;
       }
-      QMessageBox::information( 0, "Проверка BOM файла",
-                        QString("Найдено повторение позиций:\n\n"
-                                "  %1 ( %2 шт.) %3 \n"
-                                "  %4 ( %5 шт.) %6 \n\nПозиции будут объединены.")
+      QMessageBox::information( 0, "РџСЂРѕРІРµСЂРєР° BOM С„Р°Р№Р»Р°",
+                        QString("РќР°Р№РґРµРЅРѕ РїРѕРІС‚РѕСЂРµРЅРёРµ РїРѕР·РёС†РёР№:\n\n"
+                                "  %1 ( %2 С€С‚.) %3 \n"
+                                "  %4 ( %5 С€С‚.) %6 \n\nРџРѕР·РёС†РёРё Р±СѓРґСѓС‚ РѕР±СЉРµРґРёРЅРµРЅС‹.")
                                   .arg( d[j].name    ).arg( d[j].count    ).arg( d[j].position    )
                                   .arg( data[i].name ).arg( data[i].count ).arg( data[i].position ) );
       d[j].count    += data[i].count;
@@ -211,12 +214,12 @@ BomAddDialog::BomAddDialog( QWidget *parent )
   QStringList sl;
 
   //-------------------------------------------------------------------------------------
-  sl << "Наименование BOM"
-     << "Номинал"
-     << "Кол-во"
-     << "Наименование СКЛАД"
-     << "Наличие"
-     << "Позиция";
+  sl << "РќР°РёРјРµРЅРѕРІР°РЅРёРµ BOM"
+     << "РќРѕРјРёРЅР°Р»"
+     << "РљРѕР»-РІРѕ"
+     << "РќР°РёРјРµРЅРѕРІР°РЅРёРµ РЎРљР›РђР”"
+     << "РќР°Р»РёС‡РёРµ"
+     << "РџРѕР·РёС†РёСЏ";
   tw->setColumnCount(6);
   tw->verticalHeader()->setDefaultSectionSize(font().pointSize()+11);
   tw->verticalHeader()->hide();
@@ -256,12 +259,12 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
 	   return false;
   }
   query.next();
-  setWindowTitle( "Добавить в состав изделия: "+query.value(0).toString() );
+  setWindowTitle( "Р”РѕР±Р°РІРёС‚СЊ РІ СЃРѕСЃС‚Р°РІ РёР·РґРµР»РёСЏ: "+query.value(0).toString() );
   //-------------------------------------------------------------------------------------
   str = filename;
   str.chop(4);
   str.remove(0, str.lastIndexOf('/')+1);
-  str = tr("Плата ")+str;
+  str = tr("РџР»Р°С‚Р° ")+str;
   le1->setText( str );
   str.clear();
   //-------------------------------------------------------------------------------------
@@ -269,7 +272,7 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
   bf.loadFile( filename );
   bf.process();
   //-------------------------------------------------------------------------------------
-  // типы элементов
+  // С‚РёРїС‹ СЌР»РµРјРµРЅС‚РѕРІ
   QMap<QString,int> types_map;
   query.prepare(" SELECT id,typename,symbol FROM types WHERE used != 0" );
   if( !query.exec() )
@@ -282,7 +285,7 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     i++;
   }
  //-------------------------------------------------------------------------------------
- // наименования BOM ==> SKLAD
+ // РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ BOM ==> SKLAD
   QMap<QString,int> b2s_map;
   query2.prepare(" SELECT name_bom,name_sklad FROM bom2sklad" );
   if( !query2.exec() )
@@ -295,7 +298,7 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     i++;
   }
  //-------------------------------------------------------------------------------------
- // наличие на складе
+ // РЅР°Р»РёС‡РёРµ РЅР° СЃРєР»Р°РґРµ
   QMap<QString,int> nalichie_map;
   query3.prepare(" SELECT name, sum(ostatok) FROM prihod GROUP BY type,name ");
   if( !query3.exec() )
@@ -306,8 +309,8 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
   while( query3.next() )
   { str = query3.value(0).toString();
     if( nalichie_map.contains( str ) )
-    {  QMessageBox::critical( 0, "Импорт BOM файла",
-                        QString("Ошибка! В базе прихода найдено повторение\nнаименования разных типов: \n\n"
+    {  QMessageBox::critical( 0, "РРјРїРѕСЂС‚ BOM С„Р°Р№Р»Р°",
+                        QString("РћС€РёР±РєР°! Р’ Р±Р°Р·Рµ РїСЂРёС…РѕРґР° РЅР°Р№РґРµРЅРѕ РїРѕРІС‚РѕСЂРµРЅРёРµ\nРЅР°РёРјРµРЅРѕРІР°РЅРёСЏ СЂР°Р·РЅС‹С… С‚РёРїРѕРІ: \n\n"
                                 "  %1 ").arg( str ) );
        return false;
     }
@@ -318,7 +321,7 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
 
   t_data ss;
   for( i=0; i<bf.data.count(); i++ )
-  { //--------------------- тип -----
+  { //--------------------- С‚РёРї -----
 
     if( types_map.contains( bf.data[i].type ) )
     { query.seek( types_map[ bf.data[i].type ] );
@@ -328,20 +331,20 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     { ss.type = 0;
       ss.type_name.clear();
     }
-    //--------------------- название BOM ---
+    //--------------------- РЅР°Р·РІР°РЅРёРµ BOM ---
     ss.name_bom = bf.data[i].name;
-    //--------------------- номинал ---
+    //--------------------- РЅРѕРјРёРЅР°Р» ---
     ss.nominal = bf.data[i].nominal;
-    //--------------------- кол-во ---
+    //--------------------- РєРѕР»-РІРѕ ---
     ss.count = bf.data[i].count;
-    //--------------------- наименование СКЛАД ---
+    //--------------------- РЅР°РёРјРµРЅРѕРІР°РЅРёРµ РЎРљР›РђР” ---
     if( b2s_map.contains( bf.data[i].name ) )
     { query2.seek( b2s_map[ bf.data[i].name ] );
       ss.name_sklad = query2.value(1).toString();
     } else
     { ss.name_sklad.clear();
     }
-    //--------------------- наличие ---
+    //--------------------- РЅР°Р»РёС‡РёРµ ---
     str = ss.name_sklad;
     if( str.isEmpty() ) str = ss.name_bom;
     if( nalichie_map.contains( str ) )
@@ -350,7 +353,7 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     } else
     { ss.nalichie = -1;
     }
-    //--------------------- позиция ---
+    //--------------------- РїРѕР·РёС†РёСЏ ---
     ss.position = bf.data[i].position;
     //----------------------------------
     data << ss;
@@ -376,35 +379,35 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     }
     tw->setRowCount( j+1 );
     tw2data[j]=i;
-    //--------------------- название BOM ---
+    //--------------------- РЅР°Р·РІР°РЅРёРµ BOM ---
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     titem->setText( data[i].name_bom );
     tw->setItem(j,0,titem );
-    //--------------------- номинал ---
+    //--------------------- РЅРѕРјРёРЅР°Р» ---
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     titem->setText( data[i].nominal );
     tw->setItem(j,1,titem );
-    //--------------------- кол-во ---
+    //--------------------- РєРѕР»-РІРѕ ---
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
     titem->setText( QString::number( data[i].count ));
     tw->setItem(j,2,titem );
-    //--------------------- наименование СКЛАД ---
+    //--------------------- РЅР°РёРјРµРЅРѕРІР°РЅРёРµ РЎРљР›РђР” ---
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     titem->setText( data[i].name_sklad );
     tw->setItem(j,3,titem );
-    //--------------------- наличие ---
+    //--------------------- РЅР°Р»РёС‡РёРµ ---
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
     if( data[i].nalichie >= 0 )
       titem->setText( QString::number( data[i].nalichie ) );
     tw->setItem(j,4,titem );
-    //--------------------- позиция ---
+    //--------------------- РїРѕР·РёС†РёСЏ ---
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     titem->setText( data[i].position );
@@ -462,12 +465,12 @@ void BomAddDialog::accept()
     if( j >= 0 )
     { if( data[i].type != data[j].type )
       { QMessageBox::critical( this, app_header,
-        QString("ОШИБКА! Повторение позиции с разными типами: %1\n").arg(str) );
+        QString("РћРЁРР‘РљРђ! РџРѕРІС‚РѕСЂРµРЅРёРµ РїРѕР·РёС†РёРё СЃ СЂР°Р·РЅС‹РјРё С‚РёРїР°РјРё: %1\n").arg(str) );
         return;
       }
       if( data[i].nominal != data[j].nominal )
       { QMessageBox::critical( this, app_header,
-        QString("ОШИБКА! Повторение позиции с разными номиналами: %1\n").arg(str) );
+        QString("РћРЁРР‘РљРђ! РџРѕРІС‚РѕСЂРµРЅРёРµ РїРѕР·РёС†РёРё СЃ СЂР°Р·РЅС‹РјРё РЅРѕРјРёРЅР°Р»Р°РјРё: %1\n").arg(str) );
         return;
       }
       data[i].count    += data[j].count;
@@ -482,14 +485,14 @@ void BomAddDialog::accept()
   QProgressDialog progress("Copying files...", 0, 0, data.count(), this);
 
   if( le1->text().isEmpty() )
-  {QMessageBox::critical(this, tr("Импорт BOM-файла"),
-              tr("Поле \"Название\" не заполнено") );
+  {QMessageBox::critical(this, tr("РРјРїРѕСЂС‚ BOM-С„Р°Р№Р»Р°"),
+              tr("РџРѕР»Рµ \"РќР°Р·РІР°РЅРёРµ\" РЅРµ Р·Р°РїРѕР»РЅРµРЅРѕ") );
     le1->setFocus();
     return;
   }
 
-  // подготовка: чистка таблиц. Удаляем записи в kompl и zamena, не принадлежащие
-  // ни одному составу
+  // РїРѕРґРіРѕС‚РѕРІРєР°: С‡РёСЃС‚РєР° С‚Р°Р±Р»РёС†. РЈРґР°Р»СЏРµРј Р·Р°РїРёСЃРё РІ kompl Рё zamena, РЅРµ РїСЂРёРЅР°РґР»РµР¶Р°С‰РёРµ
+  // РЅРё РѕРґРЅРѕРјСѓ СЃРѕСЃС‚Р°РІСѓ
 
   query.prepare( "DELETE zamena,kompl FROM zamena,kompl "
                  " WHERE kompl.sostav NOT IN ( SELECT DISTINCT id FROM sostav ) "
@@ -505,7 +508,7 @@ void BomAddDialog::accept()
   query.addBindValue( le1->text() );
   query.addBindValue( count );
   query.addBindValue( QDate::currentDate() );
-  query.addBindValue( "Не утвержден" );
+  query.addBindValue( "РќРµ СѓС‚РІРµСЂР¶РґРµРЅ" );
   if( !query.exec() )
   {  sql_error_message( query, this );
 	   return;
@@ -555,8 +558,8 @@ BomAddDialog2::BomAddDialog2( BomAddDialog *parent_arg, int data_index_arg )
   QString name_sklad = parent->data[data_index].name_sklad;
   le->setText( parent->data[data_index].name_bom );
   QStringList sl;
-  sl << "Наименование СКЛАД"
-     << "Наличие";
+  sl << "РќР°РёРјРµРЅРѕРІР°РЅРёРµ РЎРљР›РђР”"
+     << "РќР°Р»РёС‡РёРµ";
   tw->setColumnCount(2);
   tw->verticalHeader()->setDefaultSectionSize(font().pointSize()+11);
   tw->verticalHeader()->hide();

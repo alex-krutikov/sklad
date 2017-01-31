@@ -9,6 +9,8 @@ Makefile
 *.o
 *.exe
 *.bak
+*.qbs.user
+build-*
 moc_*.cpp
 qrc_*.cpp
 ui_*.h

@@ -4,11 +4,12 @@
 #include <QString>
 #include <QStringList>
 
-#include "pch.h"
-
 #include "main.h"
 #include "mainwindow.h"
 #include "misc.h"
+
+class QSqlDatabase;
+class QSqlQuery;
 
 extern QApplication *appication;
 extern MainWindow   *mainwindow;
@@ -23,8 +24,8 @@ extern QStringList sostav_status;
 extern int           permissions;
 extern int           user_id;
 
-#define USER_PERMISSION_USERS      0x00001 // ðåäàêòèðîâàíèå ïîëüçîâàòåëåé
-#define USER_PERMISSION_KOMPL_SIGN 0x00002 // óòâåðæäåíèå êîìïëåêòàöèè
+#define USER_PERMISSION_USERS      0x00001 // Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹
+#define USER_PERMISSION_KOMPL_SIGN 0x00002 // ÑƒÑ‚Ð²ÐµÑ€Ð¶Ð´ÐµÐ½Ð¸Ðµ ÐºÐ¾Ð¼Ð¿Ð»ÐµÐºÑ‚Ð°Ñ†Ð¸Ð¸
 
 #if defined( Q_OS_WIN32 )
   #define QSETTINGS_PARAM (qApp->applicationDirPath()+"/sklad.ini"),QSettings::IniFormat

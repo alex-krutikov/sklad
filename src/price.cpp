@@ -3,6 +3,9 @@
 #include "price.h"
 #include "main.h"
 
+#include <QMessageBox>
+#include <QSqlQuery>
+
 //#######################################################################################
 //
 //#######################################################################################
@@ -31,12 +34,12 @@ PriceDialog::PriceDialog( QWidget *parent, int sostav_id_arg )
   }
   if( query.size() != 1 )
   {
-    QMessageBox::critical( this, app_header, "ОШИБКА выборки из базы!" );
+    QMessageBox::critical( this, app_header, "РћРЁРР‘РљРђ РІС‹Р±РѕСЂРєРё РёР· Р±Р°Р·С‹!" );
     return;
   }
   query.next();
   nn = query.value(0).toInt();
-  setWindowTitle( "Оценка стоимости: "+ query.value(1).toString()
+  setWindowTitle( "РћС†РµРЅРєР° СЃС‚РѕРёРјРѕСЃС‚Рё: "+ query.value(1).toString()
                       + " | " + query.value(2).toString() );
   //------------------------------------------------------------------------------------
   query.prepare( "SELECT name,SUM(price*kolichestvo)/SUM(kolichestvo) AS avr_price "
@@ -79,7 +82,7 @@ PriceDialog::PriceDialog( QWidget *parent, int sostav_id_arg )
      ss.type_name   = query.value( 1 ).toString(); // kompl.typename
      ss.need        = query.value( 2 ).toInt();    // kompl.need
      if( ss.need % nn )
-     { QMessageBox::critical( this, app_header, "ОШИБКА! Кол-во не кратно!" );
+     { QMessageBox::critical( this, app_header, "РћРЁРР‘РљРђ! РљРѕР»-РІРѕ РЅРµ РєСЂР°С‚РЅРѕ!" );
        return;
      }
      ss.need        /= nn;
@@ -99,7 +102,7 @@ PriceDialog::PriceDialog( QWidget *parent, int sostav_id_arg )
      data << ss;
    }
    //------------------------------------------------------------------------------------
-   // смещение кол-ва на первую замену
+   // СЃРјРµС‰РµРЅРёРµ РєРѕР»-РІР° РЅР° РїРµСЂРІСѓСЋ Р·Р°РјРµРЅСѓ
    for( i=1; i<data.count(); i++ )
    { if( ( !data[i-1].zamena_flag ) && ( data[i].zamena_flag ) )
      { data[i].snato   = data[i-1].snato;
@@ -108,12 +111,12 @@ PriceDialog::PriceDialog( QWidget *parent, int sostav_id_arg )
    }
    //------------------------------------------------------------------------------------
    QStringList sl;
-   sl << "Наименование"
-      << "Кол-во\n(треб.)"
-      << "Кол-во\n(факт)"
-      << "Цена\n(закуп.)"
-      << "Цена\n(оценка)"
-      << "Стоимость";
+   sl << "РќР°РёРјРµРЅРѕРІР°РЅРёРµ"
+      << "РљРѕР»-РІРѕ\n(С‚СЂРµР±.)"
+      << "РљРѕР»-РІРѕ\n(С„Р°РєС‚)"
+      << "Р¦РµРЅР°\n(Р·Р°РєСѓРї.)"
+      << "Р¦РµРЅР°\n(РѕС†РµРЅРєР°)"
+      << "РЎС‚РѕРёРјРѕСЃС‚СЊ";
 
    QColor color("bisque");
 
@@ -149,16 +152,16 @@ PriceDialog::PriceDialog( QWidget *parent, int sostav_id_arg )
      tw->setRowCount( j+1 );
      tw2data[j]=i;
      data[i].row_index=j;
-     //--------------------- наименование ---
+     //--------------------- РЅР°РёРјРµРЅРѕРІР°РЅРёРµ ---
      titem = new QTableWidgetItem;
      titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
      str = data[i].name;
-     if( data[i].zamena_flag ) str = "  ЗАМЕНА: " + str;
+     if( data[i].zamena_flag ) str = "  Р—РђРњР•РќРђ: " + str;
      //titem->setBackgroundColor( color );
      titem->setBackgroundColor("antiquewhite" );
      titem->setText( str );
      tw->setItem(j,0,titem );
-     //--------------------- требуется ---
+     //--------------------- С‚СЂРµР±СѓРµС‚СЃСЏ ---
      titem = new QTableWidgetItem;
      titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
      titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
@@ -166,14 +169,14 @@ PriceDialog::PriceDialog( QWidget *parent, int sostav_id_arg )
        titem->setText( QString::number(data[i].need) );
      titem->setBackgroundColor( color );
      tw->setItem(j,1,titem );
-     //--------------------- кол-во ---
+     //--------------------- РєРѕР»-РІРѕ ---
      titem = new QTableWidgetItem;
      titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable);
      titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
      if( data[i].snato > 0)
        titem->setText( QString::number(data[i].snato) );
      tw->setItem(j,2,titem );
-     //--------------------- цена ---
+     //--------------------- С†РµРЅР° ---
      titem = new QTableWidgetItem;
      titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
      titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
@@ -181,7 +184,7 @@ PriceDialog::PriceDialog( QWidget *parent, int sostav_id_arg )
        titem->setText( QString::number(data[i].price_real,'f',2) );
      titem->setBackgroundColor( color );
      tw->setItem(j,3,titem );
-     //--------------------- цена оценка ---
+     //--------------------- С†РµРЅР° РѕС†РµРЅРєР° ---
      titem = new QTableWidgetItem;
      titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable);
      titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
@@ -193,7 +196,7 @@ PriceDialog::PriceDialog( QWidget *parent, int sostav_id_arg )
        titem->setBackgroundColor( color );
      }
      tw->setItem(j,4,titem );
-     //--------------------- Стоимость ---
+     //--------------------- РЎС‚РѕРёРјРѕСЃС‚СЊ ---
      titem = new QTableWidgetItem;
      titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
      titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
@@ -260,18 +263,18 @@ void PriceDialog::tw_cellChanged(int row, int column)
   QSqlQuery query;
   int index = tw2data.value( row, -1 );
   if(( index < 0 ) || ( index >= data.count() ) )
-  { QMessageBox::critical( this, app_header, "ОШИБКА! Выход за границы массива.");
+  { QMessageBox::critical( this, app_header, "РћРЁРР‘РљРђ! Р’С‹С…РѕРґ Р·Р° РіСЂР°РЅРёС†С‹ РјР°СЃСЃРёРІР°.");
     return;
   }
 
   switch( column )
-  { case( 2 ): // кол-во
+  { case( 2 ): // РєРѕР»-РІРѕ
       i = text.toInt( &ok );
       if( !ok ) i = -1;
       data[index].snato = i;
       recalc();
       break;
-    case( 4 ): // цена оценка
+    case( 4 ): // С†РµРЅР° РѕС†РµРЅРєР°
       f = text.toDouble( &ok );
       if( !ok ) f = -1;
       data[index].price_est = f;

@@ -10,8 +10,15 @@
 #include "users.h"
 #include "sqlactions.h"
 
+#include <QShortcut>
+#include <QMessageBox>
+#include <QProgressDialog>
+#include <QInputDialog>
+#include <QPrintDialog>
+#include <QPrinter>
+
 //#######################################################################################
-/// главное окно
+/// РіР»Р°РІРЅРѕРµ РѕРєРЅРѕ
 //#######################################################################################
 MainWindow::MainWindow()
 {
@@ -86,16 +93,16 @@ MainWindow::MainWindow()
 
 
   //===========================================================================
-  // Наличие
+  // РќР°Р»РёС‡РёРµ
   //
   tw_sklad->clear_query_fields();
   tw_sklad->rows_highlighting = true;
   tw_sklad->query_str_pk_field = "prihod.id";
-  tw_sklad->add_query_field( "Тип",          100,  "typename"              );
-  tw_sklad->add_query_field( "Наименование", 200,  "prihod.name"           );
-  tw_sklad->add_query_field( "Остаток",       70,  "SUM(ostatok)"          );
-  tw_sklad->add_query_field( "Место",        200,  "GROUP_CONCAT(DISTINCT mesto)"             );
-  tw_sklad->add_query_field( "Цена",          70,  "SUM(price*kolichestvo)/SUM(kolichestvo) " );
+  tw_sklad->add_query_field( "РўРёРї",          100,  "typename"              );
+  tw_sklad->add_query_field( "РќР°РёРјРµРЅРѕРІР°РЅРёРµ", 200,  "prihod.name"           );
+  tw_sklad->add_query_field( "РћСЃС‚Р°С‚РѕРє",       70,  "SUM(ostatok)"          );
+  tw_sklad->add_query_field( "РњРµСЃС‚Рѕ",        200,  "GROUP_CONCAT(DISTINCT mesto)"             );
+  tw_sklad->add_query_field( "Р¦РµРЅР°",          70,  "SUM(price*kolichestvo)/SUM(kolichestvo) " );
   tw_sklad->query_str_main =
     " FROM prihod "
     " LEFT JOIN types           ON prihod.type = types.id ";
@@ -106,24 +113,24 @@ MainWindow::MainWindow()
 
 
   //===========================================================================
-  // Закупки
+  // Р—Р°РєСѓРїРєРё
   //
   tw_zakupkiHist->clear_query_fields();
   tw_zakupkiHist->query_str_pk_field = "zakupki.id";
   tw_zakupkiHist->query_str_color_field = "zakupki.color";
-  tw_zakupkiHist->add_query_field( "Тип",          100,  "typename"              );
-  tw_zakupkiHist->add_query_field( "Наименование", 200,  "zakupki.name"          );
-  tw_zakupkiHist->add_query_field( "Pаименование", 200,  "zakupki.name"          );
-  tw_zakupkiHist->add_query_field( "Кол-во",        70,  "n"                     );
-  tw_zakupkiHist->add_query_field( "Получено",      70,  "polucheno"             );
-  tw_zakupkiHist->add_query_field( "Поставщик",    100,  "postavshiki.name"      );
-  tw_zakupkiHist->add_query_field( "Счет",         200,  "schet"                 );
-  tw_zakupkiHist->add_query_field( "№ платежа",    100,  "platej"                );
-  tw_zakupkiHist->add_query_field( "Примечания",   200,  "notes"                 );
-  tw_zakupkiHist->add_query_field( "Оператор",     100,  "users1.username"       );
-  tw_zakupkiHist->add_query_field( "Дата",          70,  "zakupki.date"          );
-  tw_zakupkiHist->add_query_field( "Оператор2",    100,  "users2.username"       );
-  tw_zakupkiHist->add_query_field( "Дата2",         70,  "zakupki.date2"         );
+  tw_zakupkiHist->add_query_field( "РўРёРї",          100,  "typename"              );
+  tw_zakupkiHist->add_query_field( "РќР°РёРјРµРЅРѕРІР°РЅРёРµ", 200,  "zakupki.name"          );
+  tw_zakupkiHist->add_query_field( "PР°РёРјРµРЅРѕРІР°РЅРёРµ", 200,  "zakupki.name"          );
+  tw_zakupkiHist->add_query_field( "РљРѕР»-РІРѕ",        70,  "n"                     );
+  tw_zakupkiHist->add_query_field( "РџРѕР»СѓС‡РµРЅРѕ",      70,  "polucheno"             );
+  tw_zakupkiHist->add_query_field( "РџРѕСЃС‚Р°РІС‰РёРє",    100,  "postavshiki.name"      );
+  tw_zakupkiHist->add_query_field( "РЎС‡РµС‚",         200,  "schet"                 );
+  tw_zakupkiHist->add_query_field( "в„– РїР»Р°С‚РµР¶Р°",    100,  "platej"                );
+  tw_zakupkiHist->add_query_field( "РџСЂРёРјРµС‡Р°РЅРёСЏ",   200,  "notes"                 );
+  tw_zakupkiHist->add_query_field( "РћРїРµСЂР°С‚РѕСЂ",     100,  "users1.username"       );
+  tw_zakupkiHist->add_query_field( "Р”Р°С‚Р°",          70,  "zakupki.date"          );
+  tw_zakupkiHist->add_query_field( "РћРїРµСЂР°С‚РѕСЂ2",    100,  "users2.username"       );
+  tw_zakupkiHist->add_query_field( "Р”Р°С‚Р°2",         70,  "zakupki.date2"         );
 
   tw_zakupkiHist->query_str_main =
     " FROM zakupki "
@@ -136,27 +143,27 @@ MainWindow::MainWindow()
   tw_zakupkiHist->setShownFields( settings.value("zakupki", "").toString() );
 
   //===========================================================================
-  // Приход
+  // РџСЂРёС…РѕРґ
   //
   tw_prihodHist->clear_query_fields();
   tw_prihodHist->rows_highlighting = true;
   tw_prihodHist->query_str_pk_field = "prihod.id";
-  tw_prihodHist->add_query_field( "Тип",          100,  "typename"              );
-  tw_prihodHist->add_query_field( "Наименование", 200,  "prihod.name"           );
-  tw_prihodHist->add_query_field( "Примечания",   200,  "prihod.notes"          );
-  tw_prihodHist->add_query_field( "Код",          100,  "prihod.kod"            );
-  tw_prihodHist->add_query_field( "Место",         70,  "mesto", Qt::AlignCenter  );
-  tw_prihodHist->add_query_field( "Остаток",       70,  "ostatok"               );
-  tw_prihodHist->add_query_field( "Производитель",100,  "proizvoditeli.name"    );
-  tw_prihodHist->add_query_field( "Поставщик",    100,  "postavshiki.name"      );
-  tw_prihodHist->add_query_field( "Счет",         200,  "schet"                 );
-  tw_prihodHist->add_query_field( "Накладная",    200,  "prihod.naklad"         );
-  tw_prihodHist->add_query_field( "Кол-во",        70,  "kolichestvo"           );
-  tw_prihodHist->add_query_field( "Цена",          70,  "price"                 );
-  tw_prihodHist->add_query_field( "Оператор",     100,  "users1.username"       );
-  tw_prihodHist->add_query_field( "Дата",          70,  "prihod.date"           );
-  tw_prihodHist->add_query_field( "Оператор2",    100,  "users2.username"       );
-  tw_prihodHist->add_query_field( "Дата2",         70,  "prihod.date2"          );
+  tw_prihodHist->add_query_field( "РўРёРї",          100,  "typename"              );
+  tw_prihodHist->add_query_field( "РќР°РёРјРµРЅРѕРІР°РЅРёРµ", 200,  "prihod.name"           );
+  tw_prihodHist->add_query_field( "РџСЂРёРјРµС‡Р°РЅРёСЏ",   200,  "prihod.notes"          );
+  tw_prihodHist->add_query_field( "РљРѕРґ",          100,  "prihod.kod"            );
+  tw_prihodHist->add_query_field( "РњРµСЃС‚Рѕ",         70,  "mesto", Qt::AlignCenter  );
+  tw_prihodHist->add_query_field( "РћСЃС‚Р°С‚РѕРє",       70,  "ostatok"               );
+  tw_prihodHist->add_query_field( "РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ",100,  "proizvoditeli.name"    );
+  tw_prihodHist->add_query_field( "РџРѕСЃС‚Р°РІС‰РёРє",    100,  "postavshiki.name"      );
+  tw_prihodHist->add_query_field( "РЎС‡РµС‚",         200,  "schet"                 );
+  tw_prihodHist->add_query_field( "РќР°РєР»Р°РґРЅР°СЏ",    200,  "prihod.naklad"         );
+  tw_prihodHist->add_query_field( "РљРѕР»-РІРѕ",        70,  "kolichestvo"           );
+  tw_prihodHist->add_query_field( "Р¦РµРЅР°",          70,  "price"                 );
+  tw_prihodHist->add_query_field( "РћРїРµСЂР°С‚РѕСЂ",     100,  "users1.username"       );
+  tw_prihodHist->add_query_field( "Р”Р°С‚Р°",          70,  "prihod.date"           );
+  tw_prihodHist->add_query_field( "РћРїРµСЂР°С‚РѕСЂ2",    100,  "users2.username"       );
+  tw_prihodHist->add_query_field( "Р”Р°С‚Р°2",         70,  "prihod.date2"          );
 
   tw_prihodHist->query_str_main =
     " FROM prihod "
@@ -172,30 +179,30 @@ MainWindow::MainWindow()
   tw_prihodHist->setShownFields( settings.value("prihod", "").toString() );
 
   //===========================================================================
-  // Расход
+  // Р Р°СЃС…РѕРґ
   //
   tw_rashodHist->clear_query_fields();
   tw_rashodHist->rows_highlighting  = true;
   tw_rashodHist->row_selection_mode = true;
   tw_rashodHist->query_str_pk_field = "rashod.id";
-  tw_rashodHist->add_query_field( "№ Спец.",       70,  "sostav.id"             );
-  tw_rashodHist->add_query_field( "Тип",          100,  "types.typename"        );
-  tw_rashodHist->add_query_field( "Наименование", 200,  "prihod.name"           );
-  tw_rashodHist->add_query_field( "Код",          100,  "prihod.kod"            );
-  tw_rashodHist->add_query_field( "Кол-во",        70,  "rashod.n"              );
-  tw_rashodHist->add_query_field( "Цена",          70,  "price"                 );
-  tw_rashodHist->add_query_field( "Оператор",     100,  "users1.username"       );
-  tw_rashodHist->add_query_field( "Дата",          70,  "rashod.date"           );
-  tw_rashodHist->add_query_field( "Проект",       150,  "proekt.name"           );
-  tw_rashodHist->add_query_field( "Заказ",        150,  "zakaz.name"            );
-  tw_rashodHist->add_query_field( "Изделие",      150,  "izdelie.name"          );
-  tw_rashodHist->add_query_field( "Cостав",       150,  "sostav.name"           );
-  tw_rashodHist->add_query_field( "Место",         70,  "mesto", Qt::AlignCenter );
-  tw_rashodHist->add_query_field( "Производитель",100,  "proizvoditeli.name"    );
-  tw_rashodHist->add_query_field( "Поставщик",    100,  "postavshiki.name"      );
-  tw_rashodHist->add_query_field( "Счет",         100,  "schet"                 );
-  tw_rashodHist->add_query_field( "Накладная",    200,  "prihod.naklad"         );
-  tw_rashodHist->add_query_field( "№ платежа",    100,  "platej"                );
+  tw_rashodHist->add_query_field( "в„– РЎРїРµС†.",       70,  "sostav.id"             );
+  tw_rashodHist->add_query_field( "РўРёРї",          100,  "types.typename"        );
+  tw_rashodHist->add_query_field( "РќР°РёРјРµРЅРѕРІР°РЅРёРµ", 200,  "prihod.name"           );
+  tw_rashodHist->add_query_field( "РљРѕРґ",          100,  "prihod.kod"            );
+  tw_rashodHist->add_query_field( "РљРѕР»-РІРѕ",        70,  "rashod.n"              );
+  tw_rashodHist->add_query_field( "Р¦РµРЅР°",          70,  "price"                 );
+  tw_rashodHist->add_query_field( "РћРїРµСЂР°С‚РѕСЂ",     100,  "users1.username"       );
+  tw_rashodHist->add_query_field( "Р”Р°С‚Р°",          70,  "rashod.date"           );
+  tw_rashodHist->add_query_field( "РџСЂРѕРµРєС‚",       150,  "proekt.name"           );
+  tw_rashodHist->add_query_field( "Р—Р°РєР°Р·",        150,  "zakaz.name"            );
+  tw_rashodHist->add_query_field( "РР·РґРµР»РёРµ",      150,  "izdelie.name"          );
+  tw_rashodHist->add_query_field( "CРѕСЃС‚Р°РІ",       150,  "sostav.name"           );
+  tw_rashodHist->add_query_field( "РњРµСЃС‚Рѕ",         70,  "mesto", Qt::AlignCenter );
+  tw_rashodHist->add_query_field( "РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ",100,  "proizvoditeli.name"    );
+  tw_rashodHist->add_query_field( "РџРѕСЃС‚Р°РІС‰РёРє",    100,  "postavshiki.name"      );
+  tw_rashodHist->add_query_field( "РЎС‡РµС‚",         100,  "schet"                 );
+  tw_rashodHist->add_query_field( "РќР°РєР»Р°РґРЅР°СЏ",    200,  "prihod.naklad"         );
+  tw_rashodHist->add_query_field( "в„– РїР»Р°С‚РµР¶Р°",    100,  "platej"                );
 
   tw_rashodHist->query_str_main =
     " FROM rashod "
@@ -217,22 +224,22 @@ MainWindow::MainWindow()
   tw_rashodHist->setShownFields( settings.value("rashod", "").toString() );
 
   //===========================================================================
-  // Комплектация задания
+  // РљРѕРјРїР»РµРєС‚Р°С†РёСЏ Р·Р°РґР°РЅРёСЏ
   //
   tw_komplZad->clear_query_fields();
   tw_komplZad->query_str_pk_field = "sostav.id";
   tw_komplZad->query_str_color_field = "sostav.color";
-  tw_komplZad->add_query_field( "№",                  30,  "sostav.id"                          );
-  tw_komplZad->add_query_field( "Статус",             80,  "sostav.status2",   Qt::AlignCenter  );
-  tw_komplZad->add_query_field( "Зак.",               40,  "sostav.zakupka_status", Qt::AlignCenter  );
-  tw_komplZad->add_query_field( "Пр.",                40,  "sostav.prioritet", Qt::AlignCenter  );
-  tw_komplZad->add_query_field( "Монтаж",            100,  "sostav.notes"                       );
-  tw_komplZad->add_query_field( "Дата",               70,  "sostav.date"                        );
-  tw_komplZad->add_query_field( "Спецификация",      200,  "sostav.name"                        );
-  tw_komplZad->add_query_field( "Кол-во",             50,  "sostav.n1"                          );
-  tw_komplZad->add_query_field( "Изделие",           100,  "izdelie.name"                       );
-  tw_komplZad->add_query_field( "Заказ",             100,  "zakaz.name"                         );
-  tw_komplZad->add_query_field( "Проект",            100,  "proekt.name"                        );
+  tw_komplZad->add_query_field( "в„–",                  30,  "sostav.id"                          );
+  tw_komplZad->add_query_field( "РЎС‚Р°С‚СѓСЃ",             80,  "sostav.status2",   Qt::AlignCenter  );
+  tw_komplZad->add_query_field( "Р—Р°Рє.",               40,  "sostav.zakupka_status", Qt::AlignCenter  );
+  tw_komplZad->add_query_field( "РџСЂ.",                40,  "sostav.prioritet", Qt::AlignCenter  );
+  tw_komplZad->add_query_field( "РњРѕРЅС‚Р°Р¶",            100,  "sostav.notes"                       );
+  tw_komplZad->add_query_field( "Р”Р°С‚Р°",               70,  "sostav.date"                        );
+  tw_komplZad->add_query_field( "РЎРїРµС†РёС„РёРєР°С†РёСЏ",      200,  "sostav.name"                        );
+  tw_komplZad->add_query_field( "РљРѕР»-РІРѕ",             50,  "sostav.n1"                          );
+  tw_komplZad->add_query_field( "РР·РґРµР»РёРµ",           100,  "izdelie.name"                       );
+  tw_komplZad->add_query_field( "Р—Р°РєР°Р·",             100,  "zakaz.name"                         );
+  tw_komplZad->add_query_field( "РџСЂРѕРµРєС‚",            100,  "proekt.name"                        );
 
   tw_komplZad->query_str_main =
     " FROM sostav "
@@ -244,25 +251,25 @@ MainWindow::MainWindow()
   tw_komplZad->setShownFields( settings.value("komplzad", "").toString() );
 
   //===========================================================================
-  // Комплектация задания --- Приход
+  // РљРѕРјРїР»РµРєС‚Р°С†РёСЏ Р·Р°РґР°РЅРёСЏ --- РџСЂРёС…РѕРґ
   //
   tw_komplPrih->clear_query_fields();
   tw_komplPrih->query_str_pk_field = "prihod.id";
-  tw_komplPrih->add_query_field( "Тип",          100,  "typename"              );
-  tw_komplPrih->add_query_field( "Наименование", 200,  "prihod.name"           );
-  tw_komplPrih->add_query_field( "Код",          100,  "prihod.kod"            );
-  tw_komplPrih->add_query_field( "Место",         70,  "mesto", Qt::AlignCenter  );
-  tw_komplPrih->add_query_field( "Остаток",       70,  "ostatok"               );
-  tw_komplPrih->add_query_field( "Производитель",100,  "proizvoditeli.name"    );
-  tw_komplPrih->add_query_field( "Поставщик",    100,  "postavshiki.name"      );
-  tw_komplPrih->add_query_field( "Счет",         100,  "schet"                 );
-  tw_komplPrih->add_query_field( "Накладная",    200,  "prihod.naklad"         );
-  tw_komplPrih->add_query_field( "Кол-во",        70,  "kolichestvo"           );
-  tw_komplPrih->add_query_field( "Цена",          70,  "price"                 );
-  tw_komplPrih->add_query_field( "Оператор",     100,  "users1.username"       );
-  tw_komplPrih->add_query_field( "Дата",          70,  "prihod.date"           );
-  tw_komplPrih->add_query_field( "Оператор2",    100,  "users2.username"       );
-  tw_komplPrih->add_query_field( "Дата2",         70,  "prihod.date2"          );
+  tw_komplPrih->add_query_field( "РўРёРї",          100,  "typename"              );
+  tw_komplPrih->add_query_field( "РќР°РёРјРµРЅРѕРІР°РЅРёРµ", 200,  "prihod.name"           );
+  tw_komplPrih->add_query_field( "РљРѕРґ",          100,  "prihod.kod"            );
+  tw_komplPrih->add_query_field( "РњРµСЃС‚Рѕ",         70,  "mesto", Qt::AlignCenter  );
+  tw_komplPrih->add_query_field( "РћСЃС‚Р°С‚РѕРє",       70,  "ostatok"               );
+  tw_komplPrih->add_query_field( "РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ",100,  "proizvoditeli.name"    );
+  tw_komplPrih->add_query_field( "РџРѕСЃС‚Р°РІС‰РёРє",    100,  "postavshiki.name"      );
+  tw_komplPrih->add_query_field( "РЎС‡РµС‚",         100,  "schet"                 );
+  tw_komplPrih->add_query_field( "РќР°РєР»Р°РґРЅР°СЏ",    200,  "prihod.naklad"         );
+  tw_komplPrih->add_query_field( "РљРѕР»-РІРѕ",        70,  "kolichestvo"           );
+  tw_komplPrih->add_query_field( "Р¦РµРЅР°",          70,  "price"                 );
+  tw_komplPrih->add_query_field( "РћРїРµСЂР°С‚РѕСЂ",     100,  "users1.username"       );
+  tw_komplPrih->add_query_field( "Р”Р°С‚Р°",          70,  "prihod.date"           );
+  tw_komplPrih->add_query_field( "РћРїРµСЂР°С‚РѕСЂ2",    100,  "users2.username"       );
+  tw_komplPrih->add_query_field( "Р”Р°С‚Р°2",         70,  "prihod.date2"          );
 
   tw_komplPrih->query_str_main =
     " FROM prihod "
@@ -315,19 +322,19 @@ MainWindow::MainWindow()
   //===========================================================================
   kompl_status.clear();
   kompl_status << "";                 // 0
-  kompl_status << "Не комплектовать"; // 1
-  kompl_status << "Не отправлять";    // 2
+  kompl_status << "РќРµ РєРѕРјРїР»РµРєС‚РѕРІР°С‚СЊ"; // 1
+  kompl_status << "РќРµ РѕС‚РїСЂР°РІР»СЏС‚СЊ";    // 2
   //===========================================================================
   sostav_status.clear();
   if( permissions & USER_PERMISSION_KOMPL_SIGN )
-  { sostav_status << "Не утвержден";
+  { sostav_status << "РќРµ СѓС‚РІРµСЂР¶РґРµРЅ";
   }
-  sostav_status << "Утвержден";
-  sostav_status << "В закупке";
-  sostav_status << "В комплектации";
-  sostav_status << "В монтаже";
-  sostav_status << "В архиве";
-  sostav_status << "На разборку";
+  sostav_status << "РЈС‚РІРµСЂР¶РґРµРЅ";
+  sostav_status << "Р’ Р·Р°РєСѓРїРєРµ";
+  sostav_status << "Р’ РєРѕРјРїР»РµРєС‚Р°С†РёРё";
+  sostav_status << "Р’ РјРѕРЅС‚Р°Р¶Рµ";
+  sostav_status << "Р’ Р°СЂС…РёРІРµ";
+  sostav_status << "РќР° СЂР°Р·Р±РѕСЂРєСѓ";
 
   if( !( permissions & USER_PERMISSION_KOMPL_SIGN ) )
   { tabWidget->setTabEnabled(0,false);
@@ -337,7 +344,7 @@ MainWindow::MainWindow()
 }
 
 //==============================================================================
-/// Вызов меню "поставщики"
+/// Р’С‹Р·РѕРІ РјРµРЅСЋ "РїРѕСЃС‚Р°РІС‰РёРєРё"
 //==============================================================================
 void MainWindow::on_action_postavshiki_triggered()
 {
@@ -346,7 +353,7 @@ void MainWindow::on_action_postavshiki_triggered()
 }
 
 //==============================================================================
-/// Вызов меню "производители"
+/// Р’С‹Р·РѕРІ РјРµРЅСЋ "РїСЂРѕРёР·РІРѕРґРёС‚РµР»Рё"
 //==============================================================================
 void MainWindow::on_action_proizvoditeli_triggered()
 {
@@ -355,7 +362,7 @@ void MainWindow::on_action_proizvoditeli_triggered()
 }
 
 //==============================================================================
-/// Нажатие кнопки "Фильтр" на вкладке приход
+/// РќР°Р¶Р°С‚РёРµ РєРЅРѕРїРєРё "Р¤РёР»СЊС‚СЂ" РЅР° РІРєР»Р°РґРєРµ РїСЂРёС…РѕРґ
 //==============================================================================
 void MainWindow::on_pb_prihodFiltr_clicked()
 {
@@ -383,7 +390,7 @@ void MainWindow::my_Delete()
   QSqlQuery query;
 
   switch( tabWidget->currentIndex() )
-  { //==================== ЗАКУПКИ ===================================================
+  { //==================== Р—РђРљРЈРџРљР ===================================================
     case(2):
       {
       i = tw_zakupkiHist->get_selected_id();
@@ -398,18 +405,18 @@ void MainWindow::my_Delete()
       { str = sql_get_string( query, 0 );
         if( sql_get_string( query, 1 ).size() )
         {  QMessageBox::critical(this, app_header,
-              tr("Нельзя удалить запись - поле \'Счет\' не пусто!") );
+              tr("РќРµР»СЊР·СЏ СѓРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ - РїРѕР»Рµ \'РЎС‡РµС‚\' РЅРµ РїСѓСЃС‚Рѕ!") );
             return;
         }
       }
-      str = tr("Удалить закупку\n\n") + str + " ?";
+      str = tr("РЈРґР°Р»РёС‚СЊ Р·Р°РєСѓРїРєСѓ\n\n") + str + " ?";
       QMessageBox mb( app_header,  str,
                            QMessageBox::Warning,
                            QMessageBox::Yes,
                            QMessageBox::No | QMessageBox::Default | QMessageBox::Escape ,
                            QMessageBox::NoButton  );
-      mb.setButtonText(QMessageBox::Yes, tr("Удалить"));
-      mb.setButtonText(QMessageBox::No, tr("Отмена"));
+      mb.setButtonText(QMessageBox::Yes, tr("РЈРґР°Р»РёС‚СЊ"));
+      mb.setButtonText(QMessageBox::No, tr("РћС‚РјРµРЅР°"));
       if( mb.exec() == QMessageBox::Yes )
       {  query.prepare( " DELETE FROM zakupki WHERE id = ? " );
          query.addBindValue( i );
@@ -421,7 +428,7 @@ void MainWindow::my_Delete()
       tw_zakupkiHist->refresh();
       }
       break;
-    //==================== ПРИХОД ===================================================
+    //==================== РџР РРҐРћР” ===================================================
     case(3):
       {
       int zakupka_id=0;
@@ -443,14 +450,14 @@ void MainWindow::my_Delete()
         zakupka_id  = query.value(1).toInt();
         kolichestvo = query.value(2).toInt();
       }
-      str = tr("Удалить\nзапись о приходе\n\n") + str + " ?";
+      str = tr("РЈРґР°Р»РёС‚СЊ\nР·Р°РїРёСЃСЊ Рѕ РїСЂРёС…РѕРґРµ\n\n") + str + " ?";
       QMessageBox mb( app_header,  str,
                            QMessageBox::Warning,
                            QMessageBox::Yes,
                            QMessageBox::No | QMessageBox::Default | QMessageBox::Escape ,
                            QMessageBox::NoButton  );
-      mb.setButtonText(QMessageBox::Yes, tr("Удалить"));
-      mb.setButtonText(QMessageBox::No, tr("Отмена"));
+      mb.setButtonText(QMessageBox::Yes, tr("РЈРґР°Р»РёС‚СЊ"));
+      mb.setButtonText(QMessageBox::No, tr("РћС‚РјРµРЅР°"));
       if( mb.exec() == QMessageBox::Yes )
       {  if( !query.exec(" LOCK TABLES prihod WRITE, zakupki WRITE ") )
          {  sql_error_message( query, this );
@@ -483,7 +490,7 @@ void MainWindow::my_Delete()
       tw_prihodHist->refresh();
       }
     break;
-  //==================== РАСХОД ===================================================
+  //==================== Р РђРЎРҐРћР” ===================================================
   case(4):
       {
       int zamena_id, prihod_id, z;
@@ -511,7 +518,7 @@ void MainWindow::my_Delete()
         }
       }
 
-      str = "Удалить запись о расходе\n и возвратить на склад: \n\n";
+      str = "РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ Рѕ СЂР°СЃС…РѕРґРµ\n Рё РІРѕР·РІСЂР°С‚РёС‚СЊ РЅР° СЃРєР»Р°Рґ: \n\n";
       query.prepare( " SELECT name, n, zamena, prihod FROM rashod "
                      " LEFT JOIN prihod ON rashod.prihod = prihod.id "
                      " WHERE rashod.id IN ( SELECT id FROM t1 ) " );
@@ -528,8 +535,8 @@ void MainWindow::my_Delete()
                            QMessageBox::Yes,
                            QMessageBox::No | QMessageBox::Default | QMessageBox::Escape ,
                            QMessageBox::NoButton  );
-      mb.setButtonText(QMessageBox::Yes, "Возвратить на склад");
-      mb.setButtonText(QMessageBox::No,  "Отмена");
+      mb.setButtonText(QMessageBox::Yes, "Р’РѕР·РІСЂР°С‚РёС‚СЊ РЅР° СЃРєР»Р°Рґ");
+      mb.setButtonText(QMessageBox::No,  "РћС‚РјРµРЅР°");
       if( mb.exec() == QMessageBox::Yes )
       {  foreach( z, v )
          { query.prepare( " SELECT n,zamena,prihod "
@@ -575,9 +582,9 @@ void MainWindow::my_Delete()
       }
       }
     break;
-  //==================== КОМПЛЕКТАЦИЯ - ЗАМЕНА =================================
+  //==================== РљРћРњРџР›Р•РљРўРђР¦РРЇ - Р—РђРњР•РќРђ =================================
   case(5):
-    { if( tw_komplZad->hasFocus() )  // Удаление "На разборку"
+    { if( tw_komplZad->hasFocus() )  // РЈРґР°Р»РµРЅРёРµ "РќР° СЂР°Р·Р±РѕСЂРєСѓ"
       { i = tw_komplZad->get_selected_id();
         if( i < 0 ) return;
 
@@ -588,18 +595,18 @@ void MainWindow::my_Delete()
            return;
         }
         if( query.size() != 1 )
-        { QMessageBox::critical(this,app_header,"Ошибка выборки из базы данных." );
+        { QMessageBox::critical(this,app_header,"РћС€РёР±РєР° РІС‹Р±РѕСЂРєРё РёР· Р±Р°Р·С‹ РґР°РЅРЅС‹С…." );
           return;
         }
         query.next();
-        if( query.value(1).toString() != "На разборку" )
+        if( query.value(1).toString() != "РќР° СЂР°Р·Р±РѕСЂРєСѓ" )
         { QMessageBox::critical(this, app_header,
-            "Нельзя удалить задание:\nего статус не соответствует \"На разборку\"." );
+            "РќРµР»СЊР·СЏ СѓРґР°Р»РёС‚СЊ Р·Р°РґР°РЅРёРµ:\nРµРіРѕ СЃС‚Р°С‚СѓСЃ РЅРµ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ \"РќР° СЂР°Р·Р±РѕСЂРєСѓ\"." );
             return;
         }
 
         str = query.value(0).toString();
-        str = "Удалить задание:\n\n" + str + " ?";
+        str = "РЈРґР°Р»РёС‚СЊ Р·Р°РґР°РЅРёРµ:\n\n" + str + " ?";
         query.prepare( " SELECT SUM(snato) FROM kompl WHERE sostav = ? " );
         query.addBindValue( i );
         if( !query.exec() )
@@ -609,7 +616,7 @@ void MainWindow::my_Delete()
         while( query.next() )
         { if( query.value(0).toInt() > 0 )
           { QMessageBox::critical(this, app_header,
-                        "Нельзя удалить задание:\nесть снятые со склада компоненты." );
+                        "РќРµР»СЊР·СЏ СѓРґР°Р»РёС‚СЊ Р·Р°РґР°РЅРёРµ:\nРµСЃС‚СЊ СЃРЅСЏС‚С‹Рµ СЃРѕ СЃРєР»Р°РґР° РєРѕРјРїРѕРЅРµРЅС‚С‹." );
             return;
           }
         }
@@ -618,8 +625,8 @@ void MainWindow::my_Delete()
                        QMessageBox::Yes,
                        QMessageBox::No | QMessageBox::Default | QMessageBox::Escape ,
                        QMessageBox::NoButton  );
-        mb.setButtonText(QMessageBox::Yes, "Удалить");
-        mb.setButtonText(QMessageBox::No, "Отмена");
+        mb.setButtonText(QMessageBox::Yes, "РЈРґР°Р»РёС‚СЊ");
+        mb.setButtonText(QMessageBox::No, "РћС‚РјРµРЅР°");
         if( mb.exec() == QMessageBox::Yes )
         {  query.prepare( " DELETE sostav,kompl,zamena FROM sostav,kompl,zamena "
                           " WHERE sostav.id = ? "
@@ -632,7 +639,7 @@ void MainWindow::my_Delete()
            on_action_Pereraschet_triggered();
         }
       }
-      else if( tw_komplKomp->hasFocus() ) // Удаление "Замена"
+      else if( tw_komplKomp->hasFocus() ) // РЈРґР°Р»РµРЅРёРµ "Р—Р°РјРµРЅР°"
       { QList<QTableWidgetSelectionRange> sr = tw_komplKomp->selectedRanges();
         if( sr.count() == 0 ) return;
         i = sr.at(0).topRow();
@@ -649,14 +656,14 @@ void MainWindow::my_Delete()
           while( query.next() )
           { str = sql_get_string( query, 0 );
           }
-          str = tr("Удалить замену: \n\n") + str + " ?";
+          str = tr("РЈРґР°Р»РёС‚СЊ Р·Р°РјРµРЅСѓ: \n\n") + str + " ?";
           QMessageBox mb( app_header,  str,
                              QMessageBox::Warning,
                              QMessageBox::Yes,
                              QMessageBox::No | QMessageBox::Default | QMessageBox::Escape ,
                              QMessageBox::NoButton  );
-          mb.setButtonText(QMessageBox::Yes, "Удалить" );
-          mb.setButtonText(QMessageBox::No, "Отмена"   );
+          mb.setButtonText(QMessageBox::Yes, "РЈРґР°Р»РёС‚СЊ" );
+          mb.setButtonText(QMessageBox::No, "РћС‚РјРµРЅР°"   );
           if( mb.exec() != QMessageBox::Yes ) return;
           query.prepare( " DELETE FROM zamena WHERE id = ? " );
           query.addBindValue( i );
@@ -669,10 +676,10 @@ void MainWindow::my_Delete()
       }
     }
     break;
-  //==================== ДИФЕЦИТ =================================
+  //==================== Р”РР¤Р•Р¦РРў =================================
   case(6):
     break;
-  //==================== ПРОЕКТЫ =================================
+  //==================== РџР РћР•РљРўР« =================================
   case(0):
     projects_widget->delete_item();
     break;
@@ -688,7 +695,7 @@ void MainWindow::on_action_Pereraschet_triggered()
   QStringList sl;
   QSqlQuery query;
 
-  QProgressDialog progress("Перерасчет базы","Отмена", 0,7, this );
+  QProgressDialog progress("РџРµСЂРµСЂР°СЃС‡РµС‚ Р±Р°Р·С‹","РћС‚РјРµРЅР°", 0,7, this );
   progress.show();
 
   progress.setValue(0);
@@ -699,17 +706,17 @@ void MainWindow::on_action_Pereraschet_triggered()
 	 return;
   }
 
-  //========= Статус "не комплектовать" для типа "Модуль" в комплектации ======
+  //========= РЎС‚Р°С‚СѓСЃ "РЅРµ РєРѕРјРїР»РµРєС‚РѕРІР°С‚СЊ" РґР»СЏ С‚РёРїР° "РњРѕРґСѓР»СЊ" РІ РєРѕРјРїР»РµРєС‚Р°С†РёРё ======
   query.prepare(
     " UPDATE kompl LEFT JOIN types ON kompl.type=types.id "
-    " SET kompl.status=1 WHERE typename='Модуль' " );
+    " SET kompl.status=1 WHERE typename='РњРѕРґСѓР»СЊ' " );
   if( !query.exec() )
   {  sql_error_message( query, this );
 	   return;
   }
 
   progress.setValue(3);
-  //==================== Комплектация "need" ===================================
+  //==================== РљРѕРјРїР»РµРєС‚Р°С†РёСЏ "need" ===================================
   query.prepare( " UPDATE kompl "
                  " LEFT JOIN sostav  ON kompl.sostav   = sostav.id "
                  " LEFT JOIN izdelie ON sostav.izdelie = izdelie.id "
@@ -720,7 +727,7 @@ void MainWindow::on_action_Pereraschet_triggered()
   }
 
   progress.setValue(4);
-  //==================== Комплектация "снято" ===================================
+  //==================== РљРѕРјРїР»РµРєС‚Р°С†РёСЏ "СЃРЅСЏС‚Рѕ" ===================================
   query.prepare( " UPDATE kompl, "
                  "   ( SELECT kompl, SUM( snato ) AS s1 FROM zamena GROUP BY kompl ) AS t1 "
                  "   SET kompl.snato = t1.s1 WHERE t1.kompl=kompl.id" );
@@ -730,7 +737,7 @@ void MainWindow::on_action_Pereraschet_triggered()
   }
 
   progress.setValue(5);
-  //==================== Комплектация "color" ===================================
+  //==================== РљРѕРјРїР»РµРєС‚Р°С†РёСЏ "color" ===================================
    static const char query_text[] =
            "DROP TEMPORARY TABLE IF EXISTS t1;"
            //-------
@@ -759,7 +766,7 @@ void MainWindow::on_action_Pereraschet_triggered()
     }
   }
   progress.setValue(6);
-  //==================== Комплектация "color" через статус =======================
+  //==================== РљРѕРјРїР»РµРєС‚Р°С†РёСЏ "color" С‡РµСЂРµР· СЃС‚Р°С‚СѓСЃ =======================
   query.prepare( " UPDATE kompl "
                  " SET color = 40 WHERE status = 1 " );
   if( !query.exec() )
@@ -768,7 +775,7 @@ void MainWindow::on_action_Pereraschet_triggered()
   }
 
   progress.setValue(7);
-  //==================== Состав "color" ===================================
+  //==================== РЎРѕСЃС‚Р°РІ "color" ===================================
   query.prepare( " UPDATE sostav "
                  " LEFT JOIN "
                  "   ( SELECT sostav, "
@@ -803,8 +810,8 @@ void MainWindow::on_action_export_all_kompl_triggered()
 
   QMap<QString,QString> map;
 
-  map["20"] = "желтый";
-  map["40"] = "зеленый";
+  map["20"] = "Р¶РµР»С‚С‹Р№";
+  map["40"] = "Р·РµР»РµРЅС‹Р№";
 
   query.prepare( " SELECT sostav.id,sostav.color,sostav.status2,sostav.zakupka_status,sostav.prioritet,  "
                  "         sostav.notes, sostav.date, sostav.name, sostav.n1, izdelie.name, "
@@ -819,7 +826,7 @@ void MainWindow::on_action_export_all_kompl_triggered()
 	   return;
   }
 
-  str += "№\tЦвет\tСтатус\tЗакупка\tПриоритет\tМонтаж\tДата\tСпецификация\tКол-во\tИзделие\tЗаказ\tПроект\r\n";
+  str += "в„–\tР¦РІРµС‚\tРЎС‚Р°С‚СѓСЃ\tР—Р°РєСѓРїРєР°\tРџСЂРёРѕСЂРёС‚РµС‚\tРњРѕРЅС‚Р°Р¶\tР”Р°С‚Р°\tРЎРїРµС†РёС„РёРєР°С†РёСЏ\tРљРѕР»-РІРѕ\tРР·РґРµР»РёРµ\tР—Р°РєР°Р·\tРџСЂРѕРµРєС‚\r\n";
 
   while( query.next() )
   { for(i=0;i<12;i++)
@@ -841,7 +848,7 @@ void MainWindow::on_action_export_all_kompl_triggered()
 void MainWindow::on_action_Users_triggered()
 {
   QMessageBox::information( this, app_header,
-    "Данная функция находится в разработке." );
+    "Р”Р°РЅРЅР°СЏ С„СѓРЅРєС†РёСЏ РЅР°С…РѕРґРёС‚СЃСЏ РІ СЂР°Р·СЂР°Р±РѕС‚РєРµ." );
   //UsersDialog dialog(this);
   //UsersDialog2 dialog(this);
   //dialog.exec();
@@ -937,8 +944,8 @@ void MainWindow::on_pb_komplSnat_clicked()
   }
   if(n==0) return;
 
-  n = QInputDialog::getInteger(this, app_header,
-                               tr("Количество:"), k, 1, n, 1, &ok);
+  n = QInputDialog::getInt(this, app_header,
+                               tr("РљРѕР»РёС‡РµСЃС‚РІРѕ:"), k, 1, n, 1, &ok);
   if(!ok) return;
 
   prihod_snat( prihod_id, zamena_id, n );
@@ -964,9 +971,9 @@ void MainWindow::on_pb_komplCard_clicked()
 void MainWindow::on_pb_komplPrint_clicked()
 {
   QMenu menu;
-  QAction *act1 = menu.addAction("Комплектация");
-  QAction *act2 = menu.addAction("Отправка");
-  QAction *act3 = menu.addAction("Доотправка");
+  QAction *act1 = menu.addAction("РљРѕРјРїР»РµРєС‚Р°С†РёСЏ");
+  QAction *act2 = menu.addAction("РћС‚РїСЂР°РІРєР°");
+  QAction *act3 = menu.addAction("Р”РѕРѕС‚РїСЂР°РІРєР°");
   QAction *act = menu.exec( QCursor::pos() );
   if( act == 0 ) return;
   if(      act == act1 )  { kompl_print(); }
@@ -1062,32 +1069,32 @@ void MainWindow::kompl_print()
        rect.setWidth( w  );
        rect.setHeight( h );
        v << rect;
-       painter.drawText( rect, Qt::AlignVCenter|Qt::AlignLeft, tr("  Наименование")  );
+       painter.drawText( rect, Qt::AlignVCenter|Qt::AlignLeft, tr("  РќР°РёРјРµРЅРѕРІР°РЅРёРµ")  );
        w = ww[1];
        rect.setX( x ); x += w ;
        rect.setWidth( w  );
        v << rect;
-       painter.drawText( rect, Qt::AlignCenter, tr("Номинал")  );
+       painter.drawText( rect, Qt::AlignCenter, tr("РќРѕРјРёРЅР°Р»")  );
        w = ww[2];
        rect.setX( x ); x += w ;
        rect.setWidth( w  );
        v << rect;
-       painter.drawText( rect, Qt::AlignCenter, tr("Требуется")  );
+       painter.drawText( rect, Qt::AlignCenter, tr("РўСЂРµР±СѓРµС‚СЃСЏ")  );
        w = ww[3];
        rect.setX( x ); x += w ;
        rect.setWidth( w  );
        v << rect;
-       painter.drawText( rect, Qt::AlignCenter, tr("Снято")  );
+       painter.drawText( rect, Qt::AlignCenter, tr("РЎРЅСЏС‚Рѕ")  );
        w = ww[4];
        rect.setX( x ); x += w ;
        rect.setWidth( w  );
        v << rect;
-       painter.drawText( rect, Qt::AlignCenter, tr("Место")  );
+       painter.drawText( rect, Qt::AlignCenter, tr("РњРµСЃС‚Рѕ")  );
        w = ww[5];
        rect.setX( x ); x += w ;
        rect.setWidth( w  );
        v << rect;
-       painter.drawText( rect, Qt::AlignCenter, tr("В наличии")  );
+       painter.drawText( rect, Qt::AlignCenter, tr("Р’ РЅР°Р»РёС‡РёРё")  );
 
        n = tw_komplKomp->rowCount();
        while(i<n)
@@ -1147,7 +1154,7 @@ void MainWindow::kompl_print()
        }
 
        painter.setFont( font4 );
-       str2 = tr("Спецификация: %1 (%2 шт.)").arg( sostav ).arg( nn );
+       str2 = tr("РЎРїРµС†РёС„РёРєР°С†РёСЏ: %1 (%2 С€С‚.)").arg( sostav ).arg( nn );
        if( page == 1 )
        { painter.setFont( font4 );
          rect.setRect(0,40,1000,30);
@@ -1162,13 +1169,13 @@ void MainWindow::kompl_print()
        painter.drawText(50,  90,       QString("N: %1").arg( id ) );
        painter.drawText(900, 40,       QDate::currentDate().toString("dd.MM.yy") );
 
-       str2  = "проект: " + proekt;
-       str2 += "; заказ: " + zakaz;
-       str2 += "; изделие: " + izdelie;
+       str2  = "РїСЂРѕРµРєС‚: " + proekt;
+       str2 += "; Р·Р°РєР°Р·: " + zakaz;
+       str2 += "; РёР·РґРµР»РёРµ: " + izdelie;
        painter.drawText(50,  YSIZE-30, str2 );
 
        if(( i != n ) || ( page != 1 ))
-         painter.drawText(900, YSIZE-30, tr("стр. %1").arg(page) );
+         painter.drawText(900, YSIZE-30, tr("СЃС‚СЂ. %1").arg(page) );
 
        painter.drawRects( v );
        v.clear();
@@ -1253,12 +1260,12 @@ void MainWindow::on_pb_kompl_rashod_clicked()
     nn      = query.value(4).toInt();
   }
 
-  cb_rashod_kompl->setText( "КОМПЛЕКТАЦИЯ:   "
+  cb_rashod_kompl->setText( "РљРћРњРџР›Р•РљРўРђР¦РРЇ:   "
                              + sostav   + "  |  "
                              + izdelie  + "\n"
                              + zakaz    + "  |  "
                              + proekt   + "  |  "
-                             + "( "+QString::number(nn)+" шт.)"
+                             + "( "+QString::number(nn)+" С€С‚.)"
                               );
   cb_rashod_kompl->show();
   cb_rashod_kompl->setChecked( true );
@@ -1333,7 +1340,7 @@ void MainWindow::my5()
 }
 
 //==============================================================================
-// изменение данных в поле фильтра закупок
+// РёР·РјРµРЅРµРЅРёРµ РґР°РЅРЅС‹С… РІ РїРѕР»Рµ С„РёР»СЊС‚СЂР° Р·Р°РєСѓРїРѕРє
 //==============================================================================
 void MainWindow::my6()
 {
@@ -1360,7 +1367,7 @@ void MainWindow::my6()
 }
 
 //==============================================================================
-//  изменение данных в поле фильтра расхода
+//  РёР·РјРµРЅРµРЅРёРµ РґР°РЅРЅС‹С… РІ РїРѕР»Рµ С„РёР»СЊС‚СЂР° СЂР°СЃС…РѕРґР°
 //==============================================================================
 void MainWindow::my7()
 {
@@ -1393,7 +1400,7 @@ void MainWindow::on_cb_komplAll_toggled( bool state )
   QString str;
 
   if( !( permissions & USER_PERMISSION_KOMPL_SIGN ) )
-     str = " WHERE sostav.status2 != \'Не утвержден\' ";
+     str = " WHERE sostav.status2 != \'РќРµ СѓС‚РІРµСЂР¶РґРµРЅ\' ";
 
   if( !state )
   { if( !str.isEmpty() ) str += " AND ";
@@ -1474,7 +1481,7 @@ void MainWindow::timer_slot()
     if( id >= 0 )
     { QSqlQuery query;
       query.prepare( " SELECT id FROM sostav "
-                     " WHERE id = ? AND status2 = \'Утвержден\' " );
+                     " WHERE id = ? AND status2 = \'РЈС‚РІРµСЂР¶РґРµРЅ\' " );
       query.addBindValue( id );
       if( !query.exec() )
       {  sql_error_message( query, this );
@@ -1554,23 +1561,23 @@ void MainWindow::on_pb_kompl_status_clicked()
     map[ act ] = i;
   }
   menu.addSeparator();
-  QAction *act_zakupka_no  = menu.addAction( "Закупка: НЕТ" );
-  if( current_zakupka_status.toUpper() == "НЕТ" )
+  QAction *act_zakupka_no  = menu.addAction( "Р—Р°РєСѓРїРєР°: РќР•Рў" );
+  if( current_zakupka_status.toUpper() == "РќР•Рў" )
   {  act_zakupka_no->setCheckable( true );
      act_zakupka_no->setChecked( true );
   }
-  QAction *act_zakupka_yes = menu.addAction( "Закупка: ДА" );
-  if( current_zakupka_status.toUpper() == "ДА" )
+  QAction *act_zakupka_yes = menu.addAction( "Р—Р°РєСѓРїРєР°: Р”Рђ" );
+  if( current_zakupka_status.toUpper() == "Р”Рђ" )
   {  act_zakupka_yes->setCheckable( true );
      act_zakupka_yes->setChecked( true );
   }
   menu.addSeparator();
-  QAction *act_notes = menu.addAction( "Монтаж..." );
+  QAction *act_notes = menu.addAction( "РњРѕРЅС‚Р°Р¶..." );
   QAction *act = menu.exec( QCursor::pos() );
 
   if(( act == act_zakupka_no ) || (act == act_zakupka_yes) )
-  { if( act == act_zakupka_no  ) current_zakupka_status = "Нет";
-    if( act == act_zakupka_yes ) current_zakupka_status = "Да";
+  { if( act == act_zakupka_no  ) current_zakupka_status = "РќРµС‚";
+    if( act == act_zakupka_yes ) current_zakupka_status = "Р”Р°";
     query.prepare("UPDATE sostav SET zakupka_status = ? WHERE id = ?" );
     query.addBindValue( current_zakupka_status );
     query.addBindValue( sostav_id );

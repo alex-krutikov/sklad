@@ -4,6 +4,11 @@
 #include "main.h"
 #include "price.h"
 
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QInputDialog>
+#include <QSqlQuery>
+
 //#######################################################################################
 //
 //#######################################################################################
@@ -31,20 +36,20 @@ ProektForm::ProektForm( QWidget *parent )
   tw_sostav  -> setPalette(pal);
   tw_kompl   -> setPalette(pal);
 
-  sl << "Название";
+  sl << "РќР°Р·РІР°РЅРёРµ";
   tw_proekt->setColumnCount(1);
   tw_proekt->verticalHeader()->setDefaultSectionSize(font().pointSize()+13);
   tw_proekt->verticalHeader()->hide();
   tw_proekt->setHorizontalHeaderLabels( sl );
   tw_proekt->setSelectionBehavior( QAbstractItemView::SelectRows );
   tw_proekt->setSelectionMode( QAbstractItemView::SingleSelection );
-  tw_proekt->horizontalHeader()->setResizeMode(0,QHeaderView::Stretch);
+  tw_proekt->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Stretch);
   tw_proekt->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
   //------------------------------------------------------------------------------
   sl.clear();
-  sl << "Название"
-     << "Дата"
-     << "Пользователь";
+  sl << "РќР°Р·РІР°РЅРёРµ"
+     << "Р”Р°С‚Р°"
+     << "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ";
   tw_zakaz->setColumnCount(1);
   tw_zakaz->verticalHeader()->setDefaultSectionSize(font().pointSize()+13);
   tw_zakaz->verticalHeader()->hide();
@@ -54,11 +59,11 @@ ProektForm::ProektForm( QWidget *parent )
   tw_zakaz->horizontalHeader()->resizeSection( 2 ,  50 );
   tw_zakaz->setSelectionBehavior( QAbstractItemView::SelectRows );
   tw_zakaz->setSelectionMode( QAbstractItemView::SingleSelection );
-  tw_zakaz->horizontalHeader()->setResizeMode(0,QHeaderView::Stretch);
+  tw_zakaz->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Stretch);
   tw_zakaz->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
   //------------------------------------------------------------------------------
   sl.clear();
-  sl << "Название";
+  sl << "РќР°Р·РІР°РЅРёРµ";
   tw_izdelie->setColumnCount(1);
   tw_izdelie->verticalHeader()->setDefaultSectionSize(font().pointSize()+13);
   tw_izdelie->verticalHeader()->hide();
@@ -66,20 +71,20 @@ ProektForm::ProektForm( QWidget *parent )
   tw_izdelie->horizontalHeader()->resizeSection( 0 , 150 );
   tw_izdelie->setSelectionBehavior( QAbstractItemView::SelectRows );
   tw_izdelie->setSelectionMode( QAbstractItemView::SingleSelection );
-  tw_izdelie->horizontalHeader()->setResizeMode(0,QHeaderView::Stretch);
+  tw_izdelie->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Stretch);
   tw_izdelie->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
   //------------------------------------------------------------------------------
   sl.clear();
   sl << "N"
-     << "Название"
-     << "Кол-во"
-     << "Пр."
-     << "Статус"
-     << "Монтаж"
-     << "Дата"
-     << "Цена\nкомпл."
-     << "Цена\nплата"
-     << "Цена\nмонтаж";
+     << "РќР°Р·РІР°РЅРёРµ"
+     << "РљРѕР»-РІРѕ"
+     << "РџСЂ."
+     << "РЎС‚Р°С‚СѓСЃ"
+     << "РњРѕРЅС‚Р°Р¶"
+     << "Р”Р°С‚Р°"
+     << "Р¦РµРЅР°\nРєРѕРјРїР»."
+     << "Р¦РµРЅР°\nРїР»Р°С‚Р°"
+     << "Р¦РµРЅР°\nРјРѕРЅС‚Р°Р¶";
   tw_sostav->setColumnCount(10);
   tw_sostav->verticalHeader()->setDefaultSectionSize(font().pointSize()+13);
   tw_sostav->verticalHeader()->hide();
@@ -100,13 +105,13 @@ ProektForm::ProektForm( QWidget *parent )
   tw_sostav->setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
   //------------------------------------------------------------------------------
   sl.clear();
-  sl << "Наименование"
-     << "Номинал"
-     << "Требуется"
-     << "Снято"
-     << "В наличии"
-     << "Статус"
-     << "Позиция";
+  sl << "РќР°РёРјРµРЅРѕРІР°РЅРёРµ"
+     << "РќРѕРјРёРЅР°Р»"
+     << "РўСЂРµР±СѓРµС‚СЃСЏ"
+     << "РЎРЅСЏС‚Рѕ"
+     << "Р’ РЅР°Р»РёС‡РёРё"
+     << "РЎС‚Р°С‚СѓСЃ"
+     << "РџРѕР·РёС†РёСЏ";
   tw_kompl->setColumnCount(7);
   tw_kompl->verticalHeader()->setDefaultSectionSize(font().pointSize()+13);
   tw_kompl->verticalHeader()->hide();
@@ -144,7 +149,7 @@ ProektForm::ProektForm( QWidget *parent )
 }
 
 //=======================================================================================
-// УДАЛЕНИЕ
+// РЈР”РђР›Р•РќРР•
 //=======================================================================================
 void ProektForm::delete_item()
 {
@@ -153,7 +158,7 @@ void ProektForm::delete_item()
   //int id;
 
   if( tw_proekt->hasFocus() )
-  { //================== УДАЛЕНИЕ ПРОЕКТ ========================================================
+  { //================== РЈР”РђР›Р•РќРР• РџР РћР•РљРў ========================================================
     query.prepare( " SELECT name FROM proekt WHERE id = ? " );
     query.addBindValue( current_proekt_id );
     if( !query.exec() )
@@ -163,7 +168,7 @@ void ProektForm::delete_item()
     while( query.next() )
     { str = query.value(0).toString();
     }
-    str = "Удалить проект\n\n" + str + " ?";
+    str = "РЈРґР°Р»РёС‚СЊ РїСЂРѕРµРєС‚\n\n" + str + " ?";
     query.prepare( " SELECT id FROM zakaz WHERE proekt = ? " );
     query.addBindValue( current_proekt_id );
     if( !query.exec() )
@@ -172,7 +177,7 @@ void ProektForm::delete_item()
     }
     if( query.size() )
     {  QMessageBox::critical(this, app_header,
-        "Нельзя удалить проект:\n проект не пустой." );
+        "РќРµР»СЊР·СЏ СѓРґР°Р»РёС‚СЊ РїСЂРѕРµРєС‚:\n РїСЂРѕРµРєС‚ РЅРµ РїСѓСЃС‚РѕР№." );
         return;
     }
     QMessageBox mb( app_header,  str,
@@ -180,8 +185,8 @@ void ProektForm::delete_item()
                         QMessageBox::Yes,
                         QMessageBox::No | QMessageBox::Default | QMessageBox::Escape ,
                         QMessageBox::NoButton  );
-    mb.setButtonText(QMessageBox::Yes, tr("Удалить"));
-    mb.setButtonText(QMessageBox::No, tr("Отмена"));
+    mb.setButtonText(QMessageBox::Yes, tr("РЈРґР°Р»РёС‚СЊ"));
+    mb.setButtonText(QMessageBox::No, tr("РћС‚РјРµРЅР°"));
     if( mb.exec() == QMessageBox::Yes )
     {  query.prepare( " DELETE FROM proekt WHERE proekt.id = ? " );
        query.addBindValue( current_proekt_id );
@@ -192,7 +197,7 @@ void ProektForm::delete_item()
        proekt_refresh();
      }
   } else if( tw_zakaz->hasFocus() )
-  {  //================== УДАЛЕНИЕ ЗАКАЗ ========================================================
+  {  //================== РЈР”РђР›Р•РќРР• Р—РђРљРђР— ========================================================
     query.prepare( " SELECT name FROM zakaz WHERE id = ? " );
     query.addBindValue( current_zakaz_id );
     if( !query.exec() )
@@ -202,7 +207,7 @@ void ProektForm::delete_item()
     while( query.next() )
     { str = query.value(0).toString();
     }
-    str = "Удалить заказ\n\n" + str + " ?";
+    str = "РЈРґР°Р»РёС‚СЊ Р·Р°РєР°Р·\n\n" + str + " ?";
     query.prepare( " SELECT id FROM izdelie WHERE zakaz = ? " );
     query.addBindValue( current_zakaz_id );
     if( !query.exec() )
@@ -211,7 +216,7 @@ void ProektForm::delete_item()
     }
     if( query.size() )
     {  QMessageBox::critical(this, app_header,
-                        tr("Нельзя удалить заказ:\n заказ не пустой.") );
+                        tr("РќРµР»СЊР·СЏ СѓРґР°Р»РёС‚СЊ Р·Р°РєР°Р·:\n Р·Р°РєР°Р· РЅРµ РїСѓСЃС‚РѕР№.") );
        return;
     }
     QMessageBox mb( app_header,  str,
@@ -219,8 +224,8 @@ void ProektForm::delete_item()
                        QMessageBox::Yes,
                        QMessageBox::No | QMessageBox::Default | QMessageBox::Escape ,
                        QMessageBox::NoButton  );
-    mb.setButtonText(QMessageBox::Yes, tr("Удалить"));
-    mb.setButtonText(QMessageBox::No, tr("Отмена"));
+    mb.setButtonText(QMessageBox::Yes, tr("РЈРґР°Р»РёС‚СЊ"));
+    mb.setButtonText(QMessageBox::No, tr("РћС‚РјРµРЅР°"));
     if( mb.exec() == QMessageBox::Yes )
     {  query.prepare( " DELETE FROM zakaz WHERE zakaz.id = ? " );
        query.addBindValue( current_zakaz_id );
@@ -231,7 +236,7 @@ void ProektForm::delete_item()
        zakaz_refresh();
     }
   } else if( tw_izdelie->hasFocus() )
-  {  //================== УДАЛЕНИЕ ИЗДЕЛИЯ ========================================================
+  {  //================== РЈР”РђР›Р•РќРР• РР—Р”Р•Р›РРЇ ========================================================
     query.prepare( " SELECT name FROM izdelie WHERE id = ? " );
     query.addBindValue( current_izdelie_id );
     if( !query.exec() )
@@ -241,7 +246,7 @@ void ProektForm::delete_item()
     while( query.next() )
     { str = query.value(0).toString();
     }
-    str = "Удалить изделие\n\n" + str + " ?";
+    str = "РЈРґР°Р»РёС‚СЊ РёР·РґРµР»РёРµ\n\n" + str + " ?";
     query.prepare( " SELECT id FROM sostav WHERE izdelie = ? " );
     query.addBindValue( current_izdelie_id );
     if( !query.exec() )
@@ -250,7 +255,7 @@ void ProektForm::delete_item()
     }
     if( query.size() )
     {  QMessageBox::critical(this, app_header,
-                        tr("Нельзя удалить изделие:\n изделие не пусто.") );
+                        tr("РќРµР»СЊР·СЏ СѓРґР°Р»РёС‚СЊ РёР·РґРµР»РёРµ:\n РёР·РґРµР»РёРµ РЅРµ РїСѓСЃС‚Рѕ.") );
        return;
     }
     QMessageBox mb( app_header,  str,
@@ -258,8 +263,8 @@ void ProektForm::delete_item()
                        QMessageBox::Yes,
                        QMessageBox::No | QMessageBox::Default | QMessageBox::Escape ,
                        QMessageBox::NoButton  );
-    mb.setButtonText(QMessageBox::Yes, tr("Удалить"));
-    mb.setButtonText(QMessageBox::No, tr("Отмена"));
+    mb.setButtonText(QMessageBox::Yes, tr("РЈРґР°Р»РёС‚СЊ"));
+    mb.setButtonText(QMessageBox::No, tr("РћС‚РјРµРЅР°"));
     if( mb.exec() == QMessageBox::Yes )
     {  query.prepare( " DELETE FROM izdelie WHERE izdelie.id = ? " );
        query.addBindValue( current_izdelie_id );
@@ -270,7 +275,7 @@ void ProektForm::delete_item()
        izdelie_refresh();
     }
   } else if( tw_sostav->hasFocus() )
-  {  //================== УДАЛЕНИЕ СОСТАВ ========================================================
+  {  //================== РЈР”РђР›Р•РќРР• РЎРћРЎРўРђР’ ========================================================
     query.prepare( " SELECT name FROM sostav WHERE id = ? " );
     query.addBindValue( current_sostav_id );
     if( !query.exec() )
@@ -280,7 +285,7 @@ void ProektForm::delete_item()
     while( query.next() )
     { str = query.value(0).toString();
     }
-    str = "Удалить спецификацию\n\n" + str + " ?";
+    str = "РЈРґР°Р»РёС‚СЊ СЃРїРµС†РёС„РёРєР°С†РёСЋ\n\n" + str + " ?";
     query.prepare( " SELECT SUM(snato) FROM kompl WHERE sostav = ? " );
     query.addBindValue( current_sostav_id );
     if( !query.exec() )
@@ -291,7 +296,7 @@ void ProektForm::delete_item()
     { if( query.value(0).toInt() > 0 )
       {
          QMessageBox::critical(this, app_header,
-                        "Нельзя удалить спецификацию:\nесть снятые со склада компоненты." );
+                        "РќРµР»СЊР·СЏ СѓРґР°Р»РёС‚СЊ СЃРїРµС†РёС„РёРєР°С†РёСЋ:\nРµСЃС‚СЊ СЃРЅСЏС‚С‹Рµ СЃРѕ СЃРєР»Р°РґР° РєРѕРјРїРѕРЅРµРЅС‚С‹." );
          return;
       }
     }
@@ -301,8 +306,8 @@ void ProektForm::delete_item()
                        QMessageBox::Yes,
                        QMessageBox::No | QMessageBox::Default | QMessageBox::Escape ,
                        QMessageBox::NoButton  );
-    mb.setButtonText(QMessageBox::Yes, tr("Удалить"));
-    mb.setButtonText(QMessageBox::No, tr("Отмена"));
+    mb.setButtonText(QMessageBox::Yes, tr("РЈРґР°Р»РёС‚СЊ"));
+    mb.setButtonText(QMessageBox::No, tr("РћС‚РјРµРЅР°"));
     if( mb.exec() == QMessageBox::Yes )
     {  query.prepare(
          " DELETE sostav,kompl,zamena "
@@ -387,8 +392,8 @@ void ProektForm::on_tw_proekt_itemDoubleClicked( QTableWidgetItem* titem )
   { str = query.value(0).toString();
   }
 
-  str = QInputDialog::getText(this, "Переименование",
-                                    "Новое название проекта:", QLineEdit::Normal,
+  str = QInputDialog::getText(this, "РџРµСЂРµРёРјРµРЅРѕРІР°РЅРёРµ",
+                                    "РќРѕРІРѕРµ РЅР°Р·РІР°РЅРёРµ РїСЂРѕРµРєС‚Р°:", QLineEdit::Normal,
                                     str, &ok);
   if( (!ok) || (str.isEmpty() ) ) return;
   query.prepare( " UPDATE proekt SET name = ? WHERE id = ? " );
@@ -478,8 +483,8 @@ void ProektForm::on_tw_zakaz_itemDoubleClicked( QTableWidgetItem* titem )
   { str = query.value(0).toString();
   }
 
-  str = QInputDialog::getText(this, "Переименование",
-                                    "Новое название заказа:", QLineEdit::Normal,
+  str = QInputDialog::getText(this, "РџРµСЂРµРёРјРµРЅРѕРІР°РЅРёРµ",
+                                    "РќРѕРІРѕРµ РЅР°Р·РІР°РЅРёРµ Р·Р°РєР°Р·Р°:", QLineEdit::Normal,
                                     str, &ok);
   if( (!ok) || (str.isEmpty() ) ) return;
   query.prepare( " UPDATE zakaz SET name = ? WHERE id = ? " );
@@ -566,8 +571,8 @@ void ProektForm::on_tw_izdelie_itemDoubleClicked( QTableWidgetItem* titem )
   { str = query.value(0).toString();
   }
 
-  str = QInputDialog::getText(this, "Переименование",
-                                    "Новое название изделия:", QLineEdit::Normal,
+  str = QInputDialog::getText(this, "РџРµСЂРµРёРјРµРЅРѕРІР°РЅРёРµ",
+                                    "РќРѕРІРѕРµ РЅР°Р·РІР°РЅРёРµ РёР·РґРµР»РёСЏ:", QLineEdit::Normal,
                                     str, &ok);
   if( (!ok) || (str.isEmpty() ) ) return;
   query.prepare( " UPDATE izdelie SET name = ? WHERE id = ? " );
@@ -696,7 +701,7 @@ void ProektForm::on_tw_sostav_cellDoubleClicked( int row, int column )
 
   switch( column )
   {
-    case( 1 ):  // название
+    case( 1 ):  // РЅР°Р·РІР°РЅРёРµ
       query.prepare( " SELECT name FROM sostav WHERE id = ? " );
       query.addBindValue( current_sostav_id );
       if( !query.exec() )
@@ -707,8 +712,8 @@ void ProektForm::on_tw_sostav_cellDoubleClicked( int row, int column )
       { str = query.value(0).toString();
       }
 
-      str = QInputDialog::getText(this, "Переименование",
-                                        "Новое название спецификации:", QLineEdit::Normal,
+      str = QInputDialog::getText(this, "РџРµСЂРµРёРјРµРЅРѕРІР°РЅРёРµ",
+                                        "РќРѕРІРѕРµ РЅР°Р·РІР°РЅРёРµ СЃРїРµС†РёС„РёРєР°С†РёРё:", QLineEdit::Normal,
                                         str, &ok);
       if( (!ok) || (str.isEmpty() ) ) return;
       query.prepare( " UPDATE sostav SET name = ? WHERE id = ? " );
@@ -719,7 +724,7 @@ void ProektForm::on_tw_sostav_cellDoubleClicked( int row, int column )
          return;
       }
       break;
-    case( 2 ):  // количество
+    case( 2 ):  // РєРѕР»РёС‡РµСЃС‚РІРѕ
       query.prepare( " SELECT status2,n1 FROM sostav WHERE id = ? " );
       query.addBindValue( current_sostav_id );
       if( !query.exec() )
@@ -727,18 +732,18 @@ void ProektForm::on_tw_sostav_cellDoubleClicked( int row, int column )
          return;
       }
       if( query.size() != 1 )
-      { QMessageBox::critical( this,app_header,"Ошибка выборки из базы данных." );
+      { QMessageBox::critical( this,app_header,"РћС€РёР±РєР° РІС‹Р±РѕСЂРєРё РёР· Р±Р°Р·С‹ РґР°РЅРЅС‹С…." );
         return;
       }
       query.next();
       str = query.value(0).toString();
-      if(  str.toLower() != "не утвержден" )
+      if(  str.toLower() != "РЅРµ СѓС‚РІРµСЂР¶РґРµРЅ" )
       { QMessageBox::critical( this,app_header,
-           "Изменять количество можно только\nв спецификациях со статусом \"Не Утвержден\".");
+           "РР·РјРµРЅСЏС‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ РјРѕР¶РЅРѕ С‚РѕР»СЊРєРѕ\nРІ СЃРїРµС†РёС„РёРєР°С†РёСЏС… СЃРѕ СЃС‚Р°С‚СѓСЃРѕРј \"РќРµ РЈС‚РІРµСЂР¶РґРµРЅ\".");
            return;
       }
       i = query.value(1).toInt();
-      i = QInputDialog::getInteger(this, app_header, "Количество:",
+      i = QInputDialog::getInt(this, app_header, "РљРѕР»РёС‡РµСЃС‚РІРѕ:",
                                       i,1,1000,1, &ok);
       if( !ok ) return;
       query.prepare( " UPDATE sostav SET n1 = ? WHERE id = ? " );
@@ -750,7 +755,7 @@ void ProektForm::on_tw_sostav_cellDoubleClicked( int row, int column )
       }
       emit pereraschet_needed();
       break;
-    case(3): // приоритет
+    case(3): // РїСЂРёРѕСЂРёС‚РµС‚
       query.prepare( " SELECT prioritet FROM sostav WHERE id = ? " );
       query.addBindValue( current_sostav_id );
       if( !query.exec() )
@@ -760,8 +765,8 @@ void ProektForm::on_tw_sostav_cellDoubleClicked( int row, int column )
       while( query.next() )
       { str = query.value(0).toString();
       }
-      str = QInputDialog::getText(this, "Приоритет",
-                                        "Приоритет:", QLineEdit::Normal,
+      str = QInputDialog::getText(this, "РџСЂРёРѕСЂРёС‚РµС‚",
+                                        "РџСЂРёРѕСЂРёС‚РµС‚:", QLineEdit::Normal,
                                         str, &ok);
       i = str.toInt( &ok );
       query.prepare( " UPDATE sostav SET prioritet = ? WHERE id = ? " );
@@ -773,7 +778,7 @@ void ProektForm::on_tw_sostav_cellDoubleClicked( int row, int column )
          return;
       }
       break;
-    case(4): // статус
+    case(4): // СЃС‚Р°С‚СѓСЃ
       {
       QMenu menu;
       QMap< QAction*, int> map;
@@ -800,7 +805,7 @@ void ProektForm::on_tw_sostav_cellDoubleClicked( int row, int column )
       }
       }
       break;
-    case(8): // цена плата
+    case(8): // С†РµРЅР° РїР»Р°С‚Р°
       query.prepare( " SELECT cost_plata FROM sostav WHERE id = ? " );
       query.addBindValue( current_sostav_id );
       if( !query.exec() )
@@ -811,7 +816,7 @@ void ProektForm::on_tw_sostav_cellDoubleClicked( int row, int column )
       { str = query.value(0).toString();
       }
       str = QInputDialog::getText(this, app_header,
-                                        "Цена платы:", QLineEdit::Normal,
+                                        "Р¦РµРЅР° РїР»Р°С‚С‹:", QLineEdit::Normal,
                                         str, &ok);
       query.prepare( " UPDATE sostav SET cost_plata = ? WHERE id = ? " );
       if( !str.isEmpty() ) { query.addBindValue( str ); }
@@ -822,7 +827,7 @@ void ProektForm::on_tw_sostav_cellDoubleClicked( int row, int column )
          return;
       }
       break;
-    case(9): // цена монтаж
+    case(9): // С†РµРЅР° РјРѕРЅС‚Р°Р¶
       query.prepare( " SELECT cost_montag FROM sostav WHERE id = ? " );
       query.addBindValue( current_sostav_id );
       if( !query.exec() )
@@ -833,7 +838,7 @@ void ProektForm::on_tw_sostav_cellDoubleClicked( int row, int column )
       { str = query.value(0).toString();
       }
       str = QInputDialog::getText(this, app_header,
-                                        "Цена монтажа:", QLineEdit::Normal,
+                                        "Р¦РµРЅР° РјРѕРЅС‚Р°Р¶Р°:", QLineEdit::Normal,
                                         str, &ok);
       query.prepare( " UPDATE sostav SET cost_montag = ? WHERE id = ? " );
       if(  !str.isEmpty()  ) { query.addBindValue( str ); }
@@ -891,10 +896,10 @@ void ProektForm::kompl_refresh()
   i=0;
   t = -1;
   while( query.next() )
-  { // тип
+  { // С‚РёРї
     j = query.value(2).toInt();
     if( j != t )
-    { // новый тип
+    { // РЅРѕРІС‹Р№ С‚РёРї
       t=j;
       tw_kompl->setRowCount( i+1 );
       titem = new QTableWidgetItem( query.value(3).toString() );
@@ -907,11 +912,11 @@ void ProektForm::kompl_refresh()
       i++;
     }
     tw_kompl->setRowCount( i+1 );
-    // наименование
+    // РЅР°РёРјРµРЅРѕРІР°РЅРёРµ
     is_zamena = ( query.value(4) != query.value(7) );
     color = int2color( query.value(1).toInt() );
-    if( is_zamena ) // замена
-    { titem = new QTableWidgetItem( "  ЗАМЕНА: "+query.value(7).toString() );
+    if( is_zamena ) // Р·Р°РјРµРЅР°
+    { titem = new QTableWidgetItem( "  Р—РђРњР•РќРђ: "+query.value(7).toString() );
     } else
     { titem = new QTableWidgetItem( query.value(4).toString() );
     }
@@ -919,13 +924,13 @@ void ProektForm::kompl_refresh()
     titem->setBackgroundColor( color );
     tw_kompl->setItem( i, 0, titem );
     tw_kompl->setSpan( i, 0, 0,0 );
-    // номинал
+    // РЅРѕРјРёРЅР°Р»
     titem = new QTableWidgetItem( query.value(11).toString() );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
     titem->setBackgroundColor( color );
     tw_kompl->setItem( i, 1, titem );
-    // требуется
-    if( is_zamena ) // замена
+    // С‚СЂРµР±СѓРµС‚СЃСЏ
+    if( is_zamena ) // Р·Р°РјРµРЅР°
     { titem = new QTableWidgetItem;
     } else
     { titem = new QTableWidgetItem( query.value(5).toString() );
@@ -933,23 +938,23 @@ void ProektForm::kompl_refresh()
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
     titem->setBackgroundColor( color );
     tw_kompl->setItem( i, 2, titem );
-    // снято
+    // СЃРЅСЏС‚Рѕ
     titem = new QTableWidgetItem( query.value(10).toString() );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
     titem->setBackgroundColor( color );
     tw_kompl->setItem( i, 3, titem );
-    // наличие
+    // РЅР°Р»РёС‡РёРµ
     titem = new QTableWidgetItem( query.value(9).toString() );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
     titem->setBackgroundColor( color );
     tw_kompl->setItem( i, 4, titem );
-    // статус
+    // СЃС‚Р°С‚СѓСЃ
     titem = new QTableWidgetItem( kompl_status.value( query.value(12).toInt() ) );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
     titem->setBackgroundColor( color );
     tw_kompl->setItem( i, 5, titem );
-    // позиция
-    if( is_zamena ) // замена
+    // РїРѕР·РёС†РёСЏ
+    if( is_zamena ) // Р·Р°РјРµРЅР°
     { titem = new QTableWidgetItem;
     } else
     { titem = new QTableWidgetItem( query.value(13).toString() );
@@ -971,8 +976,8 @@ void ProektForm::on_pb_proekt_add_clicked()
   QString str;
   bool ok;
 
-  str = QInputDialog::getText(this, "Добавить",
-                               tr("Название проекта:"), QLineEdit::Normal,
+  str = QInputDialog::getText(this, "Р”РѕР±Р°РІРёС‚СЊ",
+                               tr("РќР°Р·РІР°РЅРёРµ РїСЂРѕРµРєС‚Р°:"), QLineEdit::Normal,
                                             "", &ok);
   if( (!ok) || str.isEmpty() ) return;
   query.prepare( " INSERT INTO proekt ( name ) VALUES ( ? ) " );
@@ -992,8 +997,8 @@ void ProektForm::on_pb_zakaz_add_clicked()
   QString str;
   bool ok;
 
-  str = QInputDialog::getText(this, "Добавить",
-                              "Название заказа:", QLineEdit::Normal,
+  str = QInputDialog::getText(this, "Р”РѕР±Р°РІРёС‚СЊ",
+                              "РќР°Р·РІР°РЅРёРµ Р·Р°РєР°Р·Р°:", QLineEdit::Normal,
                               "", &ok);
   if( (!ok) || str.isEmpty() ) return;
   query.prepare( " INSERT INTO zakaz ( proekt,name,date,user ) VALUES ( ?,?,?,? ) " );
@@ -1016,8 +1021,8 @@ void ProektForm::on_pb_izdelie_add_clicked()
   QString str;
   bool ok;
 
-  str = QInputDialog::getText(this, "Добавить",
-                              "Название изделия:", QLineEdit::Normal,
+  str = QInputDialog::getText(this, "Р”РѕР±Р°РІРёС‚СЊ",
+                              "РќР°Р·РІР°РЅРёРµ РёР·РґРµР»РёСЏ:", QLineEdit::Normal,
                               "", &ok);
   if( (!ok) || str.isEmpty() ) return;
   query.prepare( " INSERT INTO izdelie ( zakaz,name ) VALUES ( ?,? ) " );
@@ -1072,7 +1077,7 @@ void ProektForm::on_pb_sostav_export_to_file_clicked()
   }
 
   fn = QFileDialog::getSaveFileName(this,
-     "Экспорт в текстовый файл", fileName, "Text Files (*.txt)" );
+     "Р­РєСЃРїРѕСЂС‚ РІ С‚РµРєСЃС‚РѕРІС‹Р№ С„Р°Р№Р»", fileName, "Text Files (*.txt)" );
 
   if( fn.isEmpty() ) return;
   fileName = fn;
@@ -1080,7 +1085,7 @@ void ProektForm::on_pb_sostav_export_to_file_clicked()
   QFile file( fileName );
   bool ok = file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate );
   if( !ok ) return;
-  file.write( str.toAscii() );
+  file.write( str.toLocal8Bit() );
 }
 
 //=======================================================================================
@@ -1114,14 +1119,14 @@ void ProektForm::on_pb_kompl_export_clicked()
   }
   query.next();
 
-  str =  "Комплектация N="+QString::number(current_sostav_id)+"\r\n";
-  str += "Спецификация: " + sql_get_string( query, 3 )+ " ( " + query.value(4).toString() +" шт.)\r\n";
-  str += "Изделие: " + sql_get_string( query, 2 )+"\r\n";
-  str += "Заказ: " + sql_get_string( query, 1 )+"\r\n";
-  str += "Проект: " + sql_get_string( query, 0 )+"\r\n";
+  str =  "РљРѕРјРїР»РµРєС‚Р°С†РёСЏ N="+QString::number(current_sostav_id)+"\r\n";
+  str += "РЎРїРµС†РёС„РёРєР°С†РёСЏ: " + sql_get_string( query, 3 )+ " ( " + query.value(4).toString() +" С€С‚.)\r\n";
+  str += "РР·РґРµР»РёРµ: " + sql_get_string( query, 2 )+"\r\n";
+  str += "Р—Р°РєР°Р·: " + sql_get_string( query, 1 )+"\r\n";
+  str += "РџСЂРѕРµРєС‚: " + sql_get_string( query, 0 )+"\r\n";
   str += "\r\n";
 
-  str += "Наименование\tНоминал\tТребуется\tСнято\tВ наличии\tСтатус\tПозиция\r\n";
+  str += "РќР°РёРјРµРЅРѕРІР°РЅРёРµ\tРќРѕРјРёРЅР°Р»\tРўСЂРµР±СѓРµС‚СЃСЏ\tРЎРЅСЏС‚Рѕ\tР’ РЅР°Р»РёС‡РёРё\tРЎС‚Р°С‚СѓСЃ\tРџРѕР·РёС†РёСЏ\r\n";
 
   for(i=0; i < tw_kompl->rowCount(); i++ )
   { for(j=0; j < tw_kompl->columnCount(); j++ )
@@ -1135,7 +1140,7 @@ void ProektForm::on_pb_kompl_export_clicked()
 
   QApplication::clipboard()->setText( str );
 
-  QMessageBox::information( this, app_header, "Комплектация скопирована в буфер обмена." );
+  QMessageBox::information( this, app_header, "РљРѕРјРїР»РµРєС‚Р°С†РёСЏ СЃРєРѕРїРёСЂРѕРІР°РЅР° РІ Р±СѓС„РµСЂ РѕР±РјРµРЅР°." );
 }
 //=======================================================================================
 //
@@ -1242,15 +1247,15 @@ ProektFormSostavFindWidget::ProektFormSostavFindWidget( QWidget *parent )
   : QWidget( parent )
 {
   setupUi(this);
-  setWindowTitle("Поиск спецификации");
+  setWindowTitle("РџРѕРёСЃРє СЃРїРµС†РёС„РёРєР°С†РёРё");
   setWindowFlags( Qt::Tool );
   connect( le, SIGNAL( textChanged(const QString) ), this, SLOT( refresh() ) );
 
   tw->setColumnCount(1);
   tw->verticalHeader()->setDefaultSectionSize(font().pointSize()+13);
   tw->verticalHeader()->hide();
-  tw->setHorizontalHeaderLabels( QStringList() << "Название спецификации" );
-  tw->horizontalHeader()->setClickable( false );
+  tw->setHorizontalHeaderLabels( QStringList() << "РќР°Р·РІР°РЅРёРµ СЃРїРµС†РёС„РёРєР°С†РёРё" );
+  tw->horizontalHeader()->setSectionsClickable( false );
   tw->setEditTriggers( QAbstractItemView::NoEditTriggers );
   tw->setSelectionBehavior( QAbstractItemView::SelectRows );
   tw->setSelectionMode( QAbstractItemView::SingleSelection );

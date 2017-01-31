@@ -1,20 +1,22 @@
-/*! \mainpage Склад
+/*! \mainpage РЎРєР»Р°Рґ
 
-    \section intro Версии
+    \section intro Р’РµСЂСЃРёРё
 
-    20060926 - начальная тестовая версия
+    20060926 - РЅР°С‡Р°Р»СЊРЅР°СЏ С‚РµСЃС‚РѕРІР°СЏ РІРµСЂСЃРёСЏ
 
 */
-
-#include "pch.h"
 
 #include "main.h"
 #include "mainwindow.h"
 #include "dialogs.h"
 #include "misc.h"
 
+#include <QErrorMessage>
+#include <QSqlQuery>
+#include <QSqlError>
+
 //=======================================================================================
-// глобальные переменные
+// РіР»РѕР±Р°Р»СЊРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ
 //=======================================================================================
 QApplication *application;
 MainWindow   *mainwindow;
@@ -30,19 +32,19 @@ QStringList sostav_status;
 
 
 //=======================================================================================
-// вывод ошибки SQL-запроса
+// РІС‹РІРѕРґ РѕС€РёР±РєРё SQL-Р·Р°РїСЂРѕСЃР°
 //=======================================================================================
 void sql_error_message( QSqlQuery &query, QWidget *parent )
 {
   QErrorMessage msg( parent );
   msg.setModal(true);
-  msg.setWindowTitle( QObject::tr("Ошибка запроса SQL") );
+  msg.setWindowTitle( QObject::tr("РћС€РёР±РєР° Р·Р°РїСЂРѕСЃР° SQL") );
   msg.showMessage( query.lastError().driverText()
                    + " | " + query.lastError().databaseText()
                    + " | QUERY: \"" + query.lastQuery() + "\"");
   msg.exec();
 
-//  QMessageBox::critical(parent, QObject::tr("Ошибка запроса SQL"),
+//  QMessageBox::critical(parent, QObject::tr("РћС€РёР±РєР° Р·Р°РїСЂРѕСЃР° SQL"),
 //                             query.lastError().driverText()
 //                   + "\n"  + query.lastError().databaseText()
 //                                                                 );
@@ -70,7 +72,7 @@ QString sql_get_string( QSqlQuery &query, int n )
   return query.value(n).toString();
 }
 
-Q_IMPORT_PLUGIN( qsqlmysql )
+//Q_IMPORT_PLUGIN( qsqlmysql )
 
 //=======================================================================================
 // MAIN
@@ -88,9 +90,6 @@ int main(int argc, char *argv[])
 
     bold_font = new QFont( application->font() );
     bold_font->setBold( true );
-
-    QTextCodec::setCodecForTr(       QTextCodec::codecForName("Windows-1251") );
-    QTextCodec::setCodecForCStrings( QTextCodec::codecForName("Windows-1251") );
 
     {
     InitDialog dialog;

@@ -7,13 +7,19 @@
 #include "mainwindow.h"
 #include "sqlactions.h"
 
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QMessageBox>
+#include <QProgressDialog>
+#include <QCompleter>
+
 //#######################################################################################
-// начальный диалог
+// РЅР°С‡Р°Р»СЊРЅС‹Р№ РґРёР°Р»РѕРі
 //#######################################################################################
 InitDialog::InitDialog()
 {
   int i;
-  app_header = "Склад";
+  app_header = "РЎРєР»Р°Рґ";
 
   setupUi( this );
   setWindowTitle( app_header );
@@ -42,7 +48,7 @@ InitDialog::InitDialog()
 }
 
 //==============================================================================
-// начальный диалог -- OK
+// РЅР°С‡Р°Р»СЊРЅС‹Р№ РґРёР°Р»РѕРі -- OK
 //==============================================================================
 void InitDialog::on_pb_db_clicked()
 {
@@ -50,7 +56,7 @@ void InitDialog::on_pb_db_clicked()
 }
 
 //==============================================================================
-// начальный диалог -- OK
+// РЅР°С‡Р°Р»СЊРЅС‹Р№ РґРёР°Р»РѕРі -- OK
 //==============================================================================
 void InitDialog::accept()
 {
@@ -67,7 +73,7 @@ void InitDialog::accept()
   db->setPassword(le_db_pass->text());
   ok = db->open();
   if( !ok )
-  { QMessageBox::critical(0, "Ошибка",  db->lastError().driverText()
+  { QMessageBox::critical(0, "РћС€РёР±РєР°",  db->lastError().driverText()
                            );
     done( QDialog::Rejected );
     return;
@@ -81,7 +87,7 @@ void InitDialog::accept()
 
   QSqlQuery query;
   if( !query.exec("SET NAMES \'utf8\'") )
-  { QMessageBox::critical(0, "Ошибка", "Не могу установить кодировку"
+  { QMessageBox::critical(0, "РћС€РёР±РєР°", "РќРµ РјРѕРіСѓ СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РєРѕРґРёСЂРѕРІРєСѓ"
                              + query.lastError().driverText()
                                         );
     done( QDialog::Rejected );
@@ -113,7 +119,7 @@ void InitDialog::accept()
        return;
      }
   }
-  QMessageBox::critical(0, app_header, "Имя пользователя или пароль неверны."  );
+  QMessageBox::critical(0, app_header, "РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР»Рё РїР°СЂРѕР»СЊ РЅРµРІРµСЂРЅС‹."  );
 }
 
 //#######################################################################################
@@ -126,15 +132,15 @@ RVvodDialog::RVvodDialog( QWidget *parent, int n_arg ,int id_arg )
   QStringList sl;
 
   setupUi( this );
-  setWindowTitle( "Ручной ввод" );
+  setWindowTitle( "Р СѓС‡РЅРѕР№ РІРІРѕРґ" );
   resize(710,500);
 
   tw->setColumnCount( 4 );
   tw->verticalHeader()->setDefaultSectionSize(font().pointSize()+11);
-  sl << "Тип"
-     << "Наименование"
-     << "Номинал"
-     << "Кол-во";
+  sl << "РўРёРї"
+     << "РќР°РёРјРµРЅРѕРІР°РЅРёРµ"
+     << "РќРѕРјРёРЅР°Р»"
+     << "РљРѕР»-РІРѕ";
   tw->setHorizontalHeaderLabels( sl );
   tw->horizontalHeader()->resizeSection( 0 , 150 );
   tw->horizontalHeader()->resizeSection( 1 , 150 );
@@ -179,7 +185,7 @@ void RVvodDialog::accept()
   QProgressDialog progress("Copying files...", 0, 0, tw->rowCount(), this);
 
   if( le1->text().isEmpty() )
-  {QMessageBox::critical(this, app_header, "Поле \"Название\" не заполнено" );
+  {QMessageBox::critical(this, app_header, "РџРѕР»Рµ \"РќР°Р·РІР°РЅРёРµ\" РЅРµ Р·Р°РїРѕР»РЅРµРЅРѕ" );
     le1->setFocus();
     return;
   }
@@ -191,7 +197,7 @@ void RVvodDialog::accept()
   query.addBindValue( id );
   query.addBindValue( le1->text().toUtf8() );
   query.addBindValue( n );
-  query.addBindValue( "Не утвержден" );
+  query.addBindValue( "РќРµ СѓС‚РІРµСЂР¶РґРµРЅ" );
   if( !query.exec() )
   {  sql_error_message( query, this );
 	   return;
@@ -236,7 +242,7 @@ RVvodAddDialog::RVvodAddDialog( QWidget *parent )
   : QDialog( parent )
 {
   setupUi( this );
-  setWindowTitle( "Добавить" );
+  setWindowTitle( "Р”РѕР±Р°РІРёС‚СЊ" );
 
   connect( cb_type,  SIGNAL( currentIndexChanged(int) ),
            this,       SLOT( tw_refresh() ) );
@@ -268,9 +274,9 @@ void RVvodAddDialog::tw_refresh()
   tw->setColumnCount( 3 );
   tw->verticalHeader()->hide();
   tw->verticalHeader()->setDefaultSectionSize(font().pointSize()+11);
-  sl << "Тип"
-     << "Название"
-     << "Остаток";
+  sl << "РўРёРї"
+     << "РќР°Р·РІР°РЅРёРµ"
+     << "РћСЃС‚Р°С‚РѕРє";
   tw->setHorizontalHeaderLabels( sl );
   tw->horizontalHeader()->resizeSection( 0 , 150 );
   tw->horizontalHeader()->resizeSection( 1 , 150 );
@@ -321,7 +327,7 @@ void RVvodAddDialog::accept()
   int i = tw->currentRow();
 
   if( i < 0 )
-  { QMessageBox::critical(this, app_header,"Элемент не выбран!" );
+  { QMessageBox::critical(this, app_header,"Р­Р»РµРјРµРЅС‚ РЅРµ РІС‹Р±СЂР°РЅ!" );
     return;
   }
   name      = tw->item( i, 1 )->text();
@@ -370,7 +376,7 @@ void Postvshiki::on_pb1_clicked()
   QString str;
   bool ok;
   str = QInputDialog::getText(this, app_header,
-                                    "Название поставщика:",
+                                    "РќР°Р·РІР°РЅРёРµ РїРѕСЃС‚Р°РІС‰РёРєР°:",
                                     QLineEdit::Normal, "", &ok);
   if( !ok ) return;
   if( str.isEmpty() ) return;
@@ -393,7 +399,7 @@ void Postvshiki::on_pb2_clicked()
   QString str;
   bool ok;
   if( lw->currentRow() < 0 ) return;
-  str = QInputDialog::getText(this, app_header, "Название поставщика:",
+  str = QInputDialog::getText(this, app_header, "РќР°Р·РІР°РЅРёРµ РїРѕСЃС‚Р°РІС‰РёРєР°:",
                                     QLineEdit::Normal,
                                     lw->currentItem()->text(), &ok);
   if( !ok ) return;
@@ -465,7 +471,7 @@ void Proizvoditeli::on_pb1_clicked()
 {
   QString str;
   bool ok;
-  str = QInputDialog::getText(this, app_header , "Название производителя:",
+  str = QInputDialog::getText(this, app_header , "РќР°Р·РІР°РЅРёРµ РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЏ:",
                                     QLineEdit::Normal, "", &ok);
   if( !ok ) return;
   if( str.isEmpty() ) return;
@@ -488,7 +494,7 @@ void Proizvoditeli::on_pb2_clicked()
   QString str;
   bool ok;
   if( lw->currentRow() < 0 ) return;
-  str = QInputDialog::getText(this, app_header , "Название производителя:",
+  str = QInputDialog::getText(this, app_header , "РќР°Р·РІР°РЅРёРµ РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЏ:",
                                     QLineEdit::Normal,
                                     lw->currentItem()->text(), &ok);
   if( !ok ) return;
@@ -528,7 +534,7 @@ SostavAddDialog::SostavAddDialog( QWidget *parent,int id_arg )
   : QDialog( parent ), id( id_arg )
 {
   setupUi( this );
-  setWindowTitle( "Добавить в состав изделя" );
+  setWindowTitle( "Р”РѕР±Р°РІРёС‚СЊ РІ СЃРѕСЃС‚Р°РІ РёР·РґРµР»СЏ" );
 }
 
 //=======================================================================================
@@ -537,11 +543,11 @@ SostavAddDialog::SostavAddDialog( QWidget *parent,int id_arg )
 void SostavAddDialog::accept()
 {
   switch( cb1->currentIndex() )
-  { case( 0 ): // чтение BOM-файла
+  { case( 0 ): // С‡С‚РµРЅРёРµ BOM-С„Р°Р№Р»Р°
     { QSettings settings( QSETTINGS_PARAM );
       QString str = QFileDialog::getOpenFileName(
                       this,
-                      "Импорт BOM-файла",
+                      "РРјРїРѕСЂС‚ BOM-С„Р°Р№Р»Р°",
                       settings.value( "bompath", "" ).toString(),
                       "BOM (*.bom)");
       if( !str.isEmpty() )
@@ -554,7 +560,7 @@ void SostavAddDialog::accept()
       }
     }
     break;
-    case( 1 ):  // ручной ввод
+    case( 1 ):  // СЂСѓС‡РЅРѕР№ РІРІРѕРґ
       { RVvodDialog dialog( this, sb1->value(), id );
         dialog.exec();
         done(QDialog::Accepted);
@@ -570,7 +576,7 @@ PrihodFiltrDialog::PrihodFiltrDialog( QWidget *parent )
   : QDialog( parent )
 {
   setupUi( this );
-  setWindowTitle( "Фильтр прихода");
+  setWindowTitle( "Р¤РёР»СЊС‚СЂ РїСЂРёС…РѕРґР°");
 
   connect( bcb2,  SIGNAL( toggled(bool)), cb1, SLOT( setEnabled(bool) ) );
   connect( bcb2,  SIGNAL( clicked()    ), cb1, SLOT( setFocus()       ) );
@@ -594,7 +600,7 @@ PrihodFiltrDialog::PrihodFiltrDialog( QWidget *parent )
 
 
   QSqlQuery query;
-  // тип
+  // С‚РёРї
   if( !query.exec( "SELECT id, typename FROM types WHERE used = TRUE ORDER BY typename" ) )
   {  sql_error_message( query, this );
 	   return;
@@ -603,7 +609,7 @@ PrihodFiltrDialog::PrihodFiltrDialog( QWidget *parent )
   { cb1->addItem( sql_get_string( query, 1 ), query.value(0) );
   }
 
-  // производители
+  // РїСЂРѕРёР·РІРѕРґРёС‚РµР»Рё
   if( !query.exec( "SELECT id, name FROM proizvoditeli ORDER BY name" ) )
   {  sql_error_message( query, this );
 	   return;
@@ -612,7 +618,7 @@ PrihodFiltrDialog::PrihodFiltrDialog( QWidget *parent )
   { cb2->addItem( sql_get_string( query, 1 ), query.value(0) );
   }
 
-  // поставщики
+  // РїРѕСЃС‚Р°РІС‰РёРєРё
   if( !query.exec( "SELECT id, name FROM postavshiki ORDER BY name" ) )
   {  sql_error_message( query, this );
 	   return;
@@ -631,17 +637,17 @@ PrihodFiltrDialog::PrihodFiltrDialog( QWidget *parent )
 void PrihodFiltrDialog::on_pb1_clicked()
 {
   QString str,str2;
-  //QMessageBox::critical(this, QObject::tr("Ошибка запроса SQL"), "sdf" );
+  //QMessageBox::critical(this, QObject::tr("РћС€РёР±РєР° Р·Р°РїСЂРѕСЃР° SQL"), "sdf" );
   str.clear();
 
-  // накладная
+  // РЅР°РєР»Р°РґРЅР°СЏ
   if( bcb11->isChecked() )
   {str2 = le6->text();
    str2.replace(" ","%");
    str += " naklad LIKE '%"+str2+"%' ";
   }
 
-  // тип
+  // С‚РёРї
   if( bcb2->isChecked() )
   { if( !str.isEmpty() ) str += "AND";
     str2 = cb1->itemData( cb1->currentIndex() ).toString();
@@ -649,7 +655,7 @@ void PrihodFiltrDialog::on_pb1_clicked()
     str += " prihod.type = '" + str2 + "' ";
   }
 
-  // название
+  // РЅР°Р·РІР°РЅРёРµ
   if( bcb3->isChecked() )
   { if( !str.isEmpty() ) str += "AND";
     str2 = le2->text();
@@ -657,21 +663,21 @@ void PrihodFiltrDialog::on_pb1_clicked()
     str += " prihod.name LIKE '%"+str2+"%' ";
   }
 
-  // производитель
+  // РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ
   if( bcb5->isChecked() )
   { if( !str.isEmpty() ) str += "AND";
     str += " prihod.proizvoditel = '"
            + cb2->itemData( cb2->currentIndex() ).toString() + "' ";
   }
 
-  // поставщик
+  // РїРѕСЃС‚Р°РІС‰РёРє
   if( bcb6->isChecked() )
   { if( !str.isEmpty() ) str += "AND";
     str += " zakupki.postavshik = '"
            + cb3->itemData( cb3->currentIndex() ).toString() + "' ";
   }
 
-  // счет
+  // СЃС‡РµС‚
   if( bcb7->isChecked() )
   { if( !str.isEmpty() ) str += "AND";
     str2 = le4->text();
@@ -679,18 +685,18 @@ void PrihodFiltrDialog::on_pb1_clicked()
     str += " zakupki.schet LIKE '%"+str2+"%' ";
   }
 
-  // место
+  // РјРµСЃС‚Рѕ
   if( bcb8->isChecked() )
   { if( !str.isEmpty() ) str += "AND";
     str += " mesto LIKE '%"+le5->text()+"%' ";
   }
 
-  // начальная дата
+  // РЅР°С‡Р°Р»СЊРЅР°СЏ РґР°С‚Р°
   if( bcb9->isChecked() )
   { if( !str.isEmpty() ) str += "AND";
     str += " prihod.date >= '"+de1->date().toString("yyyy-MM-dd")+"' ";
   }
-  // конечная дата
+  // РєРѕРЅРµС‡РЅР°СЏ РґР°С‚Р°
   if( bcb10->isChecked() )
   { if( !str.isEmpty() ) str += "AND";
     str += " prihod.date <= '"+de2->date().toString("yyyy-MM-dd")+"' ";
@@ -717,8 +723,8 @@ PrihodAddDialog::PrihodAddDialog( QWidget *parent,int id_arg,int zakupka_arg )
   QStringList sl;
 
   setupUi( this );
-  if( id )  setWindowTitle( "Изменить данные в приходе");
-  else      setWindowTitle( "Добавить приход");
+  if( id )  setWindowTitle( "РР·РјРµРЅРёС‚СЊ РґР°РЅРЅС‹Рµ РІ РїСЂРёС…РѕРґРµ");
+  else      setWindowTitle( "Р”РѕР±Р°РІРёС‚СЊ РїСЂРёС…РѕРґ");
 
   connect( pbOK,     SIGNAL( clicked() ),  this, SLOT( accept() ) );
   connect( pbCANCEL, SIGNAL( clicked() ),  this, SLOT( reject() ) );
@@ -751,7 +757,7 @@ PrihodAddDialog::PrihodAddDialog( QWidget *parent,int id_arg,int zakupka_arg )
     int a = query.value(1).toInt();
     if( map.contains( str ) && ( map[str] != a ) )
     { QMessageBox::critical( this, app_header,
-        "Ошибка! База прихода содержит несколько одинаковых наименований с разными типами!\n\n" + str );
+        "РћС€РёР±РєР°! Р‘Р°Р·Р° РїСЂРёС…РѕРґР° СЃРѕРґРµСЂР¶РёС‚ РЅРµСЃРєРѕР»СЊРєРѕ РѕРґРёРЅР°РєРѕРІС‹С… РЅР°РёРјРµРЅРѕРІР°РЅРёР№ СЃ СЂР°Р·РЅС‹РјРё С‚РёРїР°РјРё!\n\n" + str );
     }
     map[ str ] = a;
   }
@@ -786,8 +792,8 @@ PrihodAddDialog::PrihodAddDialog( QWidget *parent,int id_arg,int zakupka_arg )
 	     return;
     }
     while( query.next() )
-    { cb1 ->setCurrentIndex( cb1->findData( query.value(0) ) );             // тип
-      le2 ->setText( sql_get_string( query, 1 ) ); // наименование
+    { cb1 ->setCurrentIndex( cb1->findData( query.value(0) ) );             // С‚РёРї
+      le2 ->setText( sql_get_string( query, 1 ) ); // РЅР°РёРјРµРЅРѕРІР°РЅРёРµ
     }
   }
 
@@ -811,19 +817,19 @@ PrihodAddDialog::PrihodAddDialog( QWidget *parent,int id_arg,int zakupka_arg )
 	   return;
   }
   while( query.next() )
-  { cb1 ->setCurrentIndex( cb1->findData( query.value(0) ) );             // тип
-    le2 ->setText( sql_get_string( query, 1 ) );                          // наименование
-    le9 ->setText( sql_get_string( query, 2 ) );                          // код
-    cb2 ->setCurrentIndex( cb2->findData( query.value(3) ) );             // производитель
-    le10->setText( sql_get_string( query, 4 ) );                          // накладная
-    le3->setText( query.value(5).toString() );                            // цена
-    le6->setText( query.value(6).toString() );                            // кол-во
-    le4->setText( query.value(7).toString() );                            // остаток
-    str = sql_get_string( query, 8 );                                     // место
+  { cb1 ->setCurrentIndex( cb1->findData( query.value(0) ) );             // С‚РёРї
+    le2 ->setText( sql_get_string( query, 1 ) );                          // РЅР°РёРјРµРЅРѕРІР°РЅРёРµ
+    le9 ->setText( sql_get_string( query, 2 ) );                          // РєРѕРґ
+    cb2 ->setCurrentIndex( cb2->findData( query.value(3) ) );             // РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ
+    le10->setText( sql_get_string( query, 4 ) );                          // РЅР°РєР»Р°РґРЅР°СЏ
+    le3->setText( query.value(5).toString() );                            // С†РµРЅР°
+    le6->setText( query.value(6).toString() );                            // РєРѕР»-РІРѕ
+    le4->setText( query.value(7).toString() );                            // РѕСЃС‚Р°С‚РѕРє
+    str = sql_get_string( query, 8 );                                     // РјРµСЃС‚Рѕ
     str2 = query.value(9).toString();
-   //QMessageBox::critical(this, QObject::tr("Ошибка запроса SQL"), QString::number(cb1->findData( query.value(0) ) ) );
+   //QMessageBox::critical(this, QObject::tr("РћС€РёР±РєР° Р·Р°РїСЂРѕСЃР° SQL"), QString::number(cb1->findData( query.value(0) ) ) );
     le1 ->clear();
-    le1 ->insertPlainText( str2 ); // примечания
+    le1 ->insertPlainText( str2 ); // РїСЂРёРјРµС‡Р°РЅРёСЏ
   }
 
   le_mesto->setText( str );
@@ -846,14 +852,14 @@ void PrihodAddDialog::my1( QString str )
 //=======================================================================================
 void PrihodAddDialog::on_pb1_clicked()
 {
-  QString str = "Копировать карточку: \n\n" + le2->text() + " ?";
+  QString str = "РљРѕРїРёСЂРѕРІР°С‚СЊ РєР°СЂС‚РѕС‡РєСѓ: \n\n" + le2->text() + " ?";
   QMessageBox mb( app_header,  str,
                   QMessageBox::Warning,
                   QMessageBox::Yes,
                   QMessageBox::No | QMessageBox::Default | QMessageBox::Escape ,
                   QMessageBox::NoButton  );
-  mb.setButtonText(QMessageBox::Yes, "Копировать");
-  mb.setButtonText(QMessageBox::No,  "Отмена");
+  mb.setButtonText(QMessageBox::Yes, "РљРѕРїРёСЂРѕРІР°С‚СЊ");
+  mb.setButtonText(QMessageBox::No,  "РћС‚РјРµРЅР°");
   if( mb.exec() == QMessageBox::Yes )
   { id = 0;
     accept();
@@ -867,7 +873,7 @@ void PrihodAddDialog::on_pb1_clicked()
 //=======================================================================================
 void PrihodAddDialog::on_pb2_clicked()
 {
-  le1->insertPlainText( "нет документов" );
+  le1->insertPlainText( "РЅРµС‚ РґРѕРєСѓРјРµРЅС‚РѕРІ" );
 }
 
 //=======================================================================================
@@ -876,8 +882,8 @@ void PrihodAddDialog::on_pb2_clicked()
 void PrihodAddDialog::accept()
 {
   if( le2->text().isEmpty() )
-  { QMessageBox::information(this, "Склад",
-    "Поле \"Наименование\" не заполненно!"  );
+  { QMessageBox::information(this, "РЎРєР»Р°Рґ",
+    "РџРѕР»Рµ \"РќР°РёРјРµРЅРѕРІР°РЅРёРµ\" РЅРµ Р·Р°РїРѕР»РЅРµРЅРЅРѕ!"  );
     return;
   }
 
@@ -907,19 +913,19 @@ void PrihodAddDialog::accept()
   if( id ) str += " WHERE id = ? ";
 
   query.prepare( str );
-  query.addBindValue( cb1->itemData( cb1->currentIndex() ) ); // тип
-  query.addBindValue( le2->text().toUtf8() );                 // наименование
-  query.addBindValue( le9->text().toUtf8() );                 // код
-  query.addBindValue( cb2->itemData( cb2->currentIndex() ) ); // производитель
-  query.addBindValue( le10->text().toUtf8() );                // накладная
-  query.addBindValue( mesto );                                // место
-  query.addBindValue( le4 ->text().toInt() );                 // остаток
-  query.addBindValue( le6 ->text().toInt() );                 // количество
-  query.addBindValue( le3->text().toDouble() );               // цена
-  query.addBindValue( le1-> toPlainText().toUtf8() );         // примечания
+  query.addBindValue( cb1->itemData( cb1->currentIndex() ) ); // С‚РёРї
+  query.addBindValue( le2->text().toUtf8() );                 // РЅР°РёРјРµРЅРѕРІР°РЅРёРµ
+  query.addBindValue( le9->text().toUtf8() );                 // РєРѕРґ
+  query.addBindValue( cb2->itemData( cb2->currentIndex() ) ); // РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ
+  query.addBindValue( le10->text().toUtf8() );                // РЅР°РєР»Р°РґРЅР°СЏ
+  query.addBindValue( mesto );                                // РјРµСЃС‚Рѕ
+  query.addBindValue( le4 ->text().toInt() );                 // РѕСЃС‚Р°С‚РѕРє
+  query.addBindValue( le6 ->text().toInt() );                 // РєРѕР»РёС‡РµСЃС‚РІРѕ
+  query.addBindValue( le3->text().toDouble() );               // С†РµРЅР°
+  query.addBindValue( le1-> toPlainText().toUtf8() );         // РїСЂРёРјРµС‡Р°РЅРёСЏ
   query.addBindValue( user_id );
   query.addBindValue( QDate::currentDate() );
-  if( id==0 )  query.addBindValue( zakupka );                 // закупка
+  if( id==0 )  query.addBindValue( zakupka );                 // Р·Р°РєСѓРїРєР°
   if( id    )  query.addBindValue( id );
 
   if( !query.exec() )
@@ -928,8 +934,8 @@ void PrihodAddDialog::accept()
   }
 
   query.prepare( "UPDATE prihod SET type = ? WHERE name = ?" );
-  query.addBindValue( cb1->itemData( cb1->currentIndex() ) ); // тип
-  query.addBindValue( le2->text().toUtf8() );                 // наименование
+  query.addBindValue( cb1->itemData( cb1->currentIndex() ) ); // С‚РёРї
+  query.addBindValue( le2->text().toUtf8() );                 // РЅР°РёРјРµРЅРѕРІР°РЅРёРµ
   if( !query.exec() )
   {  sql_error_message( query, this );
 	   return;
@@ -937,7 +943,7 @@ void PrihodAddDialog::accept()
 
   if( zakupka )
   { query.prepare( "UPDATE zakupki SET polucheno = polucheno + ? WHERE id = ?" );
-    query.addBindValue( le6 ->text().toInt() );                 // количество
+    query.addBindValue( le6 ->text().toInt() );                 // РєРѕР»РёС‡РµСЃС‚РІРѕ
     query.addBindValue( zakupka );
     if( !query.exec() )
     {  sql_error_message( query, this );
@@ -967,8 +973,8 @@ ZamenaAddDialog::ZamenaAddDialog( QWidget *parent, int id_arg )
 
   tw->clear_query_fields();
   tw->query_str_pk_field = " t.id";
-  tw->add_query_field( "Наименование", 200,  "t.name"           );
-  tw->add_query_field( "Остаток",      70,  "SUM(t.ostatok)"    );
+  tw->add_query_field( "РќР°РёРјРµРЅРѕРІР°РЅРёРµ", 200,  "t.name"           );
+  tw->add_query_field( "РћСЃС‚Р°С‚РѕРє",      70,  "SUM(t.ostatok)"    );
   tw->query_str_main = " FROM ( SELECT id,type,name,ostatok FROM prihod "
                        "  UNION SELECT 0,type,name,0        FROM zakupki) AS t ";
   tw->query_str_order_by = " GROUP BY t.name ORDER BY t.name ASC ";
@@ -989,7 +995,7 @@ ZamenaAddDialog::ZamenaAddDialog( QWidget *parent, int id_arg )
   { type = query.value(0).toInt();
     le1->setText( sql_get_string( query,1 ) );
   }
-  setWindowTitle( "Замена:" + le1->text() );
+  setWindowTitle( "Р—Р°РјРµРЅР°:" + le1->text() );
 }
 
 //=======================================================================================
@@ -1019,7 +1025,7 @@ void ZamenaAddDialog::on_pb_add_zamena_clicked()
   QList<QTableWidgetSelectionRange> slist = tw->selectedRanges();
 
   if( slist.isEmpty() )
-  { QMessageBox::warning( this, app_header, "Строка таблицы не выбрана." );
+  { QMessageBox::warning( this, app_header, "РЎС‚СЂРѕРєР° С‚Р°Р±Р»РёС†С‹ РЅРµ РІС‹Р±СЂР°РЅР°." );
     return;
   }
 
@@ -1032,8 +1038,8 @@ void ZamenaAddDialog::on_pb_add_zamena_clicked()
 	   return;
   }
   if( query.size() )
-  { QMessageBox::critical( this, app_header, "Невозможно добавить замену:\n"
-                                "элемент с таким именем уже есть." );
+  { QMessageBox::critical( this, app_header, "РќРµРІРѕР·РјРѕР¶РЅРѕ РґРѕР±Р°РІРёС‚СЊ Р·Р°РјРµРЅСѓ:\n"
+                                "СЌР»РµРјРµРЅС‚ СЃ С‚Р°РєРёРј РёРјРµРЅРµРј СѓР¶Рµ РµСЃС‚СЊ." );
     return;
   }
   query.prepare( " INSERT INTO zamena ( kompl, name ) VALUES ( ?,? )" );
@@ -1058,7 +1064,7 @@ void ZamenaAddDialog::on_pb_rename_clicked()
   QList<QTableWidgetSelectionRange> slist =  tw->selectedRanges();
 
   if( slist.isEmpty() )
-  { QMessageBox::warning( this, app_header, "Строчка таблицы не выбрана." );
+  { QMessageBox::warning( this, app_header, "РЎС‚СЂРѕС‡РєР° С‚Р°Р±Р»РёС†С‹ РЅРµ РІС‹Р±СЂР°РЅР°." );
     return;
   }
 
@@ -1085,8 +1091,8 @@ void ZamenaAddDialog::on_pb_rename_clicked()
 	       return;
       }
       if( query.size() )
-      { QMessageBox::critical( this, app_header, "Невозможно переименовать:\n"
-                                    "элемент с таким именем уже есть." );
+      { QMessageBox::critical( this, app_header, "РќРµРІРѕР·РјРѕР¶РЅРѕ РїРµСЂРµРёРјРµРЅРѕРІР°С‚СЊ:\n"
+                                    "СЌР»РµРјРµРЅС‚ СЃ С‚Р°РєРёРј РёРјРµРЅРµРј СѓР¶Рµ РµСЃС‚СЊ." );
         return;
       }
       query.prepare( "UPDATE kompl  SET name = ? WHERE id = ?" );
@@ -1106,13 +1112,13 @@ void ZamenaAddDialog::on_pb_rename_clicked()
       done( QDialog::Accepted );
       return;
     } else
-    { QMessageBox::critical( this, app_header, "Переименовать невозможно:\n"
-                             "количество снятых деталей не равно нулю.\n" );
+    { QMessageBox::critical( this, app_header, "РџРµСЂРµРёРјРµРЅРѕРІР°С‚СЊ РЅРµРІРѕР·РјРѕР¶РЅРѕ:\n"
+                             "РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРЅСЏС‚С‹С… РґРµС‚Р°Р»РµР№ РЅРµ СЂР°РІРЅРѕ РЅСѓР»СЋ.\n" );
       return;
     }
   }
-  QMessageBox::critical( this, app_header, QString("Переименовать невозможно:\n"
-                             "ОШИБКА БАЗЫ. [KOMPL_ID = %1]").arg( id ) );
+  QMessageBox::critical( this, app_header, QString("РџРµСЂРµРёРјРµРЅРѕРІР°С‚СЊ РЅРµРІРѕР·РјРѕР¶РЅРѕ:\n"
+                             "РћРЁРР‘РљРђ Р‘РђР—Р«. [KOMPL_ID = %1]").arg( id ) );
 }
 
 //#######################################################################################
@@ -1124,8 +1130,8 @@ ZakupkiAddDialog::ZakupkiAddDialog( QWidget *parent,int id_arg )
   QString str;
 
   setupUi( this );
-  if( id )  setWindowTitle( "Изменить данные в в закупке");
-  else      setWindowTitle( "Добавить закупку");
+  if( id )  setWindowTitle( "РР·РјРµРЅРёС‚СЊ РґР°РЅРЅС‹Рµ РІ РІ Р·Р°РєСѓРїРєРµ");
+  else      setWindowTitle( "Р”РѕР±Р°РІРёС‚СЊ Р·Р°РєСѓРїРєСѓ");
 
   connect( pbOK,     SIGNAL( clicked() ),  this, SLOT( accept() ) );
   connect( pbCANCEL, SIGNAL( clicked() ),  this, SLOT( reject() ) );
@@ -1201,13 +1207,13 @@ ZakupkiAddDialog::ZakupkiAddDialog( QWidget *parent,int id_arg )
 	   return;
   }
   while( query.next() )
-  { cb1 ->setCurrentIndex( cb1->findData( query.value(0) ) );             // тип
-    le1 ->setText( sql_get_string( query, 1 ) );                          // наименование
-    le6->setText( query.value(2).toString() );                            // кол-во
-    cb2 ->setCurrentIndex( cb2->findData( query.value(3) ) );             // поставщик
-    cb5 ->setCurrentIndex( cb5->findText( sql_get_string( query, 4 ) ) ); // счет
-    cb6 ->setCurrentIndex( cb6->findText( sql_get_string( query, 5 ) ) ); // платеж
-    te_notes->setPlainText( query.value(7).toString() ); // примечания
+  { cb1 ->setCurrentIndex( cb1->findData( query.value(0) ) );             // С‚РёРї
+    le1 ->setText( sql_get_string( query, 1 ) );                          // РЅР°РёРјРµРЅРѕРІР°РЅРёРµ
+    le6->setText( query.value(2).toString() );                            // РєРѕР»-РІРѕ
+    cb2 ->setCurrentIndex( cb2->findData( query.value(3) ) );             // РїРѕСЃС‚Р°РІС‰РёРє
+    cb5 ->setCurrentIndex( cb5->findText( sql_get_string( query, 4 ) ) ); // СЃС‡РµС‚
+    cb6 ->setCurrentIndex( cb6->findText( sql_get_string( query, 5 ) ) ); // РїР»Р°С‚РµР¶
+    te_notes->setPlainText( query.value(7).toString() ); // РїСЂРёРјРµС‡Р°РЅРёСЏ
     if( query.value(6).toInt() < 30 ) pb1->setEnabled( false );
   }
 }
@@ -1242,8 +1248,8 @@ void ZakupkiAddDialog::accept()
   QString str;
 
   if( le1->text().isEmpty() )
-  { QMessageBox::information(this,  "Склад" ,
-     "Поле \"Наименование\" не заполненно!"  );
+  { QMessageBox::information(this,  "РЎРєР»Р°Рґ" ,
+     "РџРѕР»Рµ \"РќР°РёРјРµРЅРѕРІР°РЅРёРµ\" РЅРµ Р·Р°РїРѕР»РЅРµРЅРЅРѕ!"  );
     return;
   }
 
@@ -1257,13 +1263,13 @@ void ZakupkiAddDialog::accept()
   if( id ) str += " WHERE id = ? ";
 
   query.prepare( str );
-  query.addBindValue( cb1->itemData( cb1->currentIndex() ) ); // тип
-  query.addBindValue( le1->text() );                          // наименование
-  query.addBindValue( le6->text().toInt() );                  // кол-во
-  query.addBindValue( cb2->itemData( cb2->currentIndex() ) ); // поставщик
-  query.addBindValue( cb5->currentText().toUtf8() );          // счет
-  query.addBindValue( cb6->currentText().toUtf8() );          // платеж
-  query.addBindValue( te_notes->toPlainText() );              // примечания
+  query.addBindValue( cb1->itemData( cb1->currentIndex() ) ); // С‚РёРї
+  query.addBindValue( le1->text() );                          // РЅР°РёРјРµРЅРѕРІР°РЅРёРµ
+  query.addBindValue( le6->text().toInt() );                  // РєРѕР»-РІРѕ
+  query.addBindValue( cb2->itemData( cb2->currentIndex() ) ); // РїРѕСЃС‚Р°РІС‰РёРє
+  query.addBindValue( cb5->currentText().toUtf8() );          // СЃС‡РµС‚
+  query.addBindValue( cb6->currentText().toUtf8() );          // РїР»Р°С‚РµР¶
+  query.addBindValue( te_notes->toPlainText() );              // РїСЂРёРјРµС‡Р°РЅРёСЏ
   query.addBindValue( user_id );
   query.addBindValue( QDate::currentDate() );
   if( id ) query.addBindValue( id );
@@ -1290,8 +1296,8 @@ UsersDialog::UsersDialog( QWidget *parent )
 
   tw->clear_query_fields();
   tw->query_str_pk_field = "users.id";
-  tw->add_query_field( "Имя",            200,  "username"        );
-  tw->add_query_field( "Логин",          100,  "nickname"        );
+  tw->add_query_field( "РРјСЏ",            200,  "username"        );
+  tw->add_query_field( "Р›РѕРіРёРЅ",          100,  "nickname"        );
   tw->query_str_main =
     " FROM users ";
   tw->query_str_order_by =
@@ -1335,7 +1341,7 @@ void UsersDialog::on_pb2_clicked()
 {
  QSqlQuery query;
   query.prepare( " INSERT INTO users ( username, nickname, passw, permissions ) "
-                 " VALUES (\'Новый пользователь\',\'guest\',\'\',0 ) " );
+                 " VALUES (\'РќРѕРІС‹Р№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ\',\'guest\',\'\',0 ) " );
   if( !query.exec() )
   {  sql_error_message( query, this );
 	   return;

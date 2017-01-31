@@ -1,11 +1,10 @@
 #ifndef __mainwindow_h_
 #define __mainwindow_h_
 
-#include "pch.h"
 #include "dialogs.h"
 
 //==============================================================================
-// главное окно
+// РіР»Р°РІРЅРѕРµ РѕРєРЅРѕ
 //==============================================================================
 #include "ui_mainwindow.h"
 class MainWindow : public QMainWindow,

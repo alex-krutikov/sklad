@@ -1,10 +1,10 @@
 #ifndef __misc_h__
 #define __misc_h__
 
-#include "pch.h"
+#include <QTableWidget>
 
 //==============================================================================
-/// Таблица выборки данных из SQL-запроса
+/// РўР°Р±Р»РёС†Р° РІС‹Р±РѕСЂРєРё РґР°РЅРЅС‹С… РёР· SQL-Р·Р°РїСЂРѕСЃР°
 //==============================================================================
 class SqlTable : public QTableWidget
 {
@@ -23,19 +23,19 @@ public:
   QVector<int> get_selected_id_vect();
   int  set_selected_id( int id);
 
-  QString       query_str_pk_field;    ///< имя поля PRIMARY KEY
-  QString       query_str_color_field; ///< имя поля с значением цвета
-  QString       query_str_main;     ///< часть запроса FROM ....
-  QString       query_str_where;    ///< часть запроса WHERE ....
-  QString       query_str_group_by; ///< часть запроса GROUP BY ....
-  QString       query_str_order_by; ///< часть запроса ORDER BY ....
-  QString       query_str_limit;    ///< часть запроса LIMIT ....
+  QString       query_str_pk_field;    ///< РёРјСЏ РїРѕР»СЏ PRIMARY KEY
+  QString       query_str_color_field; ///< РёРјСЏ РїРѕР»СЏ СЃ Р·РЅР°С‡РµРЅРёРµРј С†РІРµС‚Р°
+  QString       query_str_main;     ///< С‡Р°СЃС‚СЊ Р·Р°РїСЂРѕСЃР° FROM ....
+  QString       query_str_where;    ///< С‡Р°СЃС‚СЊ Р·Р°РїСЂРѕСЃР° WHERE ....
+  QString       query_str_group_by; ///< С‡Р°СЃС‚СЊ Р·Р°РїСЂРѕСЃР° GROUP BY ....
+  QString       query_str_order_by; ///< С‡Р°СЃС‚СЊ Р·Р°РїСЂРѕСЃР° ORDER BY ....
+  QString       query_str_limit;    ///< С‡Р°СЃС‚СЊ Р·Р°РїСЂРѕСЃР° LIMIT ....
 
-  QStringList   header_labels; ///< все названия в таблице
-  QStringList   query_fields;  ///< все поля в запросе
-  QVector<int>  header_sizes;  ///< значения ширин полей в таблице
-  QVector<int>  header_show_flag; ///< вектор флагов показвать/не показвать поле
-  QVector<int>  alignment;       ///< вектор выравнивание текста
+  QStringList   header_labels; ///< РІСЃРµ РЅР°Р·РІР°РЅРёСЏ РІ С‚Р°Р±Р»РёС†Рµ
+  QStringList   query_fields;  ///< РІСЃРµ РїРѕР»СЏ РІ Р·Р°РїСЂРѕСЃРµ
+  QVector<int>  header_sizes;  ///< Р·РЅР°С‡РµРЅРёСЏ С€РёСЂРёРЅ РїРѕР»РµР№ РІ С‚Р°Р±Р»РёС†Рµ
+  QVector<int>  header_show_flag; ///< РІРµРєС‚РѕСЂ С„Р»Р°РіРѕРІ РїРѕРєР°Р·РІР°С‚СЊ/РЅРµ РїРѕРєР°Р·РІР°С‚СЊ РїРѕР»Рµ
+  QVector<int>  alignment;       ///< РІРµРєС‚РѕСЂ РІС‹СЂР°РІРЅРёРІР°РЅРёРµ С‚РµРєСЃС‚Р°
   bool          rows_highlighting;
   bool          row_selection_mode;
 private:
