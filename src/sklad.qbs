@@ -8,13 +8,7 @@ Application {
     Depends { name: "Qt.sql" }
     Depends { name: "Qt.printsupport" }
 
-    cpp.cxxFlags: [
-        "--no-rtti",
-        "--no-exceptions",
-    ]
-
     cpp.cxxLanguageVersion: "c++14"
-
     consoleApplication: false
 
     cpp.includePaths: [
@@ -29,5 +23,10 @@ Application {
         "*.qrc",
         "ui/*.ui",
     ]
+
+    Group {
+        fileTagsFilter: "application"
+        qbs.install: true
+    }
 }
 
