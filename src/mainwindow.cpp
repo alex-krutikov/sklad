@@ -97,8 +97,8 @@ MainWindow::MainWindow()
   //
   tw_sklad->clear_query_fields();
   tw_sklad->rows_highlighting = true;
-  tw_sklad->query_str_pk_field = "prihod.id";
-  tw_sklad->add_query_field( "Тип",          100,  "typename"              );
+  tw_sklad->query_str_pk_field = "ANY_VALUE(prihod.id)";
+  tw_sklad->add_query_field( "Тип",          100,  "ANY_VALUE(typename)"   );
   tw_sklad->add_query_field( "Наименование", 200,  "prihod.name"           );
   tw_sklad->add_query_field( "Остаток",       70,  "SUM(ostatok)"          );
   tw_sklad->add_query_field( "Место",        200,  "GROUP_CONCAT(DISTINCT mesto)"             );
@@ -107,7 +107,7 @@ MainWindow::MainWindow()
     " FROM prihod "
     " LEFT JOIN types           ON prihod.type = types.id ";
   tw_sklad->query_str_group_by = " GROUP BY name ";
-  tw_sklad->query_str_order_by = " ORDER BY typename, name ASC ";
+  tw_sklad->query_str_order_by = " ORDER BY ANY_VALUE(typename), name ASC ";
   tw_sklad->query_str_limit = "LIMIT 0,200 ";
   tw_sklad->setShownFields( settings.value("sklad", "").toString() );
 
@@ -748,7 +748,7 @@ void MainWindow::on_action_Pereraschet_triggered()
            "DROP TEMPORARY TABLE IF EXISTS t2; "
            //-------
            "CREATE TEMPORARY TABLE t2 (kompl int UNIQUE, name char(30), s2 int ) ENGINE = MEMORY "
-           "  SELECT zamena.kompl,zamena.name,SUM(s1) AS s2 "
+           "  SELECT zamena.kompl, ANY_VALUE(zamena.name) ,SUM(s1) AS s2 "
            "  FROM zamena "
            "  LEFT JOIN t1 ON t1.name = zamena.name "
            "  GROUP BY zamena.kompl; "
