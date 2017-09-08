@@ -21,7 +21,7 @@ class BomFile
   };
 
 public:
-  void loadFile( const QString filename );
+  bool loadFile( const QString filename );
   void process();
   void sort();
 private:

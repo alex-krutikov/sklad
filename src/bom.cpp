@@ -11,7 +11,7 @@
 //#######################################################################################
 //
 //#######################################################################################
-void BomFile::loadFile( const QString filename )
+bool BomFile::loadFile( const QString filename )
 {
   data.clear();
 
@@ -28,7 +28,7 @@ void BomFile::loadFile( const QString filename )
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
   {QMessageBox::critical(mainwindow, "Импорт BOM-файла",
               QString("Не могу открыть файл \"%1\"").arg( filename ) );
-    return;
+    return false;
   }
 
   str = QString::fromLocal8Bit( file.readLine() ).toUpper().simplified();
@@ -42,21 +42,21 @@ void BomFile::loadFile( const QString filename )
   if( fn[0] < 0 )
   { QMessageBox::critical(0, "Импорт BOM-файла",
               "Не найдено поле \"Count\" в первой строке BOM-файла!" );
-    return;
+    return false;
   }
   fn[1] = sl.indexOf("COMPONENTNAME");
   if( fnmax < fn[1] ) fnmax=fn[1];
   if( fn[1] < 0 )
   { QMessageBox::critical(0, "Импорт BOM-файла",
               "Не найдено поле \"ComponentName\" в первой строке BOM-файла!" );
-    return;
+    return false;
   }
   fn[2] = sl.indexOf("REFDES");
   if( fnmax < fn[2] ) fnmax=fn[2];
   if( fn[2] < 0 )
   { QMessageBox::critical(0, "Импорт BOM-файла",
               "Не найдено поле \"RefDes\" в первой строке BOM-файла!" );
-    return;
+    return false;
   }
   fn[3] = sl.indexOf("VALUE");
   if( fnmax < fn[3] ) fnmax=fn[3];
@@ -65,7 +65,7 @@ void BomFile::loadFile( const QString filename )
               QString("Не найдено поле \"Value\" в первой строке BOM-файла! %1 %2")
                 .arg( sl.indexOf("VALUE") )
                 .arg( sl.at(4) )  );
-    return;
+    return false;
   }
 
   k = 0;
@@ -87,7 +87,7 @@ void BomFile::loadFile( const QString filename )
     if( k < 0 )
     { QMessageBox::critical(0, "Импорт BOM-файла",
               QString("Ошибка в поле \"Count\" (строка %1)! ").arg(i) );
-      return;
+      return false;
     }
 
     v.clear();
@@ -108,7 +108,7 @@ void BomFile::loadFile( const QString filename )
         QMessageBox::critical(0, "Импорт BOM-файла",
               QString("Ошибка! Присутствует кол-во в подчиненной строке. (строка %1)! ").arg(i) );
               data.clear();
-              return;
+              return false;
       }
     }
 
@@ -141,6 +141,8 @@ void BomFile::loadFile( const QString filename )
 
     data << ss;
   }
+
+  return true;
 }
 
 //==============================================================================
@@ -269,7 +271,9 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
   str.clear();
   //-------------------------------------------------------------------------------------
   BomFile bf;
-  bf.loadFile( filename );
+  bool ok = bf.loadFile( filename );
+  if (!ok)
+      return false;
   bf.process();
   //-------------------------------------------------------------------------------------
   // типы элементов
