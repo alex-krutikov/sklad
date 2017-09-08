@@ -694,17 +694,23 @@ void MainWindow::on_action_Pereraschet_triggered()
   int i;
   QStringList sl;
   QSqlQuery query;
+  int progrss_i = 0;
 
-  QProgressDialog progress("Перерасчет базы","Отмена", 0,7, this );
+  QProgressDialog progress("Перерасчет базы","Отмена", 0,12, this );
+  progress.setWindowFlag(Qt::WindowCloseButtonHint, false);
+  progress.setCancelButton(0);
   progress.show();
 
-  progress.setValue(0);
+  progress.setValue(progrss_i++);
 
   if( !query.exec( "  LOCK TABLES kompl WRITE, types WRITE, prihod WRITE, "
                    "  zakupki WRITE, sostav WRITE, izdelie WRITE, zamena WRITE " ) )
   {  sql_error_message( query, this );
 	 return;
   }
+
+  progress.setValue(progrss_i++);
+  qApp->processEvents();
 
   //========= Статус "не комплектовать" для типа "Модуль" в комплектации ======
   query.prepare(
@@ -715,7 +721,8 @@ void MainWindow::on_action_Pereraschet_triggered()
 	   return;
   }
 
-  progress.setValue(3);
+  progress.setValue(progrss_i++);
+  qApp->processEvents();
   //==================== Комплектация "need" ===================================
   query.prepare( " UPDATE kompl "
                  " LEFT JOIN sostav  ON kompl.sostav   = sostav.id "
@@ -726,7 +733,8 @@ void MainWindow::on_action_Pereraschet_triggered()
 	   return;
   }
 
-  progress.setValue(4);
+  progress.setValue(progrss_i++);
+  qApp->processEvents();
   //==================== Комплектация "снято" ===================================
   query.prepare( " UPDATE kompl, "
                  "   ( SELECT kompl, SUM( snato ) AS s1 FROM zamena GROUP BY kompl ) AS t1 "
@@ -736,7 +744,8 @@ void MainWindow::on_action_Pereraschet_triggered()
 	   return;
   }
 
-  progress.setValue(5);
+  progress.setValue(progrss_i++);
+  qApp->processEvents();
   //==================== Комплектация "color" ===================================
    static const char query_text[] =
            "DROP TEMPORARY TABLE IF EXISTS t1;"
@@ -764,8 +773,11 @@ void MainWindow::on_action_Pereraschet_triggered()
     {  sql_error_message( query, this );
 	     return;
     }
+    progress.setValue(progrss_i++);
+    qApp->processEvents();
   }
-  progress.setValue(6);
+  progress.setValue(progrss_i++);
+  qApp->processEvents();
   //==================== Комплектация "color" через статус =======================
   query.prepare( " UPDATE kompl "
                  " SET color = 40 WHERE status = 1 " );
@@ -774,7 +786,8 @@ void MainWindow::on_action_Pereraschet_triggered()
 	   return;
   }
 
-  progress.setValue(7);
+  progress.setValue(progrss_i++);
+  qApp->processEvents();
   //==================== Состав "color" ===================================
   query.prepare( " UPDATE sostav "
                  " LEFT JOIN "
@@ -790,6 +803,9 @@ void MainWindow::on_action_Pereraschet_triggered()
   {  sql_error_message( query, this );
 	   return;
   }
+
+  progress.setValue(progrss_i++);
+  qApp->processEvents();
 
   if( !query.exec( " UNLOCK TABLES " ) )
   {  sql_error_message( query, this );
