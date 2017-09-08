@@ -759,7 +759,7 @@ void MainWindow::on_action_Pereraschet_triggered()
            "CREATE TEMPORARY TABLE t2 (kompl int UNIQUE, name char(30), s2 int ) ENGINE = MEMORY "
            "  SELECT zamena.kompl, ANY_VALUE(zamena.name) ,SUM(s1) AS s2 "
            "  FROM zamena "
-           "  LEFT JOIN t1 ON t1.name = zamena.name "
+           "  INNER JOIN t1 ON t1.name = zamena.name "
            "  GROUP BY zamena.kompl; "
            //-------
            "UPDATE kompl "
