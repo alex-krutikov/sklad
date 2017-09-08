@@ -703,14 +703,14 @@ void Defichit2::refresh()
   query.prepare(
     " SELECT t1.type, t1.typename, t1.name, t1.treb, t2.nalichie, t1.sost_id, zakupka "
     " FROM ( "
-    "   SELECT ANY_VALUE(kompl.type), ANY_VALUE(typename),zamena.name,SUM(kompl.need-kompl.snato) AS treb, "
+    "   SELECT MAX(kompl.type), MAX(typename),zamena.name,SUM(kompl.need-kompl.snato) AS treb, "
     "          GROUP_CONCAT( kompl.sostav ) AS sost_id "
     "   FROM kompl "
     "   LEFT JOIN zamena ON zamena.kompl=kompl.id "
     "   LEFT JOIN types ON types.id=kompl.type "
     "   WHERE kompl.sostav IN ( " + sostav_id + " ) "
     "   GROUP BY zamena.name "
-    "   ORDER BY ANY_VALUE(typename) ASC ) AS t1 "
+    "   ORDER BY MAX(typename) ASC ) AS t1 "
     " LEFT JOIN ( "
     "   SELECT name,SUM(ostatok) AS nalichie FROM prihod GROUP BY name "
     "   ) AS t2 ON t1.name = t2.name "
@@ -807,14 +807,14 @@ void Defichit2::on_pb_print_clicked()
   query.prepare(
     " SELECT t1.type, t1.typename, t1.name, t1.treb, t2.nalichie, t1.sost_id "
     " FROM ( "
-    "   SELECT ANY_VALUE(kompl.type),ANY_VALUE(typename),zamena.name,SUM(kompl.need-kompl.snato) AS treb, "
+    "   SELECT MAX(kompl.type),MAX(typename),zamena.name,SUM(kompl.need-kompl.snato) AS treb, "
     "          GROUP_CONCAT( kompl.sostav ) AS sost_id "
     "   FROM kompl "
     "   LEFT JOIN zamena ON zamena.kompl=kompl.id "
     "   LEFT JOIN types ON types.id=kompl.type "
     "   WHERE kompl.sostav IN ( " + sostav_id + " ) "
     "   GROUP BY zamena.name "
-    "   ORDER BY ANY_VALUE(typename) ASC ) AS t1 "
+    "   ORDER BY MAX(typename) ASC ) AS t1 "
     " LEFT JOIN ( "
     "   SELECT name,SUM(ostatok) AS nalichie FROM prihod GROUP BY name "
     "   ) AS t2 ON t1.name = t2.name "
@@ -1105,7 +1105,7 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
 
   //------------------------------------------------------------------------------------
   // текущий остаток на складе
-  query.prepare( " SELECT ANY_VALUE(typename), name, SUM( ostatok ) "
+  query.prepare( " SELECT MAX(typename), name, SUM( ostatok ) "
                  " FROM prihod "
                  " LEFT JOIN types ON prihod.type=types.id "
                  " GROUP BY prihod.name " );

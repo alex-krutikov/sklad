@@ -290,7 +290,7 @@ void RVvodAddDialog::tw_refresh()
   i = cb_type->itemData( cb_type->currentIndex() ).toInt();
 
   QSqlQuery query;
-  query.prepare( "SELECT type, ANY_VALUE(typename), name, sum(ostatok) FROM prihod "
+  query.prepare( "SELECT type, MAX(typename), name, sum(ostatok) FROM prihod "
                  "  LEFT JOIN types ON prihod.type = types.id "
                  "  WHERE ( type = ? OR ? < 0 ) AND name LIKE ? "
                  "  GROUP BY type, name ORDER BY name ASC " );
@@ -972,7 +972,7 @@ ZamenaAddDialog::ZamenaAddDialog( QWidget *parent, int id_arg )
   connect( le1,  SIGNAL( textChanged(const QString) ), SLOT( my1() )  );
 
   tw->clear_query_fields();
-  tw->query_str_pk_field = " ANY_VALUE(t.id)";
+  tw->query_str_pk_field = " MAX(t.id)";
   tw->add_query_field( "Наименование", 200,  "t.name"           );
   tw->add_query_field( "Остаток",      70,  "SUM(t.ostatok)"    );
   tw->query_str_main = " FROM ( SELECT id,type,name,ostatok FROM prihod "
