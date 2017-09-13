@@ -14,6 +14,6 @@
         <file>icons/printer.png</file>
     </qresource>
     <qresource prefix="/tr" >
-        <file>qt_ru.qm</file>
+        <file>qtbase_ru.qm</file>
     </qresource>
 </RCC>

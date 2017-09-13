@@ -172,6 +172,7 @@ class RVvodDialog : public QDialog,
   Q_OBJECT
 public:
   RVvodDialog( QWidget *parent = 0, int n_arg=0,int id_arg=0 );
+  bool init_from_sostav_id(int sostav_id);
   void accept();
 private slots:
   void on_pb_add_clicked();

@@ -697,6 +697,7 @@ void MainWindow::on_action_Pereraschet_triggered()
   int progrss_i = 0;
 
   QProgressDialog progress("Перерасчет базы","Отмена", 0,12, this );
+  progress.setWindowTitle("Перерасчет");
   progress.setWindowFlag(Qt::WindowCloseButtonHint, false);
   progress.setCancelButton(0);
   progress.show();

@@ -152,6 +152,59 @@ RVvodDialog::RVvodDialog( QWidget *parent, int n_arg ,int id_arg )
 //=======================================================================================
 //
 //=======================================================================================
+bool RVvodDialog::init_from_sostav_id(int sostav_id)
+{
+    QSqlQuery query;
+
+    query.prepare("SELECT `name` FROM `sostav` WHERE `id` = ?");
+    query.addBindValue( sostav_id );
+    if( !query.exec() )
+    {  sql_error_message( query, this );
+       return false;
+    }
+
+    if (query.size() != 1) {
+        QMessageBox::information(0, "Склад", QString("Спецификация с номером %1 не найдена.").arg(sostav_id));
+        return false;
+    }
+
+    query.next();
+    le1->setText(query.value(0).toString());
+
+    query.prepare("SELECT `name`, `nominal`, `type`, `typename`, `n` "
+                  "FROM `kompl` LEFT JOIN `types` ON `kompl`.`type`=`types`.`id` "
+                  "WHERE `kompl`.`sostav` = ? ORDER BY `kompl`.`id`");
+    query.addBindValue( sostav_id );
+    if( !query.exec() )
+    {  sql_error_message( query, this );
+       return false;
+    }
+    tw->setRowCount(query.size());
+    int row_index = 0;
+    while(query.next())
+    {
+        QTableWidgetItem *ti = new QTableWidgetItem;
+        ti->setText( query.value(3).toString() );
+        ti->setData( Qt::UserRole, query.value(2) );
+        tw->setItem( row_index, 0 , ti);
+        ti = new QTableWidgetItem;
+        ti->setText( query.value(0).toString() );
+        tw->setItem( row_index, 1 , ti);
+        ti = new QTableWidgetItem;
+        ti->setText( query.value(1).toString() );
+        tw->setItem( row_index, 2 , ti);
+        ti = new QTableWidgetItem;
+        ti->setText( query.value(4).toString());
+        tw->setItem( row_index, 3 , ti);
+        ++row_index;
+    }
+
+    return true;
+}
+
+//=======================================================================================
+//
+//=======================================================================================
 void RVvodDialog::on_pb_add_clicked()
 {
   QTableWidgetItem *ti;
@@ -560,12 +613,34 @@ void SostavAddDialog::accept()
       }
     }
     break;
-    case( 1 ):  // ручной ввод
-      { RVvodDialog dialog( this, sb1->value(), id );
-        dialog.exec();
+  case( 1 ):  // ручной ввод
+    { RVvodDialog dialog( this, sb1->value(), id );
+      dialog.exec();
+
+      if (dialog.result())
         done(QDialog::Accepted);
+    }
+    break;
+  case( 2 ):  // повтор спецификации по номеру
+    { QInputDialog sostav_id_dialog(this);
+      sostav_id_dialog.setWindowTitle("Ввод номера спецификации");
+      sostav_id_dialog.setInputMode(QInputDialog::IntInput);
+      sostav_id_dialog.setLabelText("Номер спецификации:");
+      sostav_id_dialog.setIntMinimum(1);
+      sostav_id_dialog.setIntMaximum(1000000);
+      sostav_id_dialog.exec();
+
+      if (sostav_id_dialog.result())
+      {   RVvodDialog rv_dialog( this, sb1->value(), id );
+          bool ok = rv_dialog.init_from_sostav_id(sostav_id_dialog.intValue());
+          if (ok)
+          { rv_dialog.exec();
+            if (rv_dialog.result())
+              done(QDialog::Accepted);
+          }
       }
-      break;
+    }
+    break;
   }
 }
 
