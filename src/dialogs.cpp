@@ -588,6 +588,21 @@ SostavAddDialog::SostavAddDialog( QWidget *parent,int id_arg )
 {
   setupUi( this );
   setWindowTitle( "Добавить в состав изделя" );
+
+  sb_sostav->hide();
+  label_sostav->hide();
+
+  resize(size().width(), 0);
+}
+
+//=======================================================================================
+//
+//=======================================================================================
+void SostavAddDialog::on_cb1_currentIndexChanged(int index)
+{
+    bool status = (index == 2);
+    sb_sostav->setVisible(status);
+    label_sostav->setVisible(status);
 }
 
 //=======================================================================================
@@ -622,23 +637,13 @@ void SostavAddDialog::accept()
     }
     break;
   case( 2 ):  // повтор спецификации по номеру
-    { QInputDialog sostav_id_dialog(this);
-      sostav_id_dialog.setWindowTitle("Ввод номера спецификации");
-      sostav_id_dialog.setInputMode(QInputDialog::IntInput);
-      sostav_id_dialog.setLabelText("Номер спецификации:");
-      sostav_id_dialog.setIntMinimum(1);
-      sostav_id_dialog.setIntMaximum(1000000);
-      sostav_id_dialog.exec();
-
-      if (sostav_id_dialog.result())
-      {   RVvodDialog rv_dialog( this, sb1->value(), id );
-          bool ok = rv_dialog.init_from_sostav_id(sostav_id_dialog.intValue());
-          if (ok)
-          { rv_dialog.exec();
-            if (rv_dialog.result())
-              done(QDialog::Accepted);
-          }
-      }
+    {  RVvodDialog rv_dialog( this, sb1->value(), id );
+       bool ok = rv_dialog.init_from_sostav_id(sb_sostav->value());
+       if (ok)
+       { rv_dialog.exec();
+         if (rv_dialog.result())
+           done(QDialog::Accepted);
+       }
     }
     break;
   }

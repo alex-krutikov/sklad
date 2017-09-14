@@ -63,6 +63,8 @@ class SostavAddDialog : public QDialog,
 public:
   SostavAddDialog( QWidget *parent = 0, int id_arg=0 );
   void accept();
+private slots:
+  void on_cb1_currentIndexChanged(int);
 private:
   int id;
 };
