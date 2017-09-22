@@ -40,7 +40,8 @@ class BomAddDialog : public QDialog,
   friend class BomAddDialog2;
 
   struct t_data
-  { int          type;
+  { bool is_enabled;
+    int          type;
     QString type_name;
     QString type_name_bom;
     QString name_bom;
@@ -66,6 +67,7 @@ private:
   QMap<int,int> tw2data;
 private slots:
   void on_tw_cellDoubleClicked(int,int);
+  void on_tw_cellChanged(int, int);
 };
 
 //==============================================================================

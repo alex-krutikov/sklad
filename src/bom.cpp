@@ -335,6 +335,7 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     { ss.type = 0;
       ss.type_name.clear();
     }
+    ss.is_enabled = true;
     //--------------------- название BOM ---
     ss.name_bom = bf.data[i].name;
     //--------------------- номинал ---
@@ -385,8 +386,9 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     tw2data[j]=i;
     //--------------------- название BOM ---
     titem = new QTableWidgetItem;
-    titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-    titem->setText( data[i].name_bom );
+    titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
+    titem -> setCheckState(Qt::Checked);
+    titem->setText( "   " + data[i].name_bom );
     tw->setItem(j,0,titem );
     //--------------------- номинал ---
     titem = new QTableWidgetItem;
@@ -455,6 +457,29 @@ void BomAddDialog::on_tw_cellDoubleClicked( int row, int column )
 //=======================================================================================
 //
 //=======================================================================================
+void BomAddDialog::on_tw_cellChanged(int row, int column)
+{
+    if (column != 0)
+        return;
+
+    if (!(tw->item(row, 0)->flags() & Qt::ItemIsUserCheckable))
+        return;
+
+    bool checked = tw->item(row, 0)->checkState() == Qt::Checked;
+
+    data[tw2data[row]].is_enabled = checked;
+
+    QColor color = checked ? "black" : "gray";
+    for (int j = 0; j < 6; ++j) {
+        QTableWidgetItem *item = tw->item(row, j);
+        if (item)
+            item->setTextColor(color);
+    }
+}
+
+//=======================================================================================
+//
+//=======================================================================================
 void BomAddDialog::accept()
 {
   int i,j,last_id,last_id2;
@@ -463,7 +488,10 @@ void BomAddDialog::accept()
 
   QMap<QString,int> map;
   for( i=0; i<data.count(); i++ )
-  { str = data[i].name_sklad;
+  { if (!data[i].is_enabled)
+          continue;
+
+    str = data[i].name_sklad;
     if( str.isEmpty() ) str = data[i].name_bom;
     j = map.value( str, -1 );
     if( j >= 0 )
@@ -520,7 +548,10 @@ void BomAddDialog::accept()
   last_id = query.lastInsertId().toInt();
 
   for( i=0; i<data.count(); i++ )
-  { str = data[i].name_sklad;
+  { if (!data[i].is_enabled)
+          continue;
+
+    str = data[i].name_sklad;
     if( str.isEmpty() ) str = data[i].name_bom;
     query.prepare( "INSERT INTO kompl ( sostav, name, nominal, type, n ,position ) "
                    "VALUES ( ?,?,?,?,?,? ) " );
