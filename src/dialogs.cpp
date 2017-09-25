@@ -846,7 +846,7 @@ PrihodAddDialog::PrihodAddDialog( QWidget *parent,int id_arg,int zakupka_arg )
   le2->setCompleter(le2_completer);
 
   sl.clear();
-  if( !query.exec( "SELECT  DISTINCT naklad FROM prihod ORDER BY id DESC LIMIT 10" ) )
+  if( !query.exec( "SELECT naklad FROM prihod GROUP BY naklad ORDER BY MAX(id) DESC LIMIT 10" ) )
   {  sql_error_message( query, this );
 	   return;
   }
@@ -1256,7 +1256,7 @@ ZakupkiAddDialog::ZakupkiAddDialog( QWidget *parent,int id_arg )
            this, SLOT(  my1( QString ) ) );
   //-------------------------------------------------------------------------
   cb5->clear();
-  if( !query.exec( "SELECT DISTINCT schet FROM zakupki ORDER BY id DESC" ) )
+  if( !query.exec( "SELECT schet FROM zakupki GROUP BY schet ORDER BY max(id) DESC" ) )
   {  sql_error_message( query, this );
 	   return;
   }
@@ -1267,7 +1267,7 @@ ZakupkiAddDialog::ZakupkiAddDialog( QWidget *parent,int id_arg )
   if( id==0 ) cb5->clearEditText();
   //-------------------------------------------------------------------------
   cb6->clear();
-  if( !query.exec( "SELECT DISTINCT platej FROM zakupki ORDER BY id DESC" ) )
+  if( !query.exec( "SELECT platej FROM zakupki GROUP BY platej ORDER BY MAX(id) DESC" ) )
   {  sql_error_message( query, this );
 	   return;
   }
