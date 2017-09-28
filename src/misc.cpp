@@ -807,7 +807,7 @@ void Defichit2::on_pb_print_clicked()
   query.prepare(
     " SELECT t1.type, t1.typename, t1.name, t1.treb, t2.nalichie, t1.sost_id "
     " FROM ( "
-    "   SELECT MAX(kompl.type),MAX(typename),zamena.name,SUM(kompl.need-kompl.snato) AS treb, "
+    "   SELECT MAX(kompl.type) AS type, MAX(typename) AS typename, zamena.name,SUM(kompl.need-kompl.snato) AS treb, "
     "          GROUP_CONCAT( kompl.sostav ) AS sost_id "
     "   FROM kompl "
     "   LEFT JOIN zamena ON zamena.kompl=kompl.id "
