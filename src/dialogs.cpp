@@ -135,17 +135,19 @@ RVvodDialog::RVvodDialog( QWidget *parent, int n_arg ,int id_arg )
   setWindowTitle( "Ручной ввод" );
   resize(710,500);
 
-  tw->setColumnCount( 4 );
+  tw->setColumnCount( 5 );
   tw->verticalHeader()->setDefaultSectionSize(font().pointSize()+11);
   sl << "Тип"
      << "Наименование"
      << "Номинал"
-     << "Кол-во";
+     << "Кол-во"
+     << "Позиция";
   tw->setHorizontalHeaderLabels( sl );
   tw->horizontalHeader()->resizeSection( 0 , 150 );
   tw->horizontalHeader()->resizeSection( 1 , 150 );
   tw->horizontalHeader()->resizeSection( 2 , 100 );
   tw->horizontalHeader()->resizeSection( 3 ,  50 );
+  tw->horizontalHeader()->resizeSection( 4 , 150 );
   tw->setEditTriggers( QAbstractItemView::NoEditTriggers );
 }
 
@@ -171,7 +173,7 @@ bool RVvodDialog::init_from_sostav_id(int sostav_id)
     query.next();
     le1->setText(query.value(0).toString());
 
-    query.prepare("SELECT `name`, `nominal`, `type`, `typename`, `n` "
+    query.prepare("SELECT `name`, `nominal`, `type`, `typename`, `n`, `position` "
                   "FROM `kompl` LEFT JOIN `types` ON `kompl`.`type`=`types`.`id` "
                   "WHERE `kompl`.`sostav` = ? ORDER BY `kompl`.`id`");
     query.addBindValue( sostav_id );
@@ -196,6 +198,9 @@ bool RVvodDialog::init_from_sostav_id(int sostav_id)
         ti = new QTableWidgetItem;
         ti->setText( query.value(4).toString());
         tw->setItem( row_index, 3 , ti);
+        ti = new QTableWidgetItem;
+        ti->setText( query.value(5).toString());
+        tw->setItem( row_index, 4 , ti);
         ++row_index;
     }
 
@@ -225,7 +230,8 @@ void RVvodDialog::on_pb_add_clicked()
     ti = new QTableWidgetItem;
     ti->setText( QString::number( dialog.sb_n->value() ) );
     tw->setItem( tw->rowCount()-1, 3 , ti);
-
+    ti = new QTableWidgetItem;
+    tw->setItem( tw->rowCount()-1, 4 , ti);
   }
 }
 
@@ -260,13 +266,14 @@ void RVvodDialog::accept()
 
   for( i=0; i<tw->rowCount(); i++ )
   {
-    query.prepare( "INSERT INTO kompl ( sostav, name, nominal, type, n ) "
-                   "VALUES ( ?,?,?,?,? ) " );
+    query.prepare( "INSERT INTO kompl ( sostav, name, nominal, type, n, position ) "
+                   "VALUES ( ?,?,?,?,?,? ) " );
     query.addBindValue( last_id );
     query.addBindValue( tw->item(i,1)->text().toUtf8()      );
     query.addBindValue( tw->item(i,2)->text().toUtf8()      );
     query.addBindValue( tw->item(i,0)->data( Qt::UserRole ) );
     query.addBindValue( tw->item(i,3)->text().toInt()       );
+    query.addBindValue( tw->item(i,4)->text().toUtf8()      );
     if( !query.exec() )
     {  sql_error_message( query, this );
 	     return;
