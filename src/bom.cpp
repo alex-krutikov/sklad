@@ -6,6 +6,7 @@
 #include "mainwindow.h"
 
 #include <QMessageBox>
+#include <QFileDialog>
 #include <QProgressDialog>
 
 //#######################################################################################
@@ -222,16 +223,16 @@ BomAddDialog::BomAddDialog( QWidget *parent )
      << "Наименование СКЛАД"
      << "Наличие"
      << "Позиция";
-  tw->setColumnCount(6);
+  tw->setColumnCount(TW_COLUMNS_COUNT);
   tw->verticalHeader()->setDefaultSectionSize(font().pointSize()+11);
   tw->verticalHeader()->hide();
   tw->setHorizontalHeaderLabels( sl );
-  tw->horizontalHeader()->resizeSection( 0 , 150 );
-  tw->horizontalHeader()->resizeSection( 1 , 100 );
-  tw->horizontalHeader()->resizeSection( 2 ,  50 );
-  tw->horizontalHeader()->resizeSection( 3 , 150 );
-  tw->horizontalHeader()->resizeSection( 4 ,  70 );
-  tw->horizontalHeader()->resizeSection( 5 , 100 );
+  tw->horizontalHeader()->resizeSection( TW_COLUMN_BOM_NAME, 150 );
+  tw->horizontalHeader()->resizeSection( TW_COLUMN_NOMINAL, 100 );
+  tw->horizontalHeader()->resizeSection( TW_COLUMN_N_BOM,  50 );
+  tw->horizontalHeader()->resizeSection( TW_COLUMN_NAME_SKLAD, 150 );
+  tw->horizontalHeader()->resizeSection( TW_COLUMN_NALICHIE,  70 );
+  tw->horizontalHeader()->resizeSection( TW_COLUMN_POSITION, 100 );
   tw->horizontalHeader()->setStretchLastSection( true );
   tw->setSelectionBehavior( QAbstractItemView::SelectRows );
   tw->setSelectionMode( QAbstractItemView::SingleSelection );
@@ -379,7 +380,7 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
       titem -> setBackgroundColor( QColor("lightgray") );
       titem -> setFont( boldfont );
       tw->setItem( j, 0, titem );
-      tw->setSpan(j,0,1,6);
+      tw->setSpan(j,0,1,TW_COLUMNS_COUNT);
       j++;
     }
     tw->setRowCount( j+1 );
@@ -389,35 +390,35 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
     titem -> setCheckState(Qt::Checked);
     titem->setText( "   " + data[i].name_bom );
-    tw->setItem(j,0,titem );
+    tw->setItem(j, TW_COLUMN_BOM_NAME, titem );
     //--------------------- номинал ---
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     titem->setText( data[i].nominal );
-    tw->setItem(j,1,titem );
+    tw->setItem(j, TW_COLUMN_NOMINAL, titem );
     //--------------------- кол-во ---
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
     titem->setText( QString::number( data[i].count ));
-    tw->setItem(j,2,titem );
+    tw->setItem(j, TW_COLUMN_N_BOM, titem );
     //--------------------- наименование СКЛАД ---
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     titem->setText( data[i].name_sklad );
-    tw->setItem(j,3,titem );
+    tw->setItem(j, TW_COLUMN_NAME_SKLAD, titem );
     //--------------------- наличие ---
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
     if( data[i].nalichie >= 0 )
       titem->setText( QString::number( data[i].nalichie ) );
-    tw->setItem(j,4,titem );
+    tw->setItem(j, TW_COLUMN_NALICHIE, titem );
     //--------------------- позиция ---
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     titem->setText( data[i].position );
-    tw->setItem(j,5,titem );
+    tw->setItem(j, TW_COLUMN_POSITION, titem );
     j++;
   }
   return true;
@@ -435,8 +436,8 @@ void BomAddDialog::on_tw_cellDoubleClicked( int row, int column )
   BomAddDialog2 dialog(this, tw2data[row] );
   if( dialog.exec() == QDialog::Accepted )
   { QString str = data[tw2data[row]].name_sklad;
-    tw->item(row,3)->setText( str );
-    if( str.isEmpty() ) str = tw->item(row,0)->text();
+    tw->item(row, TW_COLUMN_NAME_SKLAD)->setText( str );
+    if( str.isEmpty() ) str = tw->item(row,TW_COLUMN_BOM_NAME)->text();
     QSqlQuery query;
     query.prepare(" SELECT SUM(ostatok) FROM prihod WHERE name = ?" );
     query.addBindValue( str );
@@ -445,10 +446,10 @@ void BomAddDialog::on_tw_cellDoubleClicked( int row, int column )
 	     return;
     }
     if( query.next() )
-    { tw->item(row,4)->setText( query.value(0).toString() );
+    { tw->item(row, TW_COLUMN_NALICHIE)->setText( query.value(0).toString() );
       data[tw2data[row]].nalichie = query.value(0).toInt();
     } else
-    { tw->item(row,4)->setText( QString() );
+    { tw->item(row, TW_COLUMN_NALICHIE)->setText( QString() );
       data[tw2data[row]].nalichie = -1;
     }
   }
@@ -459,22 +460,82 @@ void BomAddDialog::on_tw_cellDoubleClicked( int row, int column )
 //=======================================================================================
 void BomAddDialog::on_tw_cellChanged(int row, int column)
 {
-    if (column != 0)
+    if (column != TW_COLUMN_BOM_NAME)
         return;
 
-    if (!(tw->item(row, 0)->flags() & Qt::ItemIsUserCheckable))
+    if (!(tw->item(row, TW_COLUMN_BOM_NAME)->flags() & Qt::ItemIsUserCheckable))
         return;
 
-    bool checked = tw->item(row, 0)->checkState() == Qt::Checked;
+    bool checked = tw->item(row, TW_COLUMN_BOM_NAME)->checkState() == Qt::Checked;
 
     data[tw2data[row]].is_enabled = checked;
 
     QColor color = checked ? "black" : "gray";
-    for (int j = 0; j < 6; ++j) {
+    for (int j = 0; j < TW_COLUMNS_COUNT; ++j) {
         QTableWidgetItem *item = tw->item(row, j);
         if (item)
             item->setTextColor(color);
     }
+}
+
+//=======================================================================================
+//
+//=======================================================================================
+void BomAddDialog::on_pb_variants_file_clicked()
+{
+    //============ Открытие файла вариантов ==============
+
+    QSettings settings( QSETTINGS_PARAM );
+    QString filename = QFileDialog::getOpenFileName(
+                this,
+                "Импорт VAR-файла",
+                settings.value( "bompath", "" ).toString(),
+                "VAR (*.var)");
+    if(filename.isEmpty())
+        return;
+
+    //============ Парсинг файла вариантов ==============
+
+    variants.clear();
+
+    QFile var_file(filename);
+    var_file.open(QIODevice::ReadOnly);
+    QTextStream fs(&var_file);
+
+    t_variant v;
+
+    while(!fs.atEnd())
+    {
+        QString line = fs.readLine();
+        if (line.startsWith("Variant Name:"))
+        {
+            v = t_variant();
+            v.name = line.split(':').value(1).simplified();
+            qDebug() << "%%%" << v.name;
+            continue;
+        }
+        if (line.startsWith("Variant Description:"))
+        {
+            v.desc = line.split(':').value(1).simplified();
+            continue;
+        }
+        if (line == "PropertyTypeExcludedComponents")
+        {
+            QString line = fs.readLine();
+            v.items = line.split(';').toSet();
+            variants << v;
+            continue;
+        }
+    }
+
+    //============ Заполнение комбобокса вариантов ==============
+
+    cb_variants->clear();
+    for (int i=0; i < variants.length(); ++i)
+    {
+        cb_variants->addItem(QIcon(), QString("%1 (%2)").arg(variants[i].name).arg(variants[i].desc), i);
+    }
+
 }
 
 //=======================================================================================

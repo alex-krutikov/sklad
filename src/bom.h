@@ -39,6 +39,23 @@ class BomAddDialog : public QDialog,
 
   friend class BomAddDialog2;
 
+  struct t_variant
+  {
+      QString name;
+      QString desc;
+      QSet<QString> items;
+  };
+
+  enum {
+      TW_COLUMN_BOM_NAME = 0,
+      TW_COLUMN_NOMINAL = 1,
+      TW_COLUMN_N_BOM = 2,
+      TW_COLUMN_NAME_SKLAD = 3,
+      TW_COLUMN_NALICHIE = 4,
+      TW_COLUMN_POSITION = 5,
+      TW_COLUMNS_COUNT = 6,
+  };
+
   struct t_data
   { bool is_enabled;
     int          type;
@@ -65,9 +82,11 @@ private:
   int count;
   QVector<t_data> data;
   QMap<int,int> tw2data;
+  QVector<t_variant> variants;
 private slots:
   void on_tw_cellDoubleClicked(int,int);
   void on_tw_cellChanged(int, int);
+  void on_pb_variants_file_clicked();
 };
 
 //==============================================================================
