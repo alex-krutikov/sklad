@@ -15,7 +15,6 @@ class BomFile
     QString nominal;
     int     count;
     QStringList position_items;
-    QString position;
     QString type;
     bool operator<( const t_data &t1 ) const
       { return (type<t1.type)?(true):((type==t1.type)?(name<t1.name):(false)); }
@@ -50,11 +49,12 @@ class BomAddDialog : public QDialog,
   enum {
       TW_COLUMN_BOM_NAME = 0,
       TW_COLUMN_NOMINAL = 1,
-      TW_COLUMN_N_BOM = 2,
+      TW_COLUMN_COUNT = 2,
       TW_COLUMN_NAME_SKLAD = 3,
       TW_COLUMN_NALICHIE = 4,
       TW_COLUMN_POSITION = 5,
-      TW_COLUMNS_COUNT = 6,
+      TW_COLUMN_POSITION_EXCLUDED = 6,
+      TW_COLUMNS_COUNT = 7,
   };
 
   struct t_data
@@ -65,6 +65,7 @@ class BomAddDialog : public QDialog,
     QString name_bom;
     QString name_sklad;
     QString nominal;
+    int count_from_bom;
     int count;
     int nalichie;
     QStringList position_items;
@@ -84,11 +85,13 @@ private:
   int count;
   QVector<t_data> data;
   QMap<int,int> tw2data;
+  QMap<int,int> data2tw;
   QVector<t_variant> variants;
 private slots:
   void on_tw_cellDoubleClicked(int,int);
   void on_tw_cellChanged(int, int);
   void on_pb_variants_file_clicked();
+  void on_cb_variants_currentIndexChanged(int);
 };
 
 //==============================================================================

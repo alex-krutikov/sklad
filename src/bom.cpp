@@ -81,9 +81,9 @@ bool BomFile::loadFile( const QString filename )
   QFile file( filename );
   QRegExp rx1("\\d");
   QRegExp rx2("\\D");
-  QString str,str2,str3;
+  QString str,str3;
   QStringList sl;
-  int i,k,flag,fnmax;
+  int i,k,fnmax;
   QVector<int> fn;
   QVector<int> v,v2;
   t_data ss;
@@ -182,32 +182,6 @@ bool BomFile::loadFile( const QString filename )
         ss.position_items << QString("%1%2").arg(str3).arg(pos);
     }
 
-
-    // упрощение поля позиция (группировка соседних позиций)
-    str2.clear();
-    v2.resize( v.size() );
-    v2.fill(1);
-    qSort(v);
-    for( k=1; k<v.size()-1; k++ )
-    { if( ( (v[k-1]+1) == v[k] ) && ( v[k] == ( v[k+1]-1 ) ) ) v2[k] = 0;
-    }
-    flag=0;
-    for( k=0; k<v.size(); k++ )
-    {
-      if( v2[k] )
-      { str2 += str3+QVariant(v[k]).toString()+", ";
-        flag=0;
-      } else
-      { if( flag==0 )
-        { str2.chop(2);
-          str2 += " - ";
-          flag=1;
-        }
-      }
-    }
-    str2.chop(2);
-
-    ss.position = str2;  // позиция
     ss.type     = str3;  // тип
 
     data << ss;
@@ -254,10 +228,9 @@ void BomFile::process()
                         QString("Найдено повторение позиций:\n\n"
                                 "  %1 ( %2 шт.) %3 \n"
                                 "  %4 ( %5 шт.) %6 \n\nПозиции будут объединены.")
-                                  .arg( d[j].name    ).arg( d[j].count    ).arg( d[j].position    )
-                                  .arg( data[i].name ).arg( data[i].count ).arg( data[i].position ) );
+                                  .arg( d[j].name    ).arg( d[j].count    ).arg( d[j].position_items.join(", "))
+                                  .arg( data[i].name ).arg( data[i].count ).arg( data[i].position_items.join(", ")));
       d[j].count    += data[i].count;
-      d[j].position += ", "+data[i].position;
       d[j].position_items += data[i].position_items;
 
       continue;
@@ -283,7 +256,7 @@ BomAddDialog::BomAddDialog( QWidget *parent )
   : QDialog( parent )
 {
   setupUi( this );
-  resize(800,500);
+  resize(1024,600);
 
   QStringList sl;
 
@@ -293,17 +266,19 @@ BomAddDialog::BomAddDialog( QWidget *parent )
      << "Кол-во"
      << "Наименование СКЛАД"
      << "Наличие"
-     << "Позиция";
+     << "Позиция"
+     << "Исключенные позиции";
   tw->setColumnCount(TW_COLUMNS_COUNT);
   tw->verticalHeader()->setDefaultSectionSize(font().pointSize()+11);
   tw->verticalHeader()->hide();
   tw->setHorizontalHeaderLabels( sl );
   tw->horizontalHeader()->resizeSection( TW_COLUMN_BOM_NAME, 150 );
   tw->horizontalHeader()->resizeSection( TW_COLUMN_NOMINAL, 100 );
-  tw->horizontalHeader()->resizeSection( TW_COLUMN_N_BOM,  50 );
+  tw->horizontalHeader()->resizeSection( TW_COLUMN_COUNT,  50 );
   tw->horizontalHeader()->resizeSection( TW_COLUMN_NAME_SKLAD, 150 );
   tw->horizontalHeader()->resizeSection( TW_COLUMN_NALICHIE,  70 );
-  tw->horizontalHeader()->resizeSection( TW_COLUMN_POSITION, 100 );
+  tw->horizontalHeader()->resizeSection( TW_COLUMN_POSITION, 300 );
+  tw->horizontalHeader()->resizeSection( TW_COLUMN_POSITION_EXCLUDED, 100 );
   tw->horizontalHeader()->setStretchLastSection( true );
   tw->setSelectionBehavior( QAbstractItemView::SelectRows );
   tw->setSelectionMode( QAbstractItemView::SingleSelection );
@@ -413,7 +388,8 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     //--------------------- номинал ---
     ss.nominal = bf.data[i].nominal;
     //--------------------- кол-во ---
-    ss.count = bf.data[i].count;
+    ss.count_from_bom = bf.data[i].count;
+    ss.count = ss.count_from_bom;
     //--------------------- наименование СКЛАД ---
     if( b2s_map.contains( bf.data[i].name ) )
     { query2.seek( b2s_map[ bf.data[i].name ] );
@@ -457,6 +433,7 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     }
     tw->setRowCount( j+1 );
     tw2data[j]=i;
+    data2tw[i]=j;
     //--------------------- название BOM ---
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
@@ -473,7 +450,7 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
     titem->setText( QString::number( data[i].count ));
-    tw->setItem(j, TW_COLUMN_N_BOM, titem );
+    tw->setItem(j, TW_COLUMN_COUNT, titem );
     //--------------------- наименование СКЛАД ---
     titem = new QTableWidgetItem;
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
@@ -491,6 +468,10 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     titem->setText( data[i].position );
     tw->setItem(j, TW_COLUMN_POSITION, titem );
+    //--------------------- исключенные позиции ---
+    titem = new QTableWidgetItem;
+    titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+    tw->setItem(j, TW_COLUMN_POSITION_EXCLUDED, titem );
     j++;
   }
   return true;
@@ -561,10 +542,12 @@ void BomAddDialog::on_pb_variants_file_clicked()
     QString filename = QFileDialog::getOpenFileName(
                 this,
                 "Импорт VAR-файла",
-                settings.value( "bompath", "" ).toString(),
+                settings.value( "varpath", "" ).toString(),
                 "VAR (*.var)");
     if(filename.isEmpty())
         return;
+
+    settings.setValue("varpath", filename);
 
     //============ Парсинг файла вариантов ==============
 
@@ -605,9 +588,30 @@ void BomAddDialog::on_pb_variants_file_clicked()
     cb_variants->clear();
     for (int i=0; i < variants.length(); ++i)
     {
-        cb_variants->addItem(QIcon(), QString("%1 (%2)").arg(variants[i].name).arg(variants[i].desc), i);
+        cb_variants->addItem(QIcon(), QString("%1 (%2)").arg(variants[i].name).arg(variants[i].desc));
     }
+}
 
+void BomAddDialog::on_cb_variants_currentIndexChanged(int index)
+{
+    const QSet<QString> excludes = (index < 0) ? QSet<QString>() : variants[index].items;
+
+    for (int i = 0; i < data.size(); ++i) {
+        QStringList excl_pos_list, pos_list;
+        for (int j = 0; j < data[i].position_items.size(); ++j) {
+            if (excludes.contains(data[i].position_items[j])) {
+                excl_pos_list << data[i].position_items[j];
+            } else {
+                pos_list << data[i].position_items[j];
+            }
+        }
+        data[i].position = get_positions_string(pos_list);
+        data[i].count = data[i].count_from_bom - excl_pos_list.size();
+        tw->item(data2tw[i], TW_COLUMN_COUNT)->setText(QString::number(data[i].count));
+        tw->item(data2tw[i], TW_COLUMN_POSITION)->setText(data[i].position);
+        tw->item(data2tw[i], TW_COLUMN_POSITION_EXCLUDED)->setText(get_positions_string(excl_pos_list));
+
+    }
 }
 
 //=======================================================================================
@@ -683,6 +687,8 @@ void BomAddDialog::accept()
   for( i=0; i<data.count(); i++ )
   { if (!data[i].is_enabled)
           continue;
+    if (data[i].count == 0)
+        continue;
 
     str = data[i].name_sklad;
     if( str.isEmpty() ) str = data[i].name_bom;
