@@ -224,12 +224,14 @@ void BomFile::process()
          data.clear();
          return;
       }
-      QMessageBox::information( 0, "Проверка BOM файла",
-                        QString("Найдено повторение позиций:\n\n"
-                                "  %1 ( %2 шт.) %3 \n"
-                                "  %4 ( %5 шт.) %6 \n\nПозиции будут объединены.")
-                                  .arg( d[j].name    ).arg( d[j].count    ).arg( d[j].position_items.join(", "))
-                                  .arg( data[i].name ).arg( data[i].count ).arg( data[i].position_items.join(", ")));
+// commented as useless warning
+//
+//      QMessageBox::information( 0, "Проверка BOM файла",
+//                        QString("Найдено повторение позиций:\n\n"
+//                                "  %1 ( %2 шт.) %3 \n"
+//                                "  %4 ( %5 шт.) %6 \n\nПозиции будут объединены.")
+//                                  .arg( d[j].name    ).arg( d[j].count    ).arg( d[j].position_items.join(", "))
+//                                  .arg( data[i].name ).arg( data[i].count ).arg( data[i].position_items.join(", ")));
       d[j].count    += data[i].count;
       d[j].position_items += data[i].position_items;
 
@@ -583,6 +585,11 @@ void BomAddDialog::on_pb_variants_file_clicked()
         }
     }
 
+    if (!variants.size()) {
+          QMessageBox::information( 0, "Проверка VAR файла",
+                            "Варианты не найдены, возможно ошибочный формат файла.");
+    }
+
     //============ Заполнение комбобокса вариантов ==============
 
     cb_variants->clear();
@@ -610,8 +617,10 @@ void BomAddDialog::on_cb_variants_currentIndexChanged(int index)
         tw->item(data2tw[i], TW_COLUMN_COUNT)->setText(QString::number(data[i].count));
         tw->item(data2tw[i], TW_COLUMN_POSITION)->setText(data[i].position);
         tw->item(data2tw[i], TW_COLUMN_POSITION_EXCLUDED)->setText(get_positions_string(excl_pos_list));
-
     }
+
+    QString title = le1->text().split(" вариант: ").value(0);
+    le1->setText(title + " вариант: " + cb_variants->currentText());
 }
 
 //=======================================================================================
