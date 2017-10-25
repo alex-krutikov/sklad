@@ -14,6 +14,7 @@ class BomFile
   { QString name;
     QString nominal;
     int     count;
+    QStringList position_items;
     QString position;
     QString type;
     bool operator<( const t_data &t1 ) const
@@ -66,6 +67,7 @@ class BomAddDialog : public QDialog,
     QString nominal;
     int count;
     int nalichie;
+    QStringList position_items;
     QString position;
     bool operator<( const t_data &t1 ) const
     { return (type_name<t1.type_name)?(true):

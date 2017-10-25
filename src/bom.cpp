@@ -9,6 +9,68 @@
 #include <QFileDialog>
 #include <QProgressDialog>
 
+namespace {
+
+QString get_positions_string(const QStringList &positions_items)
+{
+    QString ret;
+
+    const QRegExp rx("^(\\D+)(\\d+)$");
+
+    if (!positions_items.length())
+        return "";
+
+    rx.indexIn(positions_items[0]);
+    QString prefix = rx.cap(1);
+
+    if(prefix.isEmpty())
+        return "Error in postion list";
+
+    QVector<int> positions;
+
+    for (const QString &str : positions_items)
+    {
+        rx.indexIn(str);
+        if (rx.cap(1) != prefix)
+            return "Error in postion list";
+        bool ok;
+        positions << rx.cap(2).toInt(&ok);
+        if (!ok)
+            return "Error in postion list";
+    }
+
+    qSort(positions);
+
+    for (int i = 0; i < positions.size();)
+    {
+        int j;
+        for (j = (i + 1); j < positions.size(); ++j)
+        {
+            if (positions[j] != (positions[j - 1] + 1))
+                break;
+        }
+        --j;
+
+        if ((j - i) > 1)
+        {
+            ret += QString("%1%2 - %3%4, ").arg(prefix).arg(positions[i]).arg(prefix).arg(positions[j]);
+        } else if ((j - i) == 1)
+        {
+            ret += QString("%1%2, %3%4, ").arg(prefix).arg(positions[i]).arg(prefix).arg(positions[j]);
+        } else
+        {
+            ret += QString("%1%2, ").arg(prefix).arg(positions[i]);
+        }
+        i = j + 1;
+    }
+
+    ret.chop(2);
+
+    return ret;
+}
+
+}
+
 //#######################################################################################
 //
 //#######################################################################################
@@ -113,6 +175,14 @@ bool BomFile::loadFile( const QString filename )
       }
     }
 
+    // заполнение полного списка позиций
+    ss.position_items.clear();
+    foreach (const int pos, v)
+    {
+        ss.position_items << QString("%1%2").arg(str3).arg(pos);
+    }
+
+
     // упрощение поля позиция (группировка соседних позиций)
     str2.clear();
     v2.resize( v.size() );
@@ -188,6 +258,7 @@ void BomFile::process()
                                   .arg( data[i].name ).arg( data[i].count ).arg( data[i].position ) );
       d[j].count    += data[i].count;
       d[j].position += ", "+data[i].position;
+      d[j].position_items += data[i].position_items;
 
       continue;
     }
@@ -360,7 +431,8 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     { ss.nalichie = -1;
     }
     //--------------------- позиция ---
-    ss.position = bf.data[i].position;
+    ss.position_items = bf.data[i].position_items;
+    ss.position = get_positions_string(ss.position_items);
     //----------------------------------
     data << ss;
   }
