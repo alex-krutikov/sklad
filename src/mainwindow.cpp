@@ -1194,6 +1194,7 @@ void MainWindow::kompl_print()
        if(( i != n ) || ( page != 1 ))
          painter.drawText(900, YSIZE-30, tr("стр. %1").arg(page) );
 
+       painter.setPen(QPen(Qt::black, 0.4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
        painter.drawRects( v );
        v.clear();
 

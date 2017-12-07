@@ -191,9 +191,6 @@ void OtpravkaDialog::on_pb_print_clicked()
   {  QPainter painter( &printer );
      painter.setWindow( 0,0,XSIZE,YSIZE );
 
-     QBrush brush(QColor("gray"));
-     QPen   pen(Qt::black, 5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
-
      QFont font("Arial");
      font.setBold(   false );
      font.setItalic( false );
@@ -375,7 +372,7 @@ void OtpravkaDialog::on_pb_print_clicked()
        if(( i != data.count() ) || ( page != 1 ))
          painter.drawText(9000, YSIZE-300, tr("стр. %1").arg(page) );
 
-       //painter.setPen( pen );
+       painter.setPen(QPen(Qt::black, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
        painter.drawRects( v );
        v.clear();
 
@@ -383,7 +380,6 @@ void OtpravkaDialog::on_pb_print_clicked()
        printer.newPage();
        page++;
      }
-     painter.end();
   }
   accept();
 }
@@ -609,8 +605,6 @@ void DootpravkaDialog::on_pb_print_clicked()
   if (printDialog.exec() == QDialog::Accepted)
   {  QPainter painter( &printer );
      painter.setWindow( 0,0,SCALE*XSIZE,SCALE*YSIZE );
-     QBrush brush(QColor("gray"));
-     QPen   pen(Qt::black, SCALE*5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
 
      QFont font("Arial");
      font.setBold(   false );
@@ -618,7 +612,6 @@ void DootpravkaDialog::on_pb_print_clicked()
      font.setPointSize(SCALE*11);
 
      QFont font2("Tahoma");
-     //QFont font2("Arial");
      font2.setBold(   false );
      font2.setItalic( false );
      font2.setPointSize(SCALE*11);
@@ -739,7 +732,7 @@ void DootpravkaDialog::on_pb_print_clicked()
        if(( i != tw->rowCount() ) || ( page != 1 ))
          painter.drawText(SCALE*900, SCALE*YSIZE-SCALE*30, tr("стр. %1").arg(page) );
 
-       //painter.setPen( pen );
+       painter.setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
        painter.drawRects( v );
        v.clear();
 
@@ -748,7 +741,6 @@ void DootpravkaDialog::on_pb_print_clicked()
        printer.newPage();
        page++;
      }
-     painter.end();
   }
   accept();
 }
