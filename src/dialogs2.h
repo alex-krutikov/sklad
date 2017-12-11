@@ -75,6 +75,7 @@ class TypesDialog : public QDialog,
   Q_OBJECT
 public:
   TypesDialog( QWidget *parent = 0);
+  void refresh_table();
 private slots:
 };
 

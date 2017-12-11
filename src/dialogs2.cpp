@@ -793,5 +793,68 @@ TypesDialog::TypesDialog(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
+
+    QStringList sl;
+
+    tw->verticalHeader()->setDefaultSectionSize(font().pointSize()+14);
+    tw->setSelectionBehavior( QAbstractItemView::SelectRows );
+
+    tw->clear();
+    sl << "Наименование"
+       << "Обозначение"
+       << "Использование";
+
+    tw->setColumnCount(3);
+    tw->setRowCount(0);
+    tw->setHorizontalHeaderLabels( sl );
+    tw->horizontalHeader()->resizeSection(  0 , 300 );
+    tw->horizontalHeader()->resizeSection(  1 , 130 );
+    tw->horizontalHeader()->resizeSection(  2 , 150 );
+
+    tw->verticalHeader()->hide();
+    tw->setSortingEnabled(true);
+
+    refresh_table();
 }
 
+void TypesDialog::refresh_table()
+{
+    QSqlQuery query;
+    query.prepare("SELECT `id`, `typename`, `symbol`, `used` "
+                  "FROM `types`");
+    if(!query.exec())
+    {  sql_error_message( query, this );
+         return;
+    }
+
+    tw->clearContents();
+    tw->setRowCount(query.size());
+
+    int row = 0;
+    while(query.next())
+    {
+        QTableWidgetItem *item = new QTableWidgetItem;
+        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+        item->setText(query.value("typename").toString());
+        item->setData(Qt::UserRole, query.value("id"));
+        tw->setItem(row, 0, item);
+
+        item = new QTableWidgetItem;
+        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+        item->setTextAlignment(Qt::AlignCenter);
+        item->setText(query.value("symbol").toString());
+        item->setData(Qt::UserRole, query.value("id"));
+        tw->setItem(row, 1, item);
+
+        item = new QTableWidgetItem;
+        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+        item->setTextAlignment(Qt::AlignCenter);
+        item->setText(query.value("used").toString());
+        item->setData(Qt::UserRole, query.value("id"));
+        tw->setItem(row, 2, item);
+
+        ++row;
+    }
+
+    tw->setCurrentItem(0);
+}

@@ -15,26 +15,26 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTableWidget" name="tableWidget"/>
+    <widget class="QTableWidget" name="tw"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="pb_add">
        <property name="text">
         <string>Добавить</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="pb_edit">
        <property name="text">
         <string>Редактировать</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="pb_delete">
        <property name="text">
         <string>Удалить</string>
        </property>
@@ -58,10 +58,10 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>tableWidget</tabstop>
-  <tabstop>pushButton</tabstop>
-  <tabstop>pushButton_2</tabstop>
-  <tabstop>pushButton_3</tabstop>
+  <tabstop>tw</tabstop>
+  <tabstop>pb_add</tabstop>
+  <tabstop>pb_edit</tabstop>
+  <tabstop>pb_delete</tabstop>
  </tabstops>
  <resources/>
  <connections/>
