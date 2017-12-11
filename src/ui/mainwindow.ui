@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,132 +10,186 @@
     <height>795</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget" >
-   <layout class="QVBoxLayout" >
-    <property name="spacing" >
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout">
+    <property name="spacing">
      <number>0</number>
     </property>
-    <property name="margin" >
+    <property name="leftMargin">
+     <number>3</number>
+    </property>
+    <property name="topMargin">
+     <number>3</number>
+    </property>
+    <property name="rightMargin">
+     <number>3</number>
+    </property>
+    <property name="bottomMargin">
      <number>3</number>
     </property>
     <item>
-     <widget class="QTabWidget" name="tabWidget" >
-      <property name="currentIndex" >
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
        <number>3</number>
       </property>
-      <widget class="QWidget" name="tab_8" >
-       <attribute name="title" >
+      <widget class="QWidget" name="tab_8">
+       <attribute name="title">
         <string>Проекты</string>
        </attribute>
-       <layout class="QVBoxLayout" >
-        <property name="spacing" >
+       <layout class="QVBoxLayout">
+        <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin" >
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
          <number>9</number>
         </property>
         <item>
-         <widget class="ProektForm" native="1" name="projects_widget" />
+         <widget class="ProektForm" name="projects_widget" native="true"/>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_3" >
-       <attribute name="title" >
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
         <string>Наличие</string>
        </attribute>
-       <layout class="QVBoxLayout" >
-        <property name="spacing" >
+       <layout class="QVBoxLayout">
+        <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin" >
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
          <number>9</number>
         </property>
         <item>
-         <widget class="QGroupBox" name="groupBox_8" >
-          <property name="title" >
+         <widget class="QGroupBox" name="groupBox_8">
+          <property name="title">
            <string>Фильтр</string>
           </property>
-          <layout class="QHBoxLayout" >
-           <property name="spacing" >
+          <layout class="QHBoxLayout">
+           <property name="spacing">
             <number>6</number>
            </property>
-           <property name="margin" >
+           <property name="leftMargin">
+            <number>9</number>
+           </property>
+           <property name="topMargin">
+            <number>9</number>
+           </property>
+           <property name="rightMargin">
+            <number>9</number>
+           </property>
+           <property name="bottomMargin">
             <number>9</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_8" >
-             <property name="text" >
+            <widget class="QLabel" name="label_8">
+             <property name="text">
               <string>Тип:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="cb_sklad_type" />
+            <widget class="QComboBox" name="cb_sklad_type"/>
            </item>
            <item>
-            <widget class="QLabel" name="label_7" >
-             <property name="text" >
+            <widget class="QLabel" name="label_7">
+             <property name="text">
               <string>Наименование:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="le_skladFiltr" />
+            <widget class="QLineEdit" name="le_skladFiltr"/>
            </item>
           </layout>
          </widget>
         </item>
         <item>
-         <widget class="SqlTable" name="tw_sklad" />
+         <widget class="SqlTable" name="tw_sklad"/>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_5" >
-       <attribute name="title" >
+      <widget class="QWidget" name="tab_5">
+       <attribute name="title">
         <string>Закупки</string>
        </attribute>
-       <layout class="QVBoxLayout" >
-        <property name="spacing" >
+       <layout class="QVBoxLayout">
+        <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin" >
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
          <number>9</number>
         </property>
         <item>
-         <widget class="QGroupBox" name="groupBox_7" >
-          <property name="title" >
+         <widget class="QGroupBox" name="groupBox_7">
+          <property name="title">
            <string>Фильтр</string>
           </property>
-          <layout class="QHBoxLayout" >
-           <property name="spacing" >
+          <layout class="QHBoxLayout">
+           <property name="spacing">
             <number>6</number>
            </property>
-           <property name="margin" >
+           <property name="leftMargin">
+            <number>9</number>
+           </property>
+           <property name="topMargin">
+            <number>9</number>
+           </property>
+           <property name="rightMargin">
+            <number>9</number>
+           </property>
+           <property name="bottomMargin">
             <number>9</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_2" >
-             <property name="text" >
+            <widget class="QLabel" name="label_2">
+             <property name="text">
               <string>Тип:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="cb_sklad_type_zakupki" />
+            <widget class="QComboBox" name="cb_sklad_type_zakupki"/>
            </item>
            <item>
-            <widget class="QLabel" name="label_5" >
-             <property name="text" >
+            <widget class="QLabel" name="label_5">
+             <property name="text">
               <string>Наименование:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="le_zakupkiFiltr" >
-             <property name="maximumSize" >
+            <widget class="QLineEdit" name="le_zakupkiFiltr">
+             <property name="maximumSize">
               <size>
                <width>150</width>
                <height>16777215</height>
@@ -143,25 +198,25 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_9" >
-             <property name="text" >
+            <widget class="QLabel" name="label_9">
+             <property name="text">
               <string>Поставщик:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="cb_zakupkiFiltrPostavshik" />
+            <widget class="QComboBox" name="cb_zakupkiFiltrPostavshik"/>
            </item>
            <item>
-            <widget class="QLabel" name="label" >
-             <property name="text" >
+            <widget class="QLabel" name="label">
+             <property name="text">
               <string>Счет:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="le_zakupkiFiltrSchet" >
-             <property name="maximumSize" >
+            <widget class="QLineEdit" name="le_zakupkiFiltrSchet">
+             <property name="maximumSize">
               <size>
                <width>150</width>
                <height>16777215</height>
@@ -171,10 +226,10 @@
            </item>
            <item>
             <spacer>
-             <property name="orientation" >
+             <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
-             <property name="sizeHint" stdset="0" >
+             <property name="sizeHint" stdset="0">
               <size>
                <width>40</width>
                <height>20</height>
@@ -186,22 +241,31 @@
          </widget>
         </item>
         <item>
-         <widget class="SqlTable" name="tw_zakupkiHist" />
+         <widget class="SqlTable" name="tw_zakupkiHist"/>
         </item>
         <item>
-         <layout class="QHBoxLayout" >
-          <property name="spacing" >
+         <layout class="QHBoxLayout">
+          <property name="spacing">
            <number>6</number>
           </property>
-          <property name="margin" >
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
            <spacer>
-            <property name="orientation" >
+            <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeHint" stdset="0" >
+            <property name="sizeHint" stdset="0">
              <size>
               <width>40</width>
               <height>20</height>
@@ -210,8 +274,8 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pb_zakupkiAdd" >
-            <property name="text" >
+           <widget class="QPushButton" name="pb_zakupkiAdd">
+            <property name="text">
              <string>Добавить</string>
             </property>
            </widget>
@@ -220,45 +284,63 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_2" >
-       <attribute name="title" >
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
         <string>Приход</string>
        </attribute>
-       <layout class="QVBoxLayout" >
-        <property name="spacing" >
+       <layout class="QVBoxLayout">
+        <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin" >
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
          <number>9</number>
         </property>
         <item>
-         <widget class="QGroupBox" name="groupBox_6" >
-          <property name="title" >
+         <widget class="QGroupBox" name="groupBox_6">
+          <property name="title">
            <string>Фильтр</string>
           </property>
-          <layout class="QHBoxLayout" >
-           <property name="spacing" >
+          <layout class="QHBoxLayout">
+           <property name="spacing">
             <number>6</number>
            </property>
-           <property name="margin" >
+           <property name="leftMargin">
+            <number>9</number>
+           </property>
+           <property name="topMargin">
+            <number>9</number>
+           </property>
+           <property name="rightMargin">
+            <number>9</number>
+           </property>
+           <property name="bottomMargin">
             <number>9</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_3" >
-             <property name="text" >
+            <widget class="QLabel" name="label_3">
+             <property name="text">
               <string>Наименование:</string>
              </property>
-             <property name="buddy" >
+             <property name="buddy">
               <cstring>le_prihodFiltr</cstring>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="le_prihodFiltr" />
+            <widget class="QLineEdit" name="le_prihodFiltr"/>
            </item>
            <item>
-            <widget class="QPushButton" name="pb_prihodFiltr" >
-             <property name="text" >
+            <widget class="QPushButton" name="pb_prihodFiltr">
+             <property name="text">
               <string>Подробнее...</string>
              </property>
             </widget>
@@ -267,16 +349,16 @@
          </widget>
         </item>
         <item>
-         <widget class="SqlTable" name="tw_prihodHist" />
+         <widget class="SqlTable" name="tw_prihodHist"/>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2" >
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <spacer name="horizontalSpacer" >
-            <property name="orientation" >
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeHint" stdset="0" >
+            <property name="sizeHint" stdset="0">
              <size>
               <width>40</width>
               <height>20</height>
@@ -285,8 +367,8 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pb_prihodAdd" >
-            <property name="text" >
+           <widget class="QPushButton" name="pb_prihodAdd">
+            <property name="text">
              <string>Добавить</string>
             </property>
            </widget>
@@ -295,49 +377,67 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_7" >
-       <attribute name="title" >
+      <widget class="QWidget" name="tab_7">
+       <attribute name="title">
         <string>Расход</string>
        </attribute>
-       <layout class="QVBoxLayout" >
-        <property name="spacing" >
+       <layout class="QVBoxLayout">
+        <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin" >
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
          <number>9</number>
         </property>
         <item>
-         <widget class="QGroupBox" name="groupBox_5" >
-          <property name="title" >
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="title">
            <string>Фильтр</string>
           </property>
-          <layout class="QHBoxLayout" >
-           <property name="spacing" >
+          <layout class="QHBoxLayout">
+           <property name="spacing">
             <number>6</number>
            </property>
-           <property name="margin" >
+           <property name="leftMargin">
+            <number>9</number>
+           </property>
+           <property name="topMargin">
+            <number>9</number>
+           </property>
+           <property name="rightMargin">
+            <number>9</number>
+           </property>
+           <property name="bottomMargin">
             <number>9</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_4" >
-             <property name="text" >
+            <widget class="QLabel" name="label_4">
+             <property name="text">
               <string>Наименование:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="le_rashodFiltr" />
+            <widget class="QLineEdit" name="le_rashodFiltr"/>
            </item>
            <item>
-            <widget class="QCheckBox" name="cb_rashod_show_all" >
-             <property name="text" >
+            <widget class="QCheckBox" name="cb_rashod_show_all">
+             <property name="text">
               <string>показывать все записи</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="cb_rashod_kompl" >
-             <property name="text" >
+            <widget class="QCheckBox" name="cb_rashod_kompl">
+             <property name="text">
               <string>комплектация</string>
              </property>
             </widget>
@@ -346,77 +446,104 @@
          </widget>
         </item>
         <item>
-         <widget class="SqlTable" name="tw_rashodHist" />
+         <widget class="SqlTable" name="tw_rashodHist"/>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_4" >
-       <attribute name="title" >
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
         <string>Комплектация</string>
        </attribute>
-       <layout class="QVBoxLayout" >
-        <property name="spacing" >
+       <layout class="QVBoxLayout">
+        <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin" >
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
          <number>9</number>
         </property>
         <item>
-         <widget class="QSplitter" name="splitter_3" >
-          <property name="orientation" >
+         <widget class="QSplitter" name="splitter_3">
+          <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
-          <widget class="QSplitter" name="splitter" >
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+          <widget class="QSplitter" name="splitter">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>50</verstretch>
             </sizepolicy>
            </property>
-           <property name="orientation" >
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <widget class="QGroupBox" name="groupBox" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+           <widget class="QGroupBox" name="groupBox">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>10</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="title" >
+            <property name="title">
              <string>Задания</string>
             </property>
-            <layout class="QVBoxLayout" >
-             <property name="spacing" >
+            <layout class="QVBoxLayout">
+             <property name="spacing">
               <number>6</number>
              </property>
-             <property name="margin" >
+             <property name="leftMargin">
+              <number>9</number>
+             </property>
+             <property name="topMargin">
+              <number>9</number>
+             </property>
+             <property name="rightMargin">
+              <number>9</number>
+             </property>
+             <property name="bottomMargin">
               <number>9</number>
              </property>
              <item>
-              <widget class="SqlTable" name="tw_komplZad" />
+              <widget class="SqlTable" name="tw_komplZad"/>
              </item>
              <item>
-              <layout class="QHBoxLayout" >
-               <property name="spacing" >
+              <layout class="QHBoxLayout">
+               <property name="spacing">
                 <number>6</number>
                </property>
-               <property name="margin" >
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
                 <number>0</number>
                </property>
                <item>
-                <widget class="QCheckBox" name="cb_komplAll" >
-                 <property name="text" >
+                <widget class="QCheckBox" name="cb_komplAll">
+                 <property name="text">
                   <string>все задания</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <spacer>
-                 <property name="orientation" >
+                 <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
-                 <property name="sizeHint" stdset="0" >
+                 <property name="sizeHint" stdset="0">
                   <size>
                    <width>40</width>
                    <height>20</height>
@@ -425,22 +552,22 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QPushButton" name="pb_kompl_price1" >
-                 <property name="text" >
+                <widget class="QPushButton" name="pb_kompl_price1">
+                 <property name="text">
                   <string>Расчет цены</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pb_kompl_status" >
-                 <property name="text" >
+                <widget class="QPushButton" name="pb_kompl_status">
+                 <property name="text">
                   <string>Статус</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pb_kompl_rashod" >
-                 <property name="text" >
+                <widget class="QPushButton" name="pb_kompl_rashod">
+                 <property name="text">
                   <string>Расход</string>
                  </property>
                 </widget>
@@ -449,54 +576,72 @@
              </item>
             </layout>
            </widget>
-           <widget class="QGroupBox" name="groupBox_2" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+           <widget class="QGroupBox" name="groupBox_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>30</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="title" >
+            <property name="title">
              <string>Компоненты</string>
             </property>
-            <layout class="QVBoxLayout" >
-             <property name="spacing" >
+            <layout class="QVBoxLayout">
+             <property name="spacing">
               <number>6</number>
              </property>
-             <property name="margin" >
+             <property name="leftMargin">
+              <number>9</number>
+             </property>
+             <property name="topMargin">
+              <number>9</number>
+             </property>
+             <property name="rightMargin">
+              <number>9</number>
+             </property>
+             <property name="bottomMargin">
               <number>9</number>
              </property>
              <item>
-              <widget class="KomplTable" name="tw_komplKomp" />
+              <widget class="KomplTable" name="tw_komplKomp"/>
              </item>
              <item>
-              <layout class="QHBoxLayout" >
-               <property name="spacing" >
+              <layout class="QHBoxLayout">
+               <property name="spacing">
                 <number>6</number>
                </property>
-               <property name="margin" >
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
                 <number>0</number>
                </property>
                <item>
-                <widget class="QPushButton" name="pb_kompl_addZamena" >
-                 <property name="text" >
+                <widget class="QPushButton" name="pb_kompl_addZamena">
+                 <property name="text">
                   <string>Добавить замену</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pb_komplStatus" >
-                 <property name="text" >
+                <widget class="QPushButton" name="pb_komplStatus">
+                 <property name="text">
                   <string>Статус</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <spacer>
-                 <property name="orientation" >
+                 <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
-                 <property name="sizeHint" stdset="0" >
+                 <property name="sizeHint" stdset="0">
                   <size>
                    <width>40</width>
                    <height>20</height>
@@ -505,15 +650,15 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QPushButton" name="pb_komplPrint" >
-                 <property name="text" >
+                <widget class="QPushButton" name="pb_komplPrint">
+                 <property name="text">
                   <string>Печать</string>
                  </property>
-                 <property name="icon" >
-                  <iconset resource="../sklad.qrc" >
+                 <property name="icon">
+                  <iconset resource="../sklad.qrc">
                    <normaloff>:/icons/icons/printer.png</normaloff>:/icons/icons/printer.png</iconset>
                  </property>
-                 <property name="iconSize" >
+                 <property name="iconSize">
                   <size>
                    <width>16</width>
                    <height>16</height>
@@ -526,48 +671,75 @@
             </layout>
            </widget>
           </widget>
-          <widget class="QWidget" name="widget" >
-           <layout class="QHBoxLayout" >
-            <property name="spacing" >
+          <widget class="QWidget" name="widget">
+           <layout class="QHBoxLayout">
+            <property name="spacing">
              <number>6</number>
             </property>
-            <property name="margin" >
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
-             <layout class="QVBoxLayout" >
-              <property name="spacing" >
+             <layout class="QVBoxLayout">
+              <property name="spacing">
                <number>6</number>
               </property>
-              <property name="margin" >
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
                <number>0</number>
               </property>
               <item>
-               <widget class="QLabel" name="label_6" >
-                <property name="text" >
+               <widget class="QLabel" name="label_6">
+                <property name="text">
                  <string>Приход:</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="SqlTable" name="tw_komplPrih" />
+               <widget class="SqlTable" name="tw_komplPrih"/>
               </item>
              </layout>
             </item>
             <item>
-             <layout class="QVBoxLayout" >
-              <property name="spacing" >
+             <layout class="QVBoxLayout">
+              <property name="spacing">
                <number>6</number>
               </property>
-              <property name="margin" >
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
                <number>0</number>
               </property>
               <item>
                <spacer>
-                <property name="orientation" >
+                <property name="orientation">
                  <enum>Qt::Vertical</enum>
                 </property>
-                <property name="sizeHint" stdset="0" >
+                <property name="sizeHint" stdset="0">
                  <size>
                   <width>20</width>
                   <height>51</height>
@@ -576,15 +748,15 @@
                </spacer>
               </item>
               <item>
-               <widget class="QPushButton" name="pb_komplSnat" >
-                <property name="text" >
+               <widget class="QPushButton" name="pb_komplSnat">
+                <property name="text">
                  <string>Снять</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="pb_komplCard" >
-                <property name="text" >
+               <widget class="QPushButton" name="pb_komplCard">
+                <property name="text">
                  <string>Карточка</string>
                 </property>
                </widget>
@@ -597,29 +769,38 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_6" >
-       <attribute name="title" >
+      <widget class="QWidget" name="tab_6">
+       <attribute name="title">
         <string>Дефицит</string>
        </attribute>
-       <layout class="QVBoxLayout" >
-        <property name="spacing" >
+       <layout class="QVBoxLayout">
+        <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin" >
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
          <number>9</number>
         </property>
         <item>
-         <widget class="Defichit2" native="1" name="widget_def" />
+         <widget class="Defichit2" name="widget_def" native="true"/>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab" >
-       <attribute name="title" >
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
         <string>Требование-накладная</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout" >
+       <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="TrebNakladWidget" native="1" name="widget_2" />
+         <widget class="TrebNakladWidget" name="widget_2" native="true"/>
         </item>
        </layout>
       </widget>
@@ -627,58 +808,64 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar" >
-   <property name="geometry" >
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>794</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu" >
-    <property name="title" >
+   <widget class="QMenu" name="menu">
+    <property name="title">
      <string>Настройки</string>
     </property>
-    <addaction name="action_postavshiki" />
-    <addaction name="action_proizvoditeli" />
-    <addaction name="action_Users" />
-    <addaction name="separator" />
-    <addaction name="action_Pereraschet" />
+    <addaction name="action_postavshiki"/>
+    <addaction name="action_proizvoditeli"/>
+    <addaction name="action_Users"/>
+    <addaction name="action_types"/>
+    <addaction name="separator"/>
+    <addaction name="action_Pereraschet"/>
    </widget>
-   <widget class="QMenu" name="menu_4" >
-    <property name="title" >
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
      <string>Сервис</string>
     </property>
-    <addaction name="action_export_all_kompl" />
+    <addaction name="action_export_all_kompl"/>
    </widget>
-   <addaction name="menu" />
-   <addaction name="menu_4" />
+   <addaction name="menu"/>
+   <addaction name="menu_4"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar" />
-  <action name="action_postavshiki" >
-   <property name="text" >
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_postavshiki">
+   <property name="text">
     <string>Поставщики</string>
    </property>
   </action>
-  <action name="action_proizvoditeli" >
-   <property name="text" >
+  <action name="action_proizvoditeli">
+   <property name="text">
     <string>Производители</string>
    </property>
   </action>
-  <action name="action_Pereraschet" >
-   <property name="text" >
+  <action name="action_Pereraschet">
+   <property name="text">
     <string>Перерасчет</string>
    </property>
   </action>
-  <action name="action_Users" >
-   <property name="text" >
+  <action name="action_Users">
+   <property name="text">
     <string>Пользователи</string>
    </property>
   </action>
-  <action name="action_export_all_kompl" >
-   <property name="text" >
+  <action name="action_export_all_kompl">
+   <property name="text">
     <string>Экспортировать все комплектации в буфер обмена</string>
+   </property>
+  </action>
+  <action name="action_types">
+   <property name="text">
+    <string>Типы радиоэлементов</string>
    </property>
   </action>
  </widget>
@@ -711,7 +898,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../sklad.qrc" />
+  <include location="../sklad.qrc"/>
  </resources>
  <connections/>
 </ui>

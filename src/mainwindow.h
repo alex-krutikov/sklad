@@ -29,6 +29,7 @@ public slots:
   void on_action_export_all_kompl_triggered();
   void my_Delete();
   void on_action_Users_triggered();
+  void on_action_types_triggered();
   void on_pb_prihodFiltr_clicked();
   void on_pb_prihodAdd_clicked();
   void on_pb_zakupkiAdd_clicked();

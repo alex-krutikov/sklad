@@ -65,4 +65,17 @@ private slots:
   void on_pb_ilya_clicked();
 };
 
+//=======================================================================================
+//
+//=======================================================================================
+#include "ui_typesdialog.h"
+class TypesDialog : public QDialog,
+                    public Ui::TypesDialog
+{
+  Q_OBJECT
+public:
+  TypesDialog( QWidget *parent = 0);
+private slots:
+};
+
 #endif
