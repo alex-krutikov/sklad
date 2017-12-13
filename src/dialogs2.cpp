@@ -4,8 +4,11 @@
 #include "dialogs2.h"
 #include "main.h"
 
-#include <QPrinter>
+#include <QErrorMessage>
+#include <QMessageBox>
 #include <QPrintDialog>
+#include <QPrinter>
+
 
 //#######################################################################################
 //
@@ -817,6 +820,9 @@ TypesDialog::TypesDialog(QWidget *parent)
     refresh_table();
 }
 
+//=======================================================================================
+//
+//=======================================================================================
 void TypesDialog::refresh_table()
 {
     QSqlQuery query;
@@ -857,4 +863,158 @@ void TypesDialog::refresh_table()
     }
 
     tw->setCurrentItem(0);
+}
+
+//=======================================================================================
+//
+//=======================================================================================
+void TypesDialog::on_pb_add_clicked()
+{
+    TypesItemDialog dialog(-1, this);
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        refresh_table();
+    }
+}
+
+//=======================================================================================
+//
+//=======================================================================================
+void TypesDialog::on_pb_edit_clicked()
+{
+    if (!tw->selectedItems().size())
+        return;
+
+    int id = tw->selectedItems().value(0)->data(Qt::UserRole).toInt();
+
+    TypesItemDialog dialog(id, this);
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        refresh_table();
+    }
+
+}
+
+//=======================================================================================
+//
+//=======================================================================================
+void TypesDialog::on_pb_delete_clicked()
+{
+    if (!tw->selectedItems().size())
+        return;
+
+    int id = tw->selectedItems().value(0)->data(Qt::UserRole).toInt();
+
+    QSqlQuery query;
+    query.prepare("SELECT `id`, `typename`, `symbol`, `used` "
+                  "FROM `types` "
+                  "WHERE `id` = :id");
+    query.bindValue(":id", id);
+    if(!query.exec())
+    {  sql_error_message( query, this );
+         return;
+    }
+    if (query.size() != 1)
+    {
+        QErrorMessage msg(this);
+        msg.setModal(true);
+        msg.setWindowTitle( QObject::tr("Ошибка выборки из БД") );
+        msg.showMessage("Не могу получить тип радиоэлемента из БД");
+        msg.exec();
+        return;
+    }
+    query.next();
+    QString typename_str = query.value("typename").toString();
+
+    QMessageBox messageBox(this);
+    messageBox.setModal(true);
+    messageBox.setWindowTitle("Удаление");
+    messageBox.setText(QString("Удалить радиокомпонент \"%1\" ?").arg(typename_str));
+    messageBox.addButton(QMessageBox::Yes);
+    messageBox.addButton(QMessageBox::No);
+    messageBox.setDefaultButton(QMessageBox::No);
+    if (messageBox.exec() != QMessageBox::Yes)
+        return;
+
+    query.prepare("DELETE FROM `types` "
+                  "WHERE `id` = :id");
+    query.bindValue(":id", id);
+    if(!query.exec())
+    {  sql_error_message( query, this );
+         return;
+    }
+    if (query.numRowsAffected() != 1)
+    {
+        QErrorMessage msg(this);
+        msg.setModal(true);
+        msg.setWindowTitle( QObject::tr("Ошибка выборки из БД") );
+        msg.showMessage("Не могу удалить радиоэлемента из БД");
+        msg.exec();
+        return;
+    }
+
+    refresh_table();
+}
+
+//=======================================================================================
+//
+//=======================================================================================
+TypesItemDialog::TypesItemDialog(int id, QWidget *parent)
+    : QDialog(parent)
+    , id(id)
+{
+    setupUi(this);
+
+    if (id < 0)
+    {
+        setWindowTitle("Добавить радиоэлемент");
+    }  else {
+        QSqlQuery query;
+        query.prepare("SELECT `id`, `typename`, `symbol`, `used` "
+                      "FROM `types` "
+                      "WHERE `id` = :id");
+        query.bindValue(":id", id);
+        if(!query.exec())
+        {  sql_error_message( query, this );
+             return;
+        }
+        if (query.size() != 1)
+        {
+            QErrorMessage msg(this);
+            msg.setModal(true);
+            msg.setWindowTitle( QObject::tr("Ошибка выборки из БД") );
+            msg.showMessage("Не могу получить тип радиоэлемента из БД");
+            msg.exec();
+        }
+        query.next();
+        le_typename->setText(query.value("typename").toString());
+        le_symbol->setText(query.value("symbol").toString());
+        cb_used->setChecked(query.value("used").toInt());
+    }
+}
+
+//=======================================================================================
+//
+//=======================================================================================
+void TypesItemDialog::accept()
+{
+    QSqlQuery query;
+    if (id < 0)
+    {
+        query.prepare("INSERT INTO `types` (`typename`, `symbol`, `used`) "
+                      "VALUES (:typename, :symbol, :used)");
+    } else {
+        query.prepare("UPDATE `types`"
+                      " SET `typename` = :typename, `symbol` = :symbol, `used` = :used"
+                      " WHERE `id` = :id");
+        query.bindValue(":id", id);
+    }
+    query.bindValue(":typename", le_typename->text());
+    query.bindValue(":symbol", le_symbol->text());
+    query.bindValue(":used", cb_used->checkState() ? 1 : 0);
+    if(!query.exec())
+    {  sql_error_message( query, this );
+         return;
+    }
+    QDialog::accept();
 }

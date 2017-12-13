@@ -77,6 +77,25 @@ public:
   TypesDialog( QWidget *parent = 0);
   void refresh_table();
 private slots:
+  void on_pb_add_clicked();
+  void on_pb_edit_clicked();
+  void on_pb_delete_clicked();
+};
+
+//=======================================================================================
+//
+//=======================================================================================
+#include "ui_typesitemdialog.h"
+class TypesItemDialog : public QDialog,
+                    public Ui::TypesItemDialog
+{
+  Q_OBJECT
+public:
+  TypesItemDialog(int id = -1, QWidget *parent = 0);
+private slots:
+  void accept();
+private:
+  const int id;
 };
 
 #endif
