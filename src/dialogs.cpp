@@ -866,7 +866,7 @@ PrihodAddDialog::PrihodAddDialog( QWidget *parent,int id_arg,int zakupka_arg )
   le10->setCompleter(le10_completer);
 
 
-  le3->setValidator( new QDoubleValidator(this) );
+  le3->setValidator( new QRegExpValidator(QRegExp("^[0-9]*[\\.,]?[0-9]+$"), this) );
   le4->setValidator( new QIntValidator(this) );
   le6->setValidator( new QIntValidator(this) );
 
@@ -973,6 +973,8 @@ void PrihodAddDialog::accept()
     "Поле \"Наименование\" не заполненно!"  );
     return;
   }
+
+  le3->setText(le3->text().replace(',','.'));
 
   QSqlQuery query;
   QString str,mesto;
