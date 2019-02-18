@@ -1,4 +1,4 @@
-#include <QtGui>
+﻿#include <QtGui>
 #include <QtSql>
 
 #include "dialogs.h"
@@ -980,7 +980,7 @@ void PrihodAddDialog::accept()
   QString str,mesto;
 
   if( bcb1->isChecked() )
-  { le3->setText( QString::number(le3->text().toDouble() * 1.18) );
+  { le3->setText( QString::number(le3->text().toDouble() * 1.20) ); // Добавление 20% НДС
   }
 
   mesto = le_mesto->text();

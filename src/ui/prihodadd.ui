@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>PrihodAddDialog</class>
- <widget class="QDialog" name="PrihodAddDialog" >
-  <property name="geometry" >
+ <widget class="QDialog" name="PrihodAddDialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,34 +10,52 @@
     <height>493</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="spacing" >
+  <layout class="QVBoxLayout">
+   <property name="spacing">
     <number>6</number>
    </property>
-   <property name="margin" >
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
     <number>9</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="groupBox" >
-     <property name="title" >
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
       <string/>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
+     <layout class="QGridLayout">
+      <property name="leftMargin">
        <number>9</number>
       </property>
-      <property name="spacing" >
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
        <number>6</number>
       </property>
-      <item row="13" column="0" >
+      <item row="13" column="0">
        <spacer>
-        <property name="orientation" >
+        <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
-        <property name="sizeHint" stdset="0" >
+        <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
           <height>40</height>
@@ -44,198 +63,207 @@
         </property>
        </spacer>
       </item>
-      <item row="14" column="0" >
-       <widget class="QPushButton" name="pb2" >
-        <property name="text" >
+      <item row="14" column="0">
+       <widget class="QPushButton" name="pb2">
+        <property name="text">
          <string>нет документов</string>
         </property>
-        <property name="autoDefault" >
+        <property name="autoDefault">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item row="12" column="0" >
-       <widget class="QLabel" name="label_7" >
-        <property name="text" >
+      <item row="12" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
          <string>Примечания:</string>
         </property>
-        <property name="buddy" >
+        <property name="buddy">
          <cstring>le1</cstring>
         </property>
        </widget>
       </item>
-      <item row="10" column="0" >
-       <widget class="QLabel" name="label_4" >
-        <property name="text" >
+      <item row="10" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
          <string>Место:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1" colspan="4" >
-       <widget class="QLineEdit" name="le2" />
+      <item row="1" column="1" colspan="4">
+       <widget class="QLineEdit" name="le2"/>
       </item>
-      <item row="0" column="0" >
-       <widget class="QLabel" name="label" >
-        <property name="text" >
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
          <string>Тип:</string>
         </property>
-        <property name="buddy" >
+        <property name="buddy">
          <cstring>cb1</cstring>
         </property>
        </widget>
       </item>
-      <item row="8" column="0" >
-       <widget class="QLabel" name="label_5" >
-        <property name="text" >
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
          <string>Остаток:</string>
         </property>
-        <property name="buddy" >
+        <property name="buddy">
          <cstring>le4</cstring>
         </property>
        </widget>
       </item>
-      <item row="8" column="1" colspan="4" >
-       <widget class="QLineEdit" name="le4" />
+      <item row="8" column="1" colspan="4">
+       <widget class="QLineEdit" name="le4"/>
       </item>
-      <item row="7" column="0" >
-       <widget class="QLabel" name="label_9" >
-        <property name="text" >
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
          <string>Количество:</string>
         </property>
-        <property name="buddy" >
+        <property name="buddy">
          <cstring>le6</cstring>
         </property>
        </widget>
       </item>
-      <item row="7" column="1" colspan="4" >
-       <widget class="QLineEdit" name="le6" />
+      <item row="7" column="1" colspan="4">
+       <widget class="QLineEdit" name="le6"/>
       </item>
-      <item row="6" column="1" colspan="2" >
-       <widget class="QLineEdit" name="le3" />
+      <item row="6" column="1" colspan="2">
+       <widget class="QLineEdit" name="le3"/>
       </item>
-      <item row="6" column="3" colspan="2" >
-       <widget class="QCheckBox" name="bcb1" >
-        <property name="text" >
-         <string>добавить НДС</string>
+      <item row="6" column="3" colspan="2">
+       <widget class="QCheckBox" name="bcb1">
+        <property name="text">
+         <string>добавить НДС (20%)</string>
         </property>
-        <property name="checked" >
+        <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="6" column="0" >
-       <widget class="QLabel" name="label_8" >
-        <property name="text" >
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
          <string>Цена:</string>
         </property>
-        <property name="buddy" >
+        <property name="buddy">
          <cstring>le3</cstring>
         </property>
        </widget>
       </item>
-      <item row="5" column="1" colspan="4" >
-       <widget class="QLineEdit" name="le10" />
+      <item row="5" column="1" colspan="4">
+       <widget class="QLineEdit" name="le10"/>
       </item>
-      <item row="5" column="0" >
-       <widget class="QLabel" name="label_13" >
-        <property name="text" >
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
          <string>Накладная:</string>
         </property>
-        <property name="buddy" >
+        <property name="buddy">
          <cstring>le10</cstring>
         </property>
        </widget>
       </item>
-      <item row="3" column="1" colspan="4" >
-       <widget class="QComboBox" name="cb2" />
+      <item row="3" column="1" colspan="4">
+       <widget class="QComboBox" name="cb2"/>
       </item>
-      <item row="3" column="0" >
-       <widget class="QLabel" name="label_6" >
-        <property name="text" >
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
          <string>Производитель:</string>
         </property>
-        <property name="buddy" >
+        <property name="buddy">
          <cstring>cb2</cstring>
         </property>
        </widget>
       </item>
-      <item row="2" column="1" colspan="4" >
-       <widget class="QLineEdit" name="le9" />
+      <item row="2" column="1" colspan="4">
+       <widget class="QLineEdit" name="le9"/>
       </item>
-      <item row="2" column="0" >
-       <widget class="QLabel" name="label_12" >
-        <property name="text" >
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_12">
+        <property name="text">
          <string>Код:</string>
         </property>
-        <property name="buddy" >
+        <property name="buddy">
          <cstring>le9</cstring>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" >
-       <widget class="QLabel" name="label_2" >
-        <property name="text" >
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
          <string>Наименование:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1" colspan="4" >
-       <widget class="QComboBox" name="cb1" />
+      <item row="0" column="1" colspan="4">
+       <widget class="QComboBox" name="cb1"/>
       </item>
-      <item row="4" column="0" colspan="5" >
-       <widget class="Line" name="line_2" >
-        <property name="orientation" >
+      <item row="4" column="0" colspan="5">
+       <widget class="Line" name="line_2">
+        <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
-      <item rowspan="3" row="12" column="1" colspan="4" >
-       <widget class="QTextEdit" name="le1" />
+      <item row="12" column="1" rowspan="3" colspan="4">
+       <widget class="QTextEdit" name="le1"/>
       </item>
-      <item row="9" column="0" colspan="5" >
-       <widget class="Line" name="line_3" >
-        <property name="orientation" >
+      <item row="9" column="0" colspan="5">
+       <widget class="Line" name="line_3">
+        <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
-      <item row="11" column="0" colspan="5" >
-       <widget class="Line" name="line_4" >
-        <property name="orientation" >
+      <item row="11" column="0" colspan="5">
+       <widget class="Line" name="line_4">
+        <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
-      <item row="10" column="1" colspan="4" >
-       <widget class="QLineEdit" name="le_mesto" />
+      <item row="10" column="1" colspan="4">
+       <widget class="QLineEdit" name="le_mesto"/>
       </item>
      </layout>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" >
-     <property name="spacing" >
+    <layout class="QHBoxLayout">
+     <property name="spacing">
       <number>6</number>
      </property>
-     <property name="margin" >
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
       <number>0</number>
      </property>
      <item>
-      <widget class="QPushButton" name="pb1" >
-       <property name="text" >
+      <widget class="QPushButton" name="pb1">
+       <property name="text">
         <string>Создать новую запись</string>
        </property>
-       <property name="autoDefault" >
+       <property name="autoDefault">
         <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
       <spacer>
-       <property name="orientation" >
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -244,21 +272,21 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pbOK" >
-       <property name="text" >
+      <widget class="QPushButton" name="pbOK">
+       <property name="text">
         <string>OK</string>
        </property>
-       <property name="autoDefault" >
+       <property name="autoDefault">
         <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pbCANCEL" >
-       <property name="text" >
+      <widget class="QPushButton" name="pbCANCEL">
+       <property name="text">
         <string>Отмена</string>
        </property>
-       <property name="autoDefault" >
+       <property name="autoDefault">
         <bool>false</bool>
        </property>
       </widget>
