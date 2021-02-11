@@ -65,7 +65,7 @@ private:
 //==============================================================================
 //
 //==============================================================================
-#include "ui_defichit2.h"
+#include "ui/ui_defichit2.h"
 class Defichit2 : public QWidget,
                   public Ui::Defichit2
 {
@@ -85,7 +85,7 @@ private:
 //==============================================================================
 //
 //==============================================================================
-#include "ui_defichit2renamedialog.h"
+#include "ui/ui_defichit2renamedialog.h"
 class Defichit2RenameDialog : public QDialog,
                               public Ui::Defichit2RenameDialog
 {
@@ -107,7 +107,7 @@ private slots:
 //==============================================================================
 //
 //==============================================================================
-#include "ui_defichitpricedialog.h"
+#include "ui/ui_defichitpricedialog.h"
 class DefichitPriceDialog : public QDialog,
                             public Ui::DefichitPriceDialog
 {

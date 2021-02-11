@@ -218,7 +218,7 @@ void SqlTable::refresh()
           a = alignment.value(k);
           if( a==0 ) a=Qt::AlignRight|Qt::AlignVCenter;
           newItem->setTextAlignment( a );
-          newItem->setBackgroundColor( color );
+          newItem->setBackground( color );
           setItem(i, k, newItem);
           break;
         case( QVariant::String ):
@@ -231,7 +231,7 @@ void SqlTable::refresh()
           a = alignment.value(k);
           if( a==0 ) a=Qt::AlignLeft|Qt::AlignVCenter;
           newItem->setTextAlignment( a );
-          newItem->setBackgroundColor( color );
+          newItem->setBackground( color );
           setItem(i, k, newItem);
           break;
         case( QVariant::Date ):
@@ -241,7 +241,7 @@ void SqlTable::refresh()
           if( !query.value(k+qq).isNull() )
             newItem->setText( date.toString("dd.MM.yy") );
           newItem->setTextAlignment( Qt::AlignCenter );
-          newItem->setBackgroundColor( color );
+          newItem->setBackground( color );
           setItem(i, k, newItem);
           break;
         default:
@@ -475,12 +475,12 @@ void KomplTable::refresh( int id )
         newitem -> setData( Qt::UserRole+3,10 );
         newitem -> setText( sql_get_string( query, 3 ) );
         newitem -> setFont( *bold_font );
-        newitem->setBackgroundColor( color4 );
+        newitem->setBackground( color4 );
         setItem( i,0, newitem );
         for( k=1; k<7; k++ )
         { newitem = new QTableWidgetItem;
           newitem->setFlags( Qt::ItemIsEnabled );
-          newitem->setBackgroundColor( color4 );
+          newitem->setBackground( color4 );
           setItem( i,k, newitem );
         }
         i++;
@@ -496,34 +496,34 @@ void KomplTable::refresh( int id )
       newitem -> setData( Qt::UserRole+2, query.value(8).toInt() );
       newitem -> setData( Qt::UserRole+3,1 );
       newitem -> setData( Qt::UserRole+4, query.value(1).toInt() == 10 );
-      newitem->setBackgroundColor( color );
+      newitem->setBackground( color );
       setItem( i,0, newitem );
 
       newitem = new QTableWidgetItem;        // номинал
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       newitem -> setText( sql_get_string( query, 12 ) );
-      newitem->setBackgroundColor( color );
+      newitem->setBackground( color );
       setItem( i,1, newitem );
 
       newitem = new QTableWidgetItem;        // требуется
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       newitem->setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
       newitem -> setText( query.value(5).toString());
-      newitem->setBackgroundColor( color );
+      newitem->setBackground( color );
       setItem( i,2, newitem );
 
       newitem = new QTableWidgetItem;        // место
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       newitem -> setText( sql_get_string( query, 11 ) );
       newitem -> setData( Qt::UserRole, query.value(0) );
-      newitem->setBackgroundColor( color );
+      newitem->setBackground( color );
       setItem( i,4, newitem );
 
       newitem = new QTableWidgetItem;        // снято
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       newitem->setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
       newitem -> setText( query.value(6).toString());
-      newitem->setBackgroundColor( color );
+      newitem->setBackground( color );
       setItem( i,3, newitem );
     } else
     { newitem = new QTableWidgetItem;        // наименование
@@ -539,44 +539,44 @@ void KomplTable::refresh( int id )
       str1 = str2;
       newitem->setData( Qt::UserRole+1, str1 );
       newitem -> setData( Qt::UserRole+2, query.value(8).toInt() );
-      newitem->setBackgroundColor( color );
+      newitem->setBackground( color );
       setItem( i,0, newitem );
 
 
       newitem = new QTableWidgetItem;        // номинал
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-      newitem->setBackgroundColor( color );
+      newitem->setBackground( color );
       setItem( i,1, newitem );
 
       newitem = new QTableWidgetItem;        // нужно
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-      newitem->setBackgroundColor( color );
+      newitem->setBackground( color );
       setItem( i,2, newitem );
 
       newitem = new QTableWidgetItem;        // место
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
       newitem -> setText( sql_get_string( query, 11 ) );
       newitem -> setData( Qt::UserRole, query.value(0) );
-      newitem->setBackgroundColor( color );
+      newitem->setBackground( color );
       setItem( i,4, newitem );
 
       newitem = new QTableWidgetItem;        // снято
       newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-      newitem->setBackgroundColor( color );
+      newitem->setBackground( color );
       setItem( i,3, newitem );
     }
 
     newitem = new QTableWidgetItem;        // в наличии
     newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     newitem -> setText( sql_get_string( query, 9 ) );
-    newitem->setBackgroundColor( color );
+    newitem->setBackground( color );
     setItem( i,5, newitem );
 
     newitem = new QTableWidgetItem;        // статус
     newitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     str = kompl_status.value( query.value(13).toInt()  );
     newitem -> setText( str );
-    newitem->setBackgroundColor( color );
+    newitem->setBackground( color );
     setItem( i,6, newitem );
 
     i++;
@@ -728,13 +728,13 @@ void Defichit2::refresh()
       titem -> setFlags( Qt::ItemIsEnabled );
       titem -> setFont( *bold_font );
       titem -> setText( query.value(1).toString() );
-      titem -> setBackgroundColor( QColor( "darkgrey" ) );
+      titem -> setBackground( QColor( "darkgrey" ) );
       titem -> setData( Qt::UserRole, 1 );
       tw->setItem( i,0, titem );
       for( k=1; k<5; k++ )
       { titem = new QTableWidgetItem;
         titem -> setFlags( Qt::ItemIsEnabled );
-        titem -> setBackgroundColor( QColor( "darkgrey" ) );
+        titem -> setBackground( QColor( "darkgrey" ) );
         tw->setItem( i,k, titem );
       }
       i++;
@@ -773,7 +773,7 @@ void Defichit2::refresh()
 
     if( query.value(4).toInt() < query.value(3).toInt() )
     { for( k=0; k<5; k++ )
-      { tw->item(i,k)->setBackgroundColor( QColor("pink") ) ;
+      { tw->item(i,k)->setBackground( QColor("pink") ) ;
         tw->item(i,k)->setData( Qt::UserRole, 2 );
       }
     }
@@ -1228,7 +1228,7 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
   for(i=0;i<n;i++)
   { if( tw->item(i,1)->text().isEmpty() )
     { tw->setSpan(i,0,0,5);
-      tw->item(i,0)->setBackgroundColor( QColor( "darkgrey" ) );
+      tw->item(i,0)->setBackground( QColor( "darkgrey" ) );
       tw->item(i,0)->setFont( *bold_font );
     }
   }
@@ -1258,7 +1258,7 @@ DefichitPriceDialog::DefichitPriceDialog( QWidget *parent, const QString &items_
     if(n)
     { tw->setItem( i,4, new QTableWidgetItem( QString::number(p*n,'f',2 ) ) );
       if( p < 0.01 )
-      { tw->item(i,4)->setBackgroundColor( QColor( "pink" ) );
+      { tw->item(i,4)->setBackground( QColor( "pink" ) );
       }
     } else
     { tw->setItem( i,4, new QTableWidgetItem( "" ) );

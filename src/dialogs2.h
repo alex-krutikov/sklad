@@ -4,7 +4,7 @@
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_otpravka.h"
+#include "ui/ui_otpravka.h"
 class OtpravkaDialog : public QDialog,
                        public Ui::OtpravkaDialog
 {
@@ -32,7 +32,7 @@ private:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_dootpravka.h"
+#include "ui/ui_dootpravka.h"
 class DootpravkaDialog : public QDialog,
                          public Ui::DootpravkaDialog
 {
@@ -51,7 +51,7 @@ private:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_montagdialog.h"
+#include "ui/ui_montagdialog.h"
 class MontagDialog : public QDialog,
                      public Ui::MontagDialog
 {
@@ -68,7 +68,7 @@ private slots:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_typesdialog.h"
+#include "ui/ui_typesdialog.h"
 class TypesDialog : public QDialog,
                     public Ui::TypesDialog
 {
@@ -85,7 +85,7 @@ private slots:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_typesitemdialog.h"
+#include "ui/ui_typesitemdialog.h"
 class TypesItemDialog : public QDialog,
                     public Ui::TypesItemDialog
 {

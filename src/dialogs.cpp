@@ -629,7 +629,6 @@ void SostavAddDialog::accept()
       { BomAddDialog dialog(this);
         if( !dialog.init( str,id,sb1->value() ) ) { done(QDialog::Rejected) ; return; }
         if( dialog.exec() == QDialog::Rejected )  { done(QDialog::Rejected) ; return; }
-        str.left( str.lastIndexOf("/") );
         settings.setValue( "bompath", str );
         done(QDialog::Accepted);
       }

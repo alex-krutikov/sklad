@@ -112,7 +112,7 @@ void OtpravkaDialog::refresh()
     { // название типа
       titem = new QTableWidgetItem;
       titem ->setText( idata.name );
-      titem ->setBackgroundColor( color1 );
+      titem ->setBackground( color1 );
       titem ->setFont( font1 );
       tw->setItem( i, 0, titem );
       tw->setSpan( i,0,1,5);
@@ -507,13 +507,13 @@ void DootpravkaDialog::refresh()
       j = query.value(0).toInt();
       titem = new QTableWidgetItem;
       titem ->setText( query.value(1).toString() );
-      titem ->setBackgroundColor( color1 );
+      titem ->setBackground( color1 );
       titem ->setFont( font1 );
       titem ->setData( Qt::UserRole, 1 );
       tw->setItem( i, 0, titem );
       for( k=1; k<6; k++ )
       { titem = new QTableWidgetItem;
-        titem ->setBackgroundColor( color1 );
+        titem ->setBackground( color1 );
         tw->setItem( i, k, titem );
       }
       i = tw->rowCount();

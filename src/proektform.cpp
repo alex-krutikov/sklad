@@ -619,16 +619,16 @@ void ProektForm::sostav_refresh()
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
     titem ->setTextAlignment( Qt::AlignVCenter|Qt::AlignRight );
     titem ->setData( Qt::UserRole, query.value(0).toString() );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_sostav->setItem( i, 0, titem );
     titem = new QTableWidgetItem( query.value(1).toString() );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_sostav->setItem( i, 1, titem );
     titem = new QTableWidgetItem( query.value(2).toString() );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
     titem ->setTextAlignment( Qt::AlignVCenter|Qt::AlignRight );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_sostav->setItem( i, 2, titem );
     titem = new QTableWidgetItem;
     titem ->setTextAlignment( Qt::AlignCenter );
@@ -636,38 +636,38 @@ void ProektForm::sostav_refresh()
     if( !query.value(3).isNull() )
     { titem ->setText( query.value(3).toString() );
     }
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_sostav->setItem( i, 3, titem );
     titem = new QTableWidgetItem( query.value(4).toString() );
     titem ->setTextAlignment( Qt::AlignCenter );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_sostav->setItem( i, 4, titem );
     titem = new QTableWidgetItem( query.value(7).toString() );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_sostav->setItem( i, 5, titem );
     titem = new QTableWidgetItem( query.value(5).toDate().toString("dd.MM.yy") );
     titem ->setTextAlignment( Qt::AlignCenter );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_sostav->setItem( i, 6, titem );
     if(  query.value(0).toInt() == a )
     { tw_sostav->selectRow( i );
     }
     titem = new QTableWidgetItem( query.value(8).toString() );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     titem ->setTextAlignment( Qt::AlignVCenter|Qt::AlignRight );
     tw_sostav->setItem( i, 7, titem );
     titem = new QTableWidgetItem( query.value(9).toString() );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     titem ->setTextAlignment( Qt::AlignVCenter|Qt::AlignRight );
     tw_sostav->setItem( i, 8, titem );
     titem = new QTableWidgetItem( query.value(10).toString() );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     titem ->setTextAlignment( Qt::AlignVCenter|Qt::AlignRight );
     tw_sostav->setItem( i, 9, titem );
     i++;
@@ -904,7 +904,7 @@ void ProektForm::kompl_refresh()
       tw_kompl->setRowCount( i+1 );
       titem = new QTableWidgetItem( query.value(3).toString() );
       titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-      titem -> setBackgroundColor( "gray" );
+      titem -> setBackground(QColor{"gray"});
       titem -> setFont( fnt );
       titem ->setData( Qt::UserRole, j );
       tw_kompl->setItem( i, 0, titem );
@@ -921,13 +921,13 @@ void ProektForm::kompl_refresh()
     { titem = new QTableWidgetItem( query.value(4).toString() );
     }
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_kompl->setItem( i, 0, titem );
     tw_kompl->setSpan( i, 0, 0,0 );
     // номинал
     titem = new QTableWidgetItem( query.value(11).toString() );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_kompl->setItem( i, 1, titem );
     // требуется
     if( is_zamena ) // замена
@@ -936,22 +936,22 @@ void ProektForm::kompl_refresh()
     { titem = new QTableWidgetItem( query.value(5).toString() );
     }
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_kompl->setItem( i, 2, titem );
     // снято
     titem = new QTableWidgetItem( query.value(10).toString() );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_kompl->setItem( i, 3, titem );
     // наличие
     titem = new QTableWidgetItem( query.value(9).toString() );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_kompl->setItem( i, 4, titem );
     // статус
     titem = new QTableWidgetItem( kompl_status.value( query.value(12).toInt() ) );
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_kompl->setItem( i, 5, titem );
     // позиция
     if( is_zamena ) // замена
@@ -960,7 +960,7 @@ void ProektForm::kompl_refresh()
     { titem = new QTableWidgetItem( query.value(13).toString() );
     }
     titem ->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-    titem->setBackgroundColor( color );
+    titem->setBackground( color );
     tw_kompl->setItem( i, 6, titem );
 
     i++;

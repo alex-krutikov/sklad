@@ -31,7 +31,7 @@ private:
 //==============================================================================
 //
 //==============================================================================
-#include "ui_bomadddialog.h"
+#include "ui/ui_bomadddialog.h"
 class BomAddDialog : public QDialog,
                      public Ui::BomAddDialog
 {
@@ -97,7 +97,7 @@ private slots:
 //==============================================================================
 //
 //==============================================================================
-#include "ui_bomadddialog2.h"
+#include "ui/ui_bomadddialog2.h"
 class BomAddDialog2 : public QDialog,
                       public Ui::BomAddDialog2
 {

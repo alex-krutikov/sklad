@@ -143,7 +143,7 @@ PriceDialog::PriceDialog( QWidget *parent, int sostav_id_arg )
        titem = new QTableWidgetItem;
        titem -> setText( str_typename );
        titem -> setFlags( Qt::ItemIsEnabled );
-       titem -> setBackgroundColor( "gray" );
+       titem -> setBackground(QColor{"gray"});
        titem -> setFont( boldfont );
        tw->setItem( j, 0, titem );
        tw->setSpan(j,0,1,7);
@@ -158,7 +158,7 @@ PriceDialog::PriceDialog( QWidget *parent, int sostav_id_arg )
      str = data[i].name;
      if( data[i].zamena_flag ) str = "  ЗАМЕНА: " + str;
      //titem->setBackgroundColor( color );
-     titem->setBackgroundColor("antiquewhite" );
+     titem->setBackground(QColor{"antiquewhite"});
      titem->setText( str );
      tw->setItem(j,0,titem );
      //--------------------- требуется ---
@@ -167,7 +167,7 @@ PriceDialog::PriceDialog( QWidget *parent, int sostav_id_arg )
      titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
      if( !data[i].zamena_flag )
        titem->setText( QString::number(data[i].need) );
-     titem->setBackgroundColor( color );
+     titem->setBackground( color );
      tw->setItem(j,1,titem );
      //--------------------- кол-во ---
      titem = new QTableWidgetItem;
@@ -182,7 +182,7 @@ PriceDialog::PriceDialog( QWidget *parent, int sostav_id_arg )
      titem -> setTextAlignment( Qt::AlignRight|Qt::AlignVCenter );
      if( data[i].price_real > 0 )
        titem->setText( QString::number(data[i].price_real,'f',2) );
-     titem->setBackgroundColor( color );
+     titem->setBackground( color );
      tw->setItem(j,3,titem );
      //--------------------- цена оценка ---
      titem = new QTableWidgetItem;
@@ -193,7 +193,7 @@ PriceDialog::PriceDialog( QWidget *parent, int sostav_id_arg )
          titem->setText( QString::number(data[i].price_est) );
      } else
      { titem -> setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-       titem->setBackgroundColor( color );
+       titem->setBackground( color );
      }
      tw->setItem(j,4,titem );
      //--------------------- Стоимость ---
@@ -238,7 +238,7 @@ void PriceDialog::recalc()
     if( data[i].snato<0 ) b=false;
     color = b ? QColor( "salmon" )
               : QColor( "seagreen" );
-    tw->item(data[i].row_index,5)->setBackgroundColor( color );
+    tw->item(data[i].row_index,5)->setBackground( color );
     tw->item(data[i].row_index,5)->setText( str );
     sum += data[i].sum;
   }

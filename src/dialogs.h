@@ -4,7 +4,7 @@
 //==============================================================================
 // начальный диалог
 //==============================================================================
-#include "ui_initdialog.h"
+#include "ui/ui_initdialog.h"
 class InitDialog : public QDialog,
                    public Ui::InitDialog
 {
@@ -19,7 +19,7 @@ private slots:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_postavshiki.h"
+#include "ui/ui_postavshiki.h"
 class Postvshiki : public QDialog,
                    public Ui::Postavshiki
 {
@@ -37,7 +37,7 @@ private slots:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_proizvoditeli.h"
+#include "ui/ui_proizvoditeli.h"
 class Proizvoditeli : public QDialog,
                       public Ui::Proizvoditeli
 {
@@ -55,7 +55,7 @@ private slots:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_sostavadd.h"
+#include "ui/ui_sostavadd.h"
 class SostavAddDialog : public QDialog,
                         public Ui::SostavAddDialog
 {
@@ -72,7 +72,7 @@ private:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_prihodfiltr.h"
+#include "ui/ui_prihodfiltr.h"
 class PrihodFiltrDialog : public QDialog,
                           public Ui::PrihodFiltrDialog
 {
@@ -88,7 +88,7 @@ public slots:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_prihodadd.h"
+#include "ui/ui_prihodadd.h"
 class PrihodAddDialog : public QDialog,
                         public Ui::PrihodAddDialog
 {
@@ -111,7 +111,7 @@ private slots:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_zamenaadd.h"
+#include "ui/ui_zamenaadd.h"
 class ZamenaAddDialog : public QDialog,
                         public Ui::ZamenaAddDialog
 {
@@ -129,7 +129,7 @@ private:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_zakupkiadd.h"
+#include "ui/ui_zakupkiadd.h"
 class ZakupkiAddDialog : public QDialog,
                          public Ui::ZakupkiAddDialog
 {
@@ -149,7 +149,7 @@ private slots:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_users.h"
+#include "ui/ui_users.h"
 class UsersDialog : public QDialog,
                     public Ui::UsersDialog
 {
@@ -167,7 +167,7 @@ private slots:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_rvvod.h"
+#include "ui/ui_rvvod.h"
 class RVvodDialog : public QDialog,
                     public Ui::RVvodDialog
 {
@@ -185,7 +185,7 @@ private:
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_rvvodadd.h"
+#include "ui/ui_rvvodadd.h"
 class RVvodAddDialog : public QDialog,
                        public Ui::RVvodAddDialog
 {

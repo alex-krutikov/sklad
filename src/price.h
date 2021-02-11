@@ -6,7 +6,7 @@
 //=======================================================================================
 //
 //=======================================================================================
-#include "ui_pricedialog.h"
+#include "ui/ui_pricedialog.h"
 class PriceDialog : public QDialog,
                     public Ui::PriceDialog
 {

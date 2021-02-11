@@ -9,6 +9,8 @@
 #include <QFileDialog>
 #include <QProgressDialog>
 
+#include <algorithm>
+
 namespace {
 
 QString get_positions_string(const QStringList &positions_items)
@@ -39,7 +41,7 @@ QString get_positions_string(const QStringList &positions_items)
             return "Error in postion list";
     }
 
-    qSort(positions);
+    std::sort(positions.begin(), positions.end());
 
     for (int i = 0; i < positions.size();)
     {
@@ -248,7 +250,7 @@ void BomFile::process()
 //==============================================================================
 void BomFile::sort()
 {
-  qSort( data );
+    std::sort(data.begin(), data.end());
 }
 
 //#######################################################################################
@@ -414,7 +416,7 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
     //----------------------------------
     data << ss;
   }
-  qSort( data );
+  std::sort(data.begin(), data.end());
   //-------------------------------------------------------------------------------------
   k = -1;
   j = 0;
@@ -427,7 +429,7 @@ bool BomAddDialog::init( QString filename, int izdelie_id, int count )
       titem = new QTableWidgetItem;
       titem -> setText( data[i].type_name );
       titem -> setFlags( Qt::ItemIsEnabled );
-      titem -> setBackgroundColor( QColor("lightgray") );
+      titem -> setBackground(QColor{"lightgray"});
       titem -> setFont( boldfont );
       tw->setItem( j, 0, titem );
       tw->setSpan(j,0,1,TW_COLUMNS_COUNT);
@@ -529,7 +531,7 @@ void BomAddDialog::on_tw_cellChanged(int row, int column)
     for (int j = 0; j < TW_COLUMNS_COUNT; ++j) {
         QTableWidgetItem *item = tw->item(row, j);
         if (item)
-            item->setTextColor(color);
+            item->setForeground(color);
     }
 }
 
@@ -579,7 +581,8 @@ void BomAddDialog::on_pb_variants_file_clicked()
         if (line == "PropertyTypeExcludedComponents")
         {
             QString line = fs.readLine();
-            v.items = line.split(';').toSet();
+            QStringList sl = line.split(';');
+            v.items = QSet<QString>{sl.begin(), sl.end()};
             variants << v;
             continue;
         }

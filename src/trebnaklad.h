@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "ui_trebnaklad.h"
+#include "ui/ui_trebnaklad.h"
 
 class TrebNakladWidget : public QWidget,
                          public Ui::TrebNakladWidget

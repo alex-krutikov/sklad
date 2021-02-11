@@ -3,8 +3,8 @@
 
 #include <QtGui>
 
-#include "ui_proektform.h"
-#include "ui_proektformsostavfind.h"
+#include "ui/ui_proektform.h"
+#include "ui/ui_proektformsostavfind.h"
 
 class ProektFormSostavFindWidget;
 
