@@ -72,7 +72,7 @@ QString sql_get_string( QSqlQuery &query, int n )
   return query.value(n).toString();
 }
 
-//Q_IMPORT_PLUGIN( qsqlmysql )
+Q_IMPORT_PLUGIN(QMYSQLDriverPlugin)
 
 //=======================================================================================
 // MAIN
@@ -101,3 +101,5 @@ int main(int argc, char *argv[])
     application->exec();
     return 0;
 }
+
+// Q_IMPORT_PLUGIN(mysql)
