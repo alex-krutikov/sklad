@@ -31,8 +31,10 @@ MainWindow::MainWindow()
     QSettings settings(QSETTINGS_PARAM);
     QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
     QSize size = settings.value("size", QSize(600, 400)).toSize();
+    const bool maximized = settings.value("maximized", false).toBool();
     resize(size);
     move(pos);
+    if (maximized) showMaximized();
 
     splitter->setChildrenCollapsible(false);
     splitter->restoreState(settings.value("splitter").toByteArray());
@@ -1817,8 +1819,17 @@ void MainWindow::closeEvent(QCloseEvent *event)
     Q_UNUSED(event);
 
     QSettings settings(QSETTINGS_PARAM);
-    settings.setValue("pos", pos());
-    settings.setValue("size", size());
+
+    settings.setValue("maximized", isMaximized());
+    if (isMaximized())
+    {
+        settings.setValue("pos", normalGeometry().topLeft());
+        settings.setValue("size", normalGeometry().size());
+    } else
+    {
+        settings.setValue("pos", pos());
+        settings.setValue("size", size());
+    }
 
     settings.setValue("zakupki", tw_zakupkiHist->getShownFields());
     settings.setValue("sklad", tw_sklad->getShownFields());
