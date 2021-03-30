@@ -5,12 +5,13 @@
 
 #include "ui/ui_trebnaklad.h"
 
-class TrebNakladWidget : public QWidget,
-                         public Ui::TrebNakladWidget
+class TrebNakladWidget
+    : public QWidget
+    , public Ui::TrebNakladWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  TrebNakladWidget( QWidget *parent = 0 );
+    TrebNakladWidget(QWidget *parent = 0);
 };
 
 #endif

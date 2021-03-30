@@ -2,8 +2,8 @@
 
 #include "trebnaklad.h"
 
-TrebNakladWidget::TrebNakladWidget( QWidget *parent  )
-  : QWidget( parent )
+TrebNakladWidget::TrebNakladWidget(QWidget *parent)
+    : QWidget(parent)
 {
-  setupUi( this );
+    setupUi(this);
 }

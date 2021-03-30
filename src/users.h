@@ -3,11 +3,12 @@
 
 #include "ui/ui_usersdialog.h"
 
-class UsersDialog2 : public QDialog,
-                     public Ui::UsersDialog2
+class UsersDialog2
+    : public QDialog
+    , public Ui::UsersDialog2
 {
 public:
-  UsersDialog2( QWidget *parent = 0 );
+    UsersDialog2(QWidget *parent = 0);
 };
 
 #endif

@@ -5,6 +5,6 @@
 // Различные функции манипуляции данными в БД
 //==============================================================================
 
-bool sql_action_zakupka_color( int zakupka_id );
+bool sql_action_zakupka_color(int zakupka_id);
 
 #endif

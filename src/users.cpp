@@ -5,8 +5,8 @@
 //=============================================================================
 //
 //=============================================================================
-UsersDialog2::UsersDialog2( QWidget *parent )
- : QDialog( parent )
+UsersDialog2::UsersDialog2(QWidget *parent)
+    : QDialog(parent)
 {
-  setupUi( this );
+    setupUi(this);
 }
