@@ -3,6 +3,8 @@
 
 #include "dialogs.h"
 
+class AnalyzerModel;
+
 //==============================================================================
 // главное окно
 //==============================================================================
@@ -24,6 +26,7 @@ private:
     PrihodFiltrDialog *prihod_filtr_dialog;
     QString sql_where_rashod_kompl;
     QString sql_where_rashod_filtr;
+
 public slots:
     void on_action_postavshiki_triggered();
     void on_action_proizvoditeli_triggered();
@@ -40,6 +43,8 @@ public slots:
     void on_pb_komplPrint_clicked();
     void on_pb_kompl_status_clicked();
     void on_pb_kompl_price1_clicked();
+    void on_pb_alz_prihod_clicked();
+    void on_pb_alz_rashod_clicked();
     void on_cb_komplAll_toggled(bool);
     void on_pb_kompl_rashod_clicked();
     void on_cb_rashod_kompl_toggled(bool);
@@ -54,6 +59,9 @@ public slots:
     void my6();
     void my7();
     void timer_slot();
+
+private:
+    AnalyzerModel *analyzer;
 };
 
 #endif

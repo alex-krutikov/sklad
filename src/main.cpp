@@ -88,7 +88,7 @@ Q_IMPORT_PLUGIN(QMYSQLDriverPlugin)
 //=======================================================================================
 int main(int argc, char *argv[])
 {
-    QApplication::setStyle("cleanlooks");
+    // QApplication::setStyle("cleanlooks");
 
     application = new QApplication(argc, argv);
 

@@ -67,13 +67,13 @@ void InitDialog::accept()
 
     db = new QSqlDatabase;
     *db = QSqlDatabase::addDatabase("QMYSQL");
-    db->setHostName(cb1->currentText());
+    db->setHostName(cb1->currentText().trimmed());
     db->setPort(3306);
 
-    db->setDatabaseName(le_db_name->text());
+    db->setDatabaseName(le_db_name->text().trimmed());
 
-    db->setUserName(le_db_user->text());
-    db->setPassword(le_db_pass->text());
+    db->setUserName(le_db_user->text().trimmed());
+    db->setPassword(le_db_pass->text().trimmed());
     ok = db->open();
     if (!ok)
     {
@@ -83,10 +83,10 @@ void InitDialog::accept()
     }
 
     QSettings settings(QSETTINGS_PARAM);
-    settings.setValue("mysqlserver", cb1->currentText());
-    settings.setValue("mysqlname", le_db_name->text());
-    settings.setValue("mysqluser", le_db_user->text());
-    settings.setValue("mysqlpass", le_db_pass->text());
+    settings.setValue("mysqlserver", cb1->currentText().trimmed());
+    settings.setValue("mysqlname", le_db_name->text().trimmed());
+    settings.setValue("mysqluser", le_db_user->text().trimmed());
+    settings.setValue("mysqlpass", le_db_pass->text().trimmed());
 
     QSqlQuery query;
     if (!query.exec("SET NAMES \'utf8\'"))
@@ -107,7 +107,7 @@ void InitDialog::accept()
 
     query.prepare("SELECT id, passw, permissions "
                   "   FROM users WHERE nickname = ? ");
-    query.addBindValue(le2->text());
+    query.addBindValue(le2->text().trimmed());
     if (!query.exec())
     {
         sql_error_message(query, this);
@@ -116,7 +116,8 @@ void InitDialog::accept()
     if (query.size() == 1)
     {
         query.next();
-        if (QString::fromUtf8(query.value(1).toByteArray()) == le3->text())
+        if (QString::fromUtf8(query.value(1).toByteArray()).trimmed()
+            == le3->text().trimmed())
         {
             user_id = query.value(0).toInt();
             permissions = query.value(2).toInt();

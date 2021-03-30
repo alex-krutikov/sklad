@@ -1,25 +1,29 @@
-#include <QtGui>
-#include <QtSql>
+#include "mainwindow.h"
 
+#include "analyzer.h"
 #include "dialogs.h"
 #include "dialogs2.h"
 #include "main.h"
-#include "mainwindow.h"
 #include "misc.h"
 #include "price.h"
 #include "sqlactions.h"
 #include "users.h"
 
+#include <QDate>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QPrintDialog>
 #include <QPrinter>
 #include <QProgressDialog>
 #include <QShortcut>
+#include <QSqlQuery>
+#include <QStringList>
+#include <QVector>
 
-//#######################################################################################
+
+//##############################################################################
 /// главное окно
-//#######################################################################################
+//##############################################################################
 MainWindow::MainWindow()
 {
     setupUi(this);
@@ -29,12 +33,23 @@ MainWindow::MainWindow()
     prihod_filtr_dialog = new PrihodFiltrDialog(this);
 
     QSettings settings(QSETTINGS_PARAM);
-    QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
-    QSize size = settings.value("size", QSize(600, 400)).toSize();
-    const bool maximized = settings.value("maximized", false).toBool();
-    resize(size);
-    move(pos);
-    if (maximized) showMaximized();
+    const bool maximized
+        = settings.value("mainwindow_maximized", false).toBool();
+    const QRect mainwindow_rect
+        = settings.value("mainwindow_geometry").toRect();
+
+    if (!mainwindow_rect.isEmpty())
+    {
+        foreach (const auto &e, QGuiApplication::screens())
+        {
+            if (e->availableGeometry().contains(mainwindow_rect))
+            {
+                setGeometry(mainwindow_rect);
+                break;
+            }
+        }
+    }
+    if (maximized) setWindowState(windowState() | Qt::WindowMaximized);
 
     splitter->setChildrenCollapsible(false);
     splitter->restoreState(settings.value("splitter").toByteArray());
@@ -299,9 +314,11 @@ MainWindow::MainWindow()
         cb_sklad_type->addItem(query.value(1).toString(), query.value(0));
         cb_sklad_type_zakupki->addItem(query.value(1).toString(),
                                        query.value(0));
+        cb_sklad_type_alz->addItem(query.value(1).toString(), query.value(0));
     }
     cb_sklad_type->setCurrentIndex(0);
     cb_sklad_type_zakupki->setCurrentIndex(0);
+    cb_sklad_type_alz->setCurrentIndex(0);
 
     //===========================================================================
     cb_zakupkiFiltrPostavshik->addItem("", 0);
@@ -348,6 +365,11 @@ MainWindow::MainWindow()
     }
 
     tabWidget->removeTab(7);
+
+    analyzer = new AnalyzerModel(this);
+    tw_alz->setModel(analyzer);
+    tw_alz->setSelectionMode(QAbstractItemView::SingleSelection);
+    tw_alz->setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
 //==============================================================================
@@ -1814,22 +1836,41 @@ void MainWindow::on_pb_kompl_price1_clicked()
 //==============================================================================
 //
 //==============================================================================
+void MainWindow::on_pb_alz_rashod_clicked()
+{
+    QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    AnalyzerModel::ItemsDpRashod dp;
+    analyzer->load(&dp, cb_sklad_type_alz->currentData().toInt());
+
+    QGuiApplication::restoreOverrideCursor();
+}
+
+//==============================================================================
+//
+//==============================================================================
+void MainWindow::on_pb_alz_prihod_clicked()
+{
+    QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    AnalyzerModel::ItemsDpPrihod dp;
+    analyzer->load(&dp, cb_sklad_type_alz->currentData().toInt());
+
+    QGuiApplication::restoreOverrideCursor();
+}
+
+//==============================================================================
+//
+//==============================================================================
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event);
 
     QSettings settings(QSETTINGS_PARAM);
 
-    settings.setValue("maximized", isMaximized());
-    if (isMaximized())
-    {
-        settings.setValue("pos", normalGeometry().topLeft());
-        settings.setValue("size", normalGeometry().size());
-    } else
-    {
-        settings.setValue("pos", pos());
-        settings.setValue("size", size());
-    }
+    settings.setValue("mainwindow_maximized", isMaximized());
+    settings.setValue("mainwindow_geometry",
+                      isMaximized() ? normalGeometry() : geometry());
 
     settings.setValue("zakupki", tw_zakupkiHist->getShownFields());
     settings.setValue("sklad", tw_sklad->getShownFields());

@@ -18,9 +18,9 @@ target_compile_definitions(mysql_plugin PRIVATE  QT_STATIC QT_STATICPLUGIN)
 target_include_directories(mysql_plugin
     PRIVATE
         sql/mysql/include
-        C:/Qt/5.14.2/mingw73_64/include/QtCore/5.14.2
-        C:/Qt/5.14.2/mingw73_64/include/QtCore/5.14.2/QtCore
-        C:/Qt/5.14.2/mingw73_64/include/QtSql/5.14.2
+        C:/Qt/5.15.2/mingw81_64/include/QtCore/5.15.2
+        C:/Qt/5.15.2/mingw81_64/include/QtCore/5.15.2/QtCore
+        C:/Qt/5.15.2/mingw81_64/include/QtSql/5.15.2
 )
 
 target_sources(mysql_plugin
@@ -30,7 +30,10 @@ target_sources(mysql_plugin
         sql/main.cpp
 )
 
-target_link_libraries(mysql_plugin Qt5::Sql ${CMAKE_CURRENT_SOURCE_DIR}/sql/mysql/lib/libmysql.lib)
+target_link_libraries(mysql_plugin
+    Qt5::Sql
+    ${CMAKE_CURRENT_SOURCE_DIR}/sql/mysql/lib/libmysql.lib
+)
 
 add_executable(app WIN32)
 
@@ -49,6 +52,8 @@ target_include_directories(app
 
 target_sources(app
     PRIVATE
+        analyzer.cpp
+        analyzer.h
         bom.cpp
         bom.h
         dialogs.cpp
@@ -72,6 +77,13 @@ target_sources(app
         trebnaklad.h
         users.cpp
         users.h
+)
+
+target_precompile_headers(app
+    PRIVATE
+        <QtGui>
+        <QtSql>
+        <QtWidgets>
 )
 
 install(TARGETS app DESTINATION .)
