@@ -1323,7 +1323,7 @@ bool QMYSQLDriver::open(const QString& db,
        stored procedure call will fail.
     */
     unsigned int optionFlags = Q_CLIENT_MULTI_STATEMENTS;
-    const QStringList opts(connOpts.split(QLatin1Char(';'), QString::SkipEmptyParts));
+    const QStringList opts(connOpts.split(QLatin1Char(';'), Qt::SkipEmptyParts));
     QString unixSocket;
     QString sslCert;
     QString sslCA;

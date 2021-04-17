@@ -11,6 +11,7 @@ find_package(Qt5 COMPONENTS Sql REQUIRED)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5 COMPONENTS PrintSupport REQUIRED)
 
+
 add_library(mysql_plugin)
 
 target_compile_definitions(mysql_plugin PRIVATE  QT_STATIC QT_STATICPLUGIN)
@@ -18,9 +19,7 @@ target_compile_definitions(mysql_plugin PRIVATE  QT_STATIC QT_STATICPLUGIN)
 target_include_directories(mysql_plugin
     PRIVATE
         sql/mysql/include
-        C:/Qt/5.15.2/mingw81_64/include/QtCore/5.15.2
-        C:/Qt/5.15.2/mingw81_64/include/QtCore/5.15.2/QtCore
-        C:/Qt/5.15.2/mingw81_64/include/QtSql/5.15.2
+        ${Qt5Sql_PRIVATE_INCLUDE_DIRS}
 )
 
 target_sources(mysql_plugin
