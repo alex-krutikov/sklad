@@ -70,6 +70,7 @@ target_sources(app
         proektform.cpp
         proektform.h
         sklad.rc
+        sklad.qrc
         sqlactions.cpp
         sqlactions.h
         trebnaklad.cpp

@@ -19,6 +19,10 @@ private slots:
     void on_pb_copy_clicked();
 
 private:
+    void print(bool rekvizit, const QString &notes);
+    void accept() override;
+
+private:
     struct t_data
     {
         int flag;

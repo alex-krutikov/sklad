@@ -966,6 +966,54 @@ void MainWindow::on_action_export_all_kompl_triggered()
 //==============================================================================
 //
 //==============================================================================
+void MainWindow::on_action_nazvanie_org_triggered()
+{
+    QSettings settings(QSETTINGS_PARAM);
+
+    bool ok = true;
+    QString str = settings.value("nazvanie_org").toString();
+    str = QInputDialog::getText(
+        this, app_header, "Название организации:", QLineEdit::Normal, str, &ok);
+
+    if (!ok) return;
+    settings.setValue("nazvanie_org", str.simplified());
+}
+
+//==============================================================================
+//
+//==============================================================================
+void MainWindow::on_action_inn_org_triggered()
+{
+    QSettings settings(QSETTINGS_PARAM);
+
+    bool ok = true;
+    QString str = settings.value("inn_org").toString();
+    str = QInputDialog::getText(
+        this, app_header, "ИНН организации:", QLineEdit::Normal, str, &ok);
+
+    if (!ok) return;
+    settings.setValue("inn_org", str.simplified());
+}
+
+//==============================================================================
+//
+//==============================================================================
+void MainWindow::on_action_zav_skladom_triggered()
+{
+    QSettings settings(QSETTINGS_PARAM);
+
+    bool ok = true;
+    QString str = settings.value("zav_skladom").toString();
+    str = QInputDialog::getText(
+        this, app_header, "Заведующий складом:", QLineEdit::Normal, str, &ok);
+
+    if (!ok) return;
+    settings.setValue("zav_skladom", str.simplified());
+}
+
+//==============================================================================
+//
+//==============================================================================
 void MainWindow::on_action_Users_triggered()
 {
     QMessageBox::information(this, app_header,

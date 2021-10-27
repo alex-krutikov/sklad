@@ -924,7 +924,7 @@
      <x>0</x>
      <y>0</y>
      <width>1064</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -935,6 +935,10 @@
     <addaction name="action_proizvoditeli"/>
     <addaction name="action_Users"/>
     <addaction name="action_types"/>
+    <addaction name="separator"/>
+    <addaction name="action_nazvanie_org"/>
+    <addaction name="action_inn_org"/>
+    <addaction name="action_zav_skladom"/>
     <addaction name="separator"/>
     <addaction name="action_Pereraschet"/>
    </widget>
@@ -976,6 +980,21 @@
   <action name="action_types">
    <property name="text">
     <string>Типы радиоэлементов</string>
+   </property>
+  </action>
+  <action name="action_nazvanie_org">
+   <property name="text">
+    <string>Название организации</string>
+   </property>
+  </action>
+  <action name="action_inn_org">
+   <property name="text">
+    <string>ИНН организации</string>
+   </property>
+  </action>
+  <action name="action_zav_skladom">
+   <property name="text">
+    <string>Зав. складом</string>
    </property>
   </action>
  </widget>

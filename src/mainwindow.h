@@ -32,6 +32,9 @@ public slots:
     void on_action_proizvoditeli_triggered();
     void on_action_Pereraschet_triggered();
     void on_action_export_all_kompl_triggered();
+    void on_action_nazvanie_org_triggered();
+    void on_action_inn_org_triggered();
+    void on_action_zav_skladom_triggered();
     void my_Delete();
     void on_action_Users_triggered();
     void on_action_types_triggered();

@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>OtpravkaDialog</class>
- <widget class="QDialog" name="OtpravkaDialog" >
-  <property name="geometry" >
+ <widget class="QDialog" name="OtpravkaDialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,51 +10,95 @@
     <height>479</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
+  <layout class="QVBoxLayout">
+   <property name="spacing">
     <number>6</number>
    </property>
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
    <item>
-    <widget class="QFrame" name="frame" >
-     <property name="frameShape" >
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
       <enum>QFrame::Box</enum>
      </property>
-     <property name="frameShadow" >
+     <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>9</number>
+     <layout class="QVBoxLayout">
+      <property name="spacing">
+       <number>2</number>
       </property>
-      <property name="spacing" >
-       <number>6</number>
+      <property name="leftMargin">
+       <number>2</number>
+      </property>
+      <property name="topMargin">
+       <number>2</number>
+      </property>
+      <property name="rightMargin">
+       <number>2</number>
+      </property>
+      <property name="bottomMargin">
+       <number>2</number>
       </property>
       <item>
-       <widget class="QTableWidget" name="tw" />
+       <widget class="QTableWidget" name="tw"/>
       </item>
      </layout>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Дополнительные данные для вывода на печать:</string>
      </property>
-     <property name="spacing" >
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="le_notes"/>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <property name="spacing">
       <number>6</number>
      </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="pb_copy">
+       <property name="text">
+        <string>  Копировать в буфер обмена  </string>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer>
-       <property name="orientation" >
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -62,15 +107,15 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pb_copy" >
-       <property name="text" >
-        <string>Копировать в буфер обмена</string>
+      <widget class="QCheckBox" name="cb_rekvizit">
+       <property name="text">
+        <string>печатать реквизиты</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pb_print" >
-       <property name="text" >
+      <widget class="QPushButton" name="pb_print">
+       <property name="text">
         <string>Печать</string>
        </property>
       </widget>
@@ -79,6 +124,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tw</tabstop>
+  <tabstop>le_notes</tabstop>
+  <tabstop>cb_rekvizit</tabstop>
+  <tabstop>pb_print</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

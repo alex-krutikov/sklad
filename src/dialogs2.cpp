@@ -20,6 +20,10 @@ OtpravkaDialog::OtpravkaDialog(QWidget *parent)
     setWindowTitle("Отправка");
     resize(600, 400);
 
+    const QSettings settings(QSETTINGS_PARAM);
+    le_notes->setText(settings.value("otpravka_notes").toString());
+    cb_rekvizit->setChecked(settings.value("otpravka_rekvizit").toBool());
+
     sostav_id = 0;
 }
 
@@ -154,6 +158,49 @@ void OtpravkaDialog::refresh()
 //=======================================================================================
 void OtpravkaDialog::on_pb_print_clicked()
 {
+    print(cb_rekvizit->isChecked(), le_notes->text());
+}
+
+//=======================================================================================
+//
+//=======================================================================================
+void OtpravkaDialog::print(bool rekvizit, const QString &notes)
+{
+    QString rek_nazvaine;
+    QString rek_inn;
+    QString rek_zav_skladom;
+
+    if (rekvizit)
+    {
+        const QSettings settings(QSETTINGS_PARAM);
+        rek_nazvaine = settings.value("nazvanie_org").toString();
+        rek_inn = settings.value("inn_org").toString();
+        rek_zav_skladom = settings.value("zav_skladom").toString();
+
+        if (rek_nazvaine.isEmpty())
+        {
+            QMessageBox::warning(this, app_header,
+                                 "Название организации не задано. "
+                                 "Воспользуйтесь меню `Настройки`.");
+        }
+
+        if (rek_inn.isEmpty())
+        {
+            QMessageBox::warning(this, app_header,
+                                 "ИНН организации не задан. "
+                                 "Воспользуйтесь меню `Настройки`.");
+        }
+
+
+        if (rek_zav_skladom.isEmpty())
+        {
+            QMessageBox::warning(this, app_header,
+                                 "Зав. склада не задано. "
+                                 "Воспользуйтесь меню `Настройки`.");
+        }
+    }
+
+
     QRect rect;
     int nn = 0;
 
@@ -389,6 +436,23 @@ void OtpravkaDialog::on_pb_print_clicked()
                 if (cur_y > YSIZE - 1200) break;
             }
 
+            if ((page == 1))
+            {
+                QString str;
+                if (rekvizit)
+                {
+                    str = QString{"%1   ИНН: %2  %3"}
+                              .arg(rek_nazvaine)
+                              .arg(rek_inn)
+                              .arg(notes);
+                } else
+                {
+                    str = notes;
+                }
+                painter.setFont(font2);
+                painter.drawText(500, 400, str);
+            }
+
             painter.setFont(font4);
             str2 = tr("Спецификация: %1 (%2 шт.)").arg(sostav).arg(nn);
             if (page == 1)
@@ -400,11 +464,12 @@ void OtpravkaDialog::on_pb_print_clicked()
             {
                 painter.setFont(font2);
                 rect.setRect(0, 400, 10000, 600);
-                painter.drawText(2000, 400, str2);
+                painter.drawText(4000, 400, str2);
             }
 
             painter.setFont(font2);
-            painter.drawText(500, 900, QString("N: %1").arg(sostav_id));
+            painter.drawText(500, (page == 1 ? 900 : TABLE_Y - 40),
+                             QString("N: %1").arg(sostav_id));
             painter.drawText(9000, 400,
                              QDate::currentDate().toString("dd.MM.yy"));
 
@@ -424,6 +489,12 @@ void OtpravkaDialog::on_pb_print_clicked()
             if (i == data.count()) break;
             printer.newPage();
             page++;
+        }
+        if (rekvizit)
+        {
+            painter.setFont(font4);
+            painter.drawText(1100, YSIZE - 400,
+                             tr("Зав. складом  %1").arg(rek_zav_skladom));
         }
     }
     accept();
@@ -468,6 +539,18 @@ void OtpravkaDialog::on_pb_copy_clicked()
     str.chop(1);
 
     QApplication::clipboard()->setText(str);
+}
+
+//=======================================================================================
+//
+//=======================================================================================
+void OtpravkaDialog::accept()
+{
+    QSettings settings(QSETTINGS_PARAM);
+    settings.setValue("otpravka_notes", le_notes->text());
+    settings.setValue("otpravka_rekvizit", cb_rekvizit->isChecked());
+
+    QDialog::accept();
 }
 
 //#######################################################################################

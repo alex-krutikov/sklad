@@ -15,6 +15,8 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
+#include <memory>
+
 //=======================================================================================
 // глобальные переменные
 //=======================================================================================
@@ -90,26 +92,25 @@ int main(int argc, char *argv[])
 {
     // QApplication::setStyle("cleanlooks");
 
-    application = new QApplication(argc, argv);
+    QApplication application(argc, argv);
 
-    QTranslator *qt_translator = new QTranslator;
-    if (qt_translator->load(":tr/qtbase_ru.qm"))
-    {
-        application->installTranslator(qt_translator);
-    }
+    QTranslator qt_translator;
+    if (qt_translator.load(":tr/qtbase_ru.qm"))
+        application.installTranslator(&qt_translator);
 
-    bold_font = new QFont(application->font());
-    bold_font->setBold(true);
+    auto bold_font_ptr = std::make_unique<QFont>(application.font());
+    bold_font_ptr->setBold(true);
+    bold_font = bold_font_ptr.get();
 
     {
         InitDialog dialog;
-        if (dialog.exec() == 0) return 0;
+        if (dialog.exec() == QDialog::Rejected) return 0;
     }
 
-    mainwindow = new MainWindow;
-    mainwindow->show();
-    application->exec();
-    return 0;
+    MainWindow mainwindow;
+    mainwindow.show();
+
+    return application.exec();
 }
 
 // Q_IMPORT_PLUGIN(mysql)
