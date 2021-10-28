@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+
 project(sklad)
 
 set(CMAKE_AUTOMOC ON)
@@ -12,9 +14,13 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5 COMPONENTS PrintSupport REQUIRED)
 
 
-add_library(mysql_plugin)
+add_library(mysql_plugin STATIC)
 
-target_compile_definitions(mysql_plugin PRIVATE  QT_STATIC QT_STATICPLUGIN)
+target_compile_definitions(mysql_plugin 
+    PRIVATE
+        QT_PLUGIN
+        QT_STATICPLUGIN
+)
 
 target_include_directories(mysql_plugin
     PRIVATE
