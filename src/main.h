@@ -4,17 +4,13 @@
 #include <QString>
 #include <QStringList>
 
-#include "main.h"
 #include "mainwindow.h"
 #include "misc.h"
 
 class QSqlDatabase;
 class QSqlQuery;
 
-extern QApplication *appication;
-extern MainWindow *mainwindow;
-extern QFont *bold_font;
-extern QSqlDatabase *db;
+extern MainWindow *mainwindow_ptr;
 extern QString app_header;
 
 

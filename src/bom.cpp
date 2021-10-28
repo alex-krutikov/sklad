@@ -96,7 +96,7 @@ bool BomFile::loadFile(const QString filename)
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QMessageBox::critical(
-            mainwindow, "Импорт BOM-файла",
+            mainwindow_ptr, "Импорт BOM-файла",
             QString("Не могу открыть файл \"%1\"").arg(filename));
         return false;
     }

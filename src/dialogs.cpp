@@ -65,19 +65,18 @@ void InitDialog::accept()
 {
     bool ok;
 
-    db = new QSqlDatabase;
-    *db = QSqlDatabase::addDatabase("QMYSQL");
-    db->setHostName(cb1->currentText().trimmed());
-    db->setPort(3306);
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName(cb1->currentText().trimmed());
+    db.setPort(3306);
 
-    db->setDatabaseName(le_db_name->text().trimmed());
+    db.setDatabaseName(le_db_name->text().trimmed());
 
-    db->setUserName(le_db_user->text().trimmed());
-    db->setPassword(le_db_pass->text().trimmed());
-    ok = db->open();
+    db.setUserName(le_db_user->text().trimmed());
+    db.setPassword(le_db_pass->text().trimmed());
+    ok = db.open();
     if (!ok)
     {
-        QMessageBox::critical(0, "Ошибка", db->lastError().driverText());
+        QMessageBox::critical(0, "Ошибка", db.lastError().driverText());
         done(QDialog::Rejected);
         return;
     }
@@ -386,7 +385,7 @@ void RVvodAddDialog::tw_refresh()
     query.addBindValue(str);
     if (!query.exec())
     {
-        sql_error_message(query, mainwindow);
+        sql_error_message(query, mainwindow_ptr);
         return;
     }
     i = 0;
@@ -856,14 +855,14 @@ void PrihodFiltrDialog::on_pb1_clicked()
 
     if (!str.isEmpty()) str = " WHERE " + str;
 
-    mainwindow->tw_prihodHist->query_str_limit.clear();
+    mainwindow_ptr->tw_prihodHist->query_str_limit.clear();
     if (!bcb12->isChecked())
     {
-        mainwindow->tw_prihodHist->query_str_limit = "LIMIT 0,200 ";
+        mainwindow_ptr->tw_prihodHist->query_str_limit = "LIMIT 0,200 ";
     }
 
-    mainwindow->tw_prihodHist->query_str_where = str;
-    mainwindow->tw_prihodHist->refresh();
+    mainwindow_ptr->tw_prihodHist->query_str_where = str;
+    mainwindow_ptr->tw_prihodHist->refresh();
 }
 
 //#######################################################################################
@@ -1464,7 +1463,7 @@ void ZakupkiAddDialog::on_pb1_clicked()
 {
     PrihodAddDialog dialog(this, 0, id);
     dialog.exec();
-    mainwindow->on_action_Pereraschet_triggered();
+    mainwindow_ptr->on_action_Pereraschet_triggered();
     done(QDialog::Rejected);
 }
 

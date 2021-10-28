@@ -15,13 +15,11 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
-#include <memory>
-
 //=======================================================================================
 // глобальные переменные
 //=======================================================================================
 QApplication *application;
-MainWindow *mainwindow;
+MainWindow *mainwindow_ptr;
 QFont *bold_font;
 QSqlDatabase *db;
 QString app_header;
@@ -98,16 +96,13 @@ int main(int argc, char *argv[])
     if (qt_translator.load(":tr/qtbase_ru.qm"))
         application.installTranslator(&qt_translator);
 
-    auto bold_font_ptr = std::make_unique<QFont>(application.font());
-    bold_font_ptr->setBold(true);
-    bold_font = bold_font_ptr.get();
-
     {
         InitDialog dialog;
         if (dialog.exec() == QDialog::Rejected) return 0;
     }
 
     MainWindow mainwindow;
+    mainwindow_ptr = &mainwindow;
     mainwindow.show();
 
     return application.exec();

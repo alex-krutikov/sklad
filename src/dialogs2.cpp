@@ -436,7 +436,7 @@ void OtpravkaDialog::print(bool rekvizit, const QString &notes)
                 if (cur_y > YSIZE - 1200) break;
             }
 
-            if ((page == 1))
+            if (page == 1)
             {
                 QString str;
                 if (rekvizit)

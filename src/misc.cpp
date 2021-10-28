@@ -417,6 +417,10 @@ void KomplTable::refresh(int id)
     QColor color3;
     QColor color4;
     QString str, str1, str2;
+
+    QFont bold_font = qApp->font();
+    bold_font.setBold(true);
+
     // int current_row = currentRow();
     if (id < 1) return;
 
@@ -504,7 +508,7 @@ void KomplTable::refresh(int id)
                 newitem->setFlags(Qt::ItemIsEnabled);
                 newitem->setData(Qt::UserRole + 3, 10);
                 newitem->setText(sql_get_string(query, 3));
-                newitem->setFont(*bold_font);
+                newitem->setFont(bold_font);
                 newitem->setBackground(color4);
                 setItem(i, 0, newitem);
                 for (k = 1; k < 7; k++)
@@ -640,7 +644,7 @@ void KomplTable::add_zamena()
 
     ZamenaAddDialog dialog(this, item(i, 0)->data(Qt::UserRole).toInt());
     if (dialog.exec() == QDialog::Accepted)
-        mainwindow->on_action_Pereraschet_triggered();
+        mainwindow_ptr->on_action_Pereraschet_triggered();
 }
 
 //=======================================================================================
@@ -705,6 +709,9 @@ void Defichit2::refresh()
     QString str;
     QStringList sl;
     QTableWidgetItem *titem;
+
+    QFont bold_font = qApp->font();
+    bold_font.setBold(true);
 
     tw->setSelectionBehavior(QAbstractItemView::SelectRows);
     tw->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -775,7 +782,7 @@ void Defichit2::refresh()
             j = query.value(0).toInt();
             titem = new QTableWidgetItem;
             titem->setFlags(Qt::ItemIsEnabled);
-            titem->setFont(*bold_font);
+            titem->setFont(bold_font);
             titem->setText(query.value(1).toString());
             titem->setBackground(QColor("darkgrey"));
             titem->setData(Qt::UserRole, 1);
@@ -1165,6 +1172,9 @@ DefichitPriceDialog::DefichitPriceDialog(QWidget *parent,
     QMap<QString, double> price_est_map;
     QMap<QString, double> price_map;
 
+    QFont bold_font = qApp->font();
+    bold_font.setBold(true);
+
     //------------------------------------------------------------------------------------
     // подготовка таблицы
 
@@ -1337,7 +1347,7 @@ DefichitPriceDialog::DefichitPriceDialog(QWidget *parent,
         {
             tw->setSpan(i, 0, 0, 5);
             tw->item(i, 0)->setBackground(QColor("darkgrey"));
-            tw->item(i, 0)->setFont(*bold_font);
+            tw->item(i, 0)->setFont(bold_font);
         }
     }
 
