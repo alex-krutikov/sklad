@@ -12,6 +12,7 @@
         <file>icons/navigate_plus.png</file>
         <file>icons/preferences.png</file>
         <file>icons/printer.png</file>
+        <file>icons/splash.png</file>
     </qresource>
     <qresource prefix="/tr" >
         <file>qtbase_ru.qm</file>

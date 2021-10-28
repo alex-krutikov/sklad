@@ -48,6 +48,15 @@ InitDialog::InitDialog()
 
     frame->hide();
     adjustSize();
+
+    QScreen *screen = QGuiApplication::screens().value(0);
+    if (screen)
+    {
+        const QPoint p = screen->geometry().center();
+        QRect geom = geometry();
+        geom.moveCenter(p);
+        setGeometry(geom);
+    }
 }
 
 //==============================================================================

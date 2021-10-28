@@ -12,6 +12,7 @@
 #include "misc.h"
 
 #include <QErrorMessage>
+#include <QSplashScreen>
 #include <QSqlError>
 #include <QSqlQuery>
 
@@ -101,9 +102,17 @@ int main(int argc, char *argv[])
         if (dialog.exec() == QDialog::Rejected) return 0;
     }
 
+    QPixmap splashPixmap{":icons/icons/splash.png"};
+    QSplashScreen splash{splashPixmap};
+    splash.show();
+    application.processEvents();
+
+
     MainWindow mainwindow;
     mainwindow_ptr = &mainwindow;
     mainwindow.show();
+
+    splash.close();
 
     return application.exec();
 }
