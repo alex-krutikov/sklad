@@ -85,11 +85,11 @@ target_sources(app
         users.h
 )
 
-target_precompile_headers(app
-    PRIVATE
-        <QtGui>
-        <QtSql>
-        <QtWidgets>
-)
+# target_precompile_headers(app
+#     PRIVATE
+#         <QtGui>
+#         <QtSql>
+#         <QtWidgets>
+# )
 
 install(TARGETS app DESTINATION .)

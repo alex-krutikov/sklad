@@ -20,6 +20,17 @@ PriceDialog::PriceDialog(QWidget *parent, int sostav_id_arg)
     fnt.setBold(true);
     le1->setFont(fnt);
     //------------------------------------------------------------------------------------
+    cb_price_type->addItem("Последняя актуальная", "last_actual");
+    cb_price_type->addItem("Усредненная", "avr");
+    //------------------------------------------------------------------------------------
+    sb_price_months->setMinimum(0);
+    sb_price_months->setMaximum(100 * 12);
+    sb_price_months->setSingleStep(6);
+    //------------------------------------------------------------------------------------
+    label_2->setEnabled(false);
+    label_3->setEnabled(false);
+    sb_price_months->setEnabled(false);
+    //------------------------------------------------------------------------------------
     int i, j;
     QString str;
     QString str_typename;
@@ -45,19 +56,7 @@ PriceDialog::PriceDialog(QWidget *parent, int sostav_id_arg)
     setWindowTitle("Оценка стоимости: " + query.value(1).toString() + " | "
                    + query.value(2).toString());
     //------------------------------------------------------------------------------------
-    query.prepare(
-        "SELECT name,SUM(price*kolichestvo)/SUM(kolichestvo) AS avr_price "
-        " FROM prihod GROUP BY name");
-    if (!query.exec())
-    {
-        sql_error_message(query, this);
-        return;
-    }
-    while (query.next())
-    {
-        if (query.isNull(1)) continue;
-        price[query.value(0).toString()] = query.value(1).toDouble();
-    }
+    queryPrices();
     //------------------------------------------------------------------------------------
     QSqlQuery query_price;
     query_price.prepare("SELECT name, price_est FROM price_est");
@@ -229,6 +228,11 @@ PriceDialog::PriceDialog(QWidget *parent, int sostav_id_arg)
     recalc();
 
     connect(tw, SIGNAL(cellChanged(int, int)), SLOT(tw_cellChanged(int, int)));
+
+    connect(cb_price_type, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &PriceDialog::price_settings_changed);
+    connect(sb_price_months, QOverload<int>::of(&QSpinBox::valueChanged), this,
+            &PriceDialog::price_settings_changed);
 }
 
 //=======================================================================================
@@ -270,6 +274,104 @@ void PriceDialog::recalc()
 //=======================================================================================
 //
 //=======================================================================================
+void PriceDialog::queryPrices()
+{
+    const QColor color1 = QColor{"bisque"};
+    const Qt::ItemFlags f1
+        = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
+    const Qt::ItemFlags f2 = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+
+    price.clear();
+
+    int months = 0;
+    if (cb_price_type->currentData() == "avr")
+        months = sb_price_months->value();
+
+    QSqlQuery query;
+    // Запрос для последней актуальной цены
+    query.prepare("SELECT name, price FROM prihod WHERE id IN "
+                  "( SELECT MAX(id) FROM prihod "
+                  " GROUP BY name) ");
+    if (!query.exec())
+    {
+        sql_error_message(query, this);
+        return;
+    }
+    QMap<QString, double> last_price;
+    while (query.next())
+    {
+        last_price.insert(query.value(0).toString(), query.value(1).toDouble());
+    }
+
+    if (cb_price_type->currentData() == "avr")
+    {
+        // Запрос для средней цены
+        query.prepare(
+            "SELECT name,SUM(price*kolichestvo)/SUM(kolichestvo) AS avr_price "
+            "FROM prihod "
+            "WHERE date >= DATE_SUB(NOW(), INTERVAL :period MONTH) "
+            "GROUP BY name");
+        query.bindValue(":period", months);
+        if (!query.exec())
+        {
+            sql_error_message(query, this);
+            return;
+        }
+        while (query.next())
+        {
+            if (query.isNull(1)) continue;
+            price[query.value(0).toString()] = query.value(1).toDouble();
+        }
+
+        // Дополнение средних цен последними актуальными
+        // для позиций где нет средней цены
+
+        for (auto it = last_price.constBegin(); it != last_price.constEnd();
+             ++it)
+        {
+            if (!price.contains(it.key())) price.insert(it.key(), it.value());
+        }
+    } else
+    {
+        // последняя актуальная цена
+        price = std::move(last_price);
+    }
+
+    // Обновление таблицы
+
+    for (int i = 0; i < data.count(); i++)
+    {
+        data[i].price_real = price.value(data[i].name, -1);
+
+        //----------------------------------------------------------------------
+        QTableWidgetItem *titem = tw->item(data[i].row_index, 3);
+        if (!titem) continue;
+        if (data[i].price_real > 0)
+            titem->setText(QString::number(data[i].price_real, 'f', 2));
+        else
+            titem->setText("");
+
+        //----------------------------------------------------------------------
+        titem = tw->item(data[i].row_index, 4);
+        if (!titem) continue;
+        if (data[i].price_real <= 0)
+        {
+            titem->setBackground(QBrush{});
+            if (titem->flags() != f1) titem->setFlags(f1);
+            if (data[i].price_est > 0)
+                titem->setText(QString::number(data[i].price_est));
+        } else
+        {
+            if (titem->flags() != f2) titem->setFlags(f2);
+            titem->setBackground(color1);
+            titem->setText("");
+        }
+    }
+}
+
+//=======================================================================================
+//
+//=======================================================================================
 void PriceDialog::tw_cellChanged(int row, int column)
 {
     bool ok;
@@ -304,21 +406,18 @@ void PriceDialog::tw_cellChanged(int row, int column)
     case (4): // цена оценка
         f = text.toDouble(&ok);
         if (!ok) f = -1;
-        data[index].price_est = f;
         if (f > 0)
         {
+            data[index].price_est = f;
+
             query.prepare("REPLACE price_est SET price_est = ?, name = ?");
             query.addBindValue(f);
             query.addBindValue(data[index].name);
-        } else
-        {
-            query.prepare("DELETE FROM price_est WHERE name = ?");
-            query.addBindValue(data[index].name);
-        }
-        if (!query.exec())
-        {
-            sql_error_message(query, this);
-            return;
+            if (!query.exec())
+            {
+                sql_error_message(query, this);
+                return;
+            }
         }
         recalc();
         break;
@@ -334,6 +433,31 @@ void PriceDialog::on_tw_cellDoubleClicked(int row, int column)
 
     QString str = tw->item(row, 0)->text();
     QApplication::clipboard()->setText(str);
+}
+
+//=======================================================================================
+//
+//=======================================================================================
+void PriceDialog::price_settings_changed()
+{
+    const bool flag = cb_price_type->currentData() == "avr";
+    label_2->setEnabled(flag);
+    label_3->setEnabled(flag);
+    sb_price_months->setEnabled(flag);
+
+    queryPrices();
+    recalc();
+}
+
+//=======================================================================================
+//
+//=======================================================================================
+void PriceDialog::on_pb_export_clicked()
+{
+    const QString str = tablewidget2str(tw);
+    QApplication::clipboard()->setText(str);
+    QMessageBox::information(this, app_header,
+                             "Таблица скопирована в буфер обмена.");
 }
 
 //=======================================================================================

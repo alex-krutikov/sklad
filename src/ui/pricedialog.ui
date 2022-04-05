@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>PriceDialog</class>
- <widget class="QDialog" name="PriceDialog" >
-  <property name="geometry" >
+ <widget class="QDialog" name="PriceDialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,61 +10,46 @@
     <height>492</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="spacing" >
+  <layout class="QVBoxLayout">
+   <property name="spacing">
     <number>6</number>
    </property>
-   <property name="leftMargin" >
+   <property name="leftMargin">
     <number>9</number>
    </property>
-   <property name="topMargin" >
+   <property name="topMargin">
     <number>9</number>
    </property>
-   <property name="rightMargin" >
+   <property name="rightMargin">
     <number>9</number>
    </property>
-   <property name="bottomMargin" >
+   <property name="bottomMargin">
     <number>9</number>
    </property>
    <item>
-    <widget class="QTableWidget" name="tw" />
-   </item>
-   <item>
-    <layout class="QHBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
-      <number>0</number>
-     </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pb_ok" >
-       <property name="text" >
-        <string>OK</string>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Тип цены:</string>
        </property>
       </widget>
      </item>
      <item>
-      <spacer>
-       <property name="orientation" >
+      <widget class="QComboBox" name="cb_price_type"/>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeType" >
+       <property name="sizeType">
         <enum>QSizePolicy::Fixed</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>20</width>
          <height>20</height>
@@ -72,37 +58,132 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="label" >
-       <property name="text" >
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Усреднение за последние</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="sb_price_months">
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>месяцев</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pb_export">
+       <property name="text">
+        <string>Экспорт</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tw"/>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="pb_ok">
+       <property name="text">
+        <string>OK</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
         <string>Стоимость:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="le1" >
-       <property name="maximumSize" >
+      <widget class="QLineEdit" name="le1">
+       <property name="maximumSize">
         <size>
          <width>70</width>
          <height>16777215</height>
         </size>
        </property>
-       <property name="frame" >
+       <property name="frame">
         <bool>false</bool>
        </property>
-       <property name="alignment" >
+       <property name="alignment">
         <set>Qt::AlignRight</set>
        </property>
-       <property name="readOnly" >
+       <property name="readOnly">
         <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
       <spacer>
-       <property name="orientation" >
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -114,6 +195,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pb_ok</tabstop>
+  <tabstop>le1</tabstop>
+  <tabstop>tw</tabstop>
+  <tabstop>cb_price_type</tabstop>
+  <tabstop>sb_price_months</tabstop>
+  <tabstop>pb_export</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -30,13 +30,15 @@ public:
 private slots:
     void tw_cellChanged(int, int);
     void on_tw_cellDoubleClicked(int, int);
-    // void on_pb_nds_clicked();
+    void price_settings_changed();
+    void on_pb_export_clicked();
     void on_pb_ok_clicked();
 signals:
     void updated();
 
 private:
     void recalc();
+    void queryPrices();
     int sostav_id;
     QVector<t_data> data;
     QMap<int, int> tw2data;
