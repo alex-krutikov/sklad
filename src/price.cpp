@@ -21,6 +21,7 @@ PriceDialog::PriceDialog(QWidget *parent, int sostav_id_arg)
     le1->setFont(fnt);
     //------------------------------------------------------------------------------------
     cb_price_type->addItem("Последняя актуальная", "last_actual");
+    cb_price_type->addItem("Максимальная", "max");
     cb_price_type->addItem("Усредненная", "avr");
     //------------------------------------------------------------------------------------
     sb_price_months->setMinimum(0);
@@ -303,7 +304,22 @@ void PriceDialog::queryPrices()
         last_price.insert(query.value(0).toString(), query.value(1).toDouble());
     }
 
-    if (cb_price_type->currentData() == "avr")
+    if (cb_price_type->currentData() == "max")
+    {
+        // Запрос для максимальной цены
+        query.prepare("SELECT name, MAX(price) FROM prihod "
+                      "GROUP BY name ");
+        if (!query.exec())
+        {
+            sql_error_message(query, this);
+            return;
+        }
+        while (query.next())
+        {
+            price.insert(query.value(0).toString(), query.value(1).toDouble());
+        }
+
+    } else if (cb_price_type->currentData() == "avr")
     {
         // Запрос для средней цены
         query.prepare(
