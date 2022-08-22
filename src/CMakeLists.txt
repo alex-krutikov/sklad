@@ -24,7 +24,8 @@ target_compile_definitions(mysql_plugin
 
 target_include_directories(mysql_plugin
     PRIVATE
-        sql/mysql/include
+        $<$<PLATFORM_ID:Windows>:sql/mysql/include>
+        $<$<PLATFORM_ID:Linux>:/usr/include/mysql>
         ${Qt5Sql_PRIVATE_INCLUDE_DIRS}
 )
 
@@ -37,7 +38,8 @@ target_sources(mysql_plugin
 
 target_link_libraries(mysql_plugin
     Qt5::Sql
-    ${CMAKE_CURRENT_SOURCE_DIR}/sql/mysql/lib/libmysql.lib
+    $<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_SOURCE_DIR}/sql/mysql/lib/libmysql.lib>
+    $<$<PLATFORM_ID:Linux>:libmysqlclient.so>
 )
 
 add_executable(app WIN32)
@@ -85,11 +87,5 @@ target_sources(app
         users.h
 )
 
-# target_precompile_headers(app
-#     PRIVATE
-#         <QtGui>
-#         <QtSql>
-#         <QtWidgets>
-# )
 
 install(TARGETS app DESTINATION .)
