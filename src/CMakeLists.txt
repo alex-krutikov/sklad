@@ -24,7 +24,7 @@ target_compile_definitions(mysql_plugin
 
 target_include_directories(mysql_plugin
     PRIVATE
-        $<$<PLATFORM_ID:Windows>:sql/mysql/include>
+        $<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_SOURCE_DIR}/sql/mysql/include>
         $<$<PLATFORM_ID:Linux>:/usr/include/mysql>
         ${Qt5Sql_PRIVATE_INCLUDE_DIRS}
 )
