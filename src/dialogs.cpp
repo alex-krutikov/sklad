@@ -1082,7 +1082,7 @@ void PrihodAddDialog::accept()
     if (bcb1->isChecked())
     {
         le3->setText(QString::number(le3->text().toDouble()
-                                     * 1.20)); // Добавление 20% НДС
+                                     * 1.22)); // Добавление 22% НДС
     }
 
     mesto = le_mesto->text();
